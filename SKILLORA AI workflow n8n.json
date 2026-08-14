@@ -1,0 +1,985 @@
+{
+  "name": "SKILLORA AI",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "skillora-ai",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2096,
+        1616
+      ],
+      "id": "ecfcb204-391e-415e-9cba-91a4513db1f7",
+      "name": "Webhook",
+      "webhookId": "4d4df1ac-d91c-4854-bc04-f85ed00530e0"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.module }}",
+                    "rightValue": "notes",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2b730847-0831-4705-a9ae-028e81596f0b"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "00d6caea-d1af-482b-8b09-cdd9e257d268",
+                    "leftValue": "={{ $json.body.module }}",
+                    "rightValue": "youtube_search",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "09612c72-17e3-49a3-ad97-3f5d6a8ed516",
+                    "leftValue": "={{ $json.body.module }}",
+                    "rightValue": "quiz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eec1c832-2c83-41d3-aac9-aed5e2b81895",
+                    "leftValue": "={{ $json.body.module }}",
+                    "rightValue": "roadmap",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "848e509f-02ac-4d73-b88c-d85d007a951d",
+                    "leftValue": "={{ $json.body.module }}",
+                    "rightValue": "assistant",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1680,
+        1568
+      ],
+      "id": "79b30272-18ac-4560-838a-690fb2dc4fc3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -912,
+        848
+      ],
+      "id": "2dd4dcaf-3cd9-495a-a6d9-936df2be5cf0",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "qV13d64OkexFclAw",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"notes\": \"React Hooks are functions that allow functional components to use React features such as state and lifecycle behavior. Important hooks include useState, useEffect, useContext, useMemo, and useCallback.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -544,
+        848
+      ],
+      "id": "8d08fc0a-aa53-4077-94ef-5280c7da8942",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "q",
+              "value": "={{ $('Webhook').first().json.body.search }} tutorial {{ $('Webhook').first().json.body.language }}"
+            },
+            {
+              "name": "type",
+              "value": "video"
+            },
+            {
+              "name": "maxResults",
+              "value": "10"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyCg3jupG2HWtmuu3HKkNXlUXpGA-EduaW4"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -1008,
+        1184
+      ],
+      "id": "7111b05d-c18a-43be-b4c3-150358eec5b3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the YouTube API response\nconst data = $input.first().json;\n\n// Get videos from YouTube response\nconst youtubeItems = Array.isArray(data.items)\n  ? data.items\n  : [];\n\n// Convert YouTube results into clean video objects\nconst videos = youtubeItems\n  .filter(item => item?.id?.videoId)\n  .map(item => {\n    const videoId = item.id.videoId;\n    const snippet = item.snippet || {};\n\n    return {\n      id: videoId,\n\n      title: snippet.title || \"YouTube Lesson\",\n\n      description: snippet.description || \"\",\n\n      youtubeId: videoId,\n\n      thumbnail:\n        snippet.thumbnails?.high?.url ||\n        snippet.thumbnails?.medium?.url ||\n        snippet.thumbnails?.default?.url ||\n        \"\",\n\n      channel:\n        snippet.channelTitle || \"\",\n\n      publishedAt:\n        snippet.publishedAt ||\n        snippet.publishTime ||\n        \"\",\n\n      youtubeUrl:\n        `https://www.youtube.com/watch?v=${videoId}`,\n    };\n  });\n\n// Get original request from Webhook\nconst webhookData = $('Webhook').first().json;\n\nconst body = webhookData.body || {};\n\nconst course = body.course || \"\";\nconst language = body.language || \"English\";\n\n// Send ONLY the clean data to Respond to Webhook\nreturn [\n  {\n    json: {\n      success: true,\n      course: course,\n      language: language,\n      videos: videos,\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        1184
+      ],
+      "id": "73421e5a-866b-4fbc-b705-e209325082ea",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ notes: $json.output.notes }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -128,
+        592
+      ],
+      "id": "1674bd1e-04a2-48e3-9325-0d2274ced003",
+      "name": "NOTES RESPOND"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -384,
+        1184
+      ],
+      "id": "06d61b61-9040-413d-ba05-f949ff709ed1",
+      "name": "YOUTUBE VIDEO RESPOND"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        1728
+      ],
+      "id": "c7803203-ba7b-4837-afdc-c934692e0f29",
+      "name": "Mistral Cloud Chat Model1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "qV13d64OkexFclAw",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\n// Get AI output\nlet output =\n  input.output ??\n  input.text ??\n  input.response ??\n  input.content ??\n  \"\";\n\n// If output is already an object\nif (typeof output === \"object\" && output !== null) {\n  return [\n    {\n      json: {\n        success: true,\n        quiz: output,\n      },\n    },\n  ];\n}\n\n// Convert to string\noutput = String(output).trim();\n\n// Remove Markdown code fences if AI accidentally adds them\noutput = output\n  .replace(/^```json\\s*/i, \"\")\n  .replace(/^```\\s*/i, \"\")\n  .replace(/\\s*```$/i, \"\")\n  .trim();\n\n// Find JSON object if there is extra text\nconst firstBrace = output.indexOf(\"{\");\nconst lastBrace = output.lastIndexOf(\"}\");\n\nif (firstBrace !== -1 && lastBrace !== -1) {\n  output = output.substring(firstBrace, lastBrace + 1);\n}\n\nlet quiz;\n\ntry {\n  quiz = JSON.parse(output);\n} catch (error) {\n  return [\n    {\n      json: {\n        success: false,\n        error: \"AI returned invalid JSON\",\n        raw: output,\n      },\n    },\n  ];\n}\n\n// Get original request from Webhook\nconst webhookData = $(\"Webhook\").first().json;\n\nconst course =\n  webhookData.body?.course || quiz.course || \"\";\n\nconst language =\n  webhookData.body?.language || quiz.language || \"English\";\n\nreturn [\n  {\n    json: {\n      success: true,\n      module: \"quiz\",\n      course,\n      language,\n      questions: quiz.questions || [],\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        1584
+      ],
+      "id": "d16787bf-bc55-4d12-8299-f063a9e45160",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -144,
+        1584
+      ],
+      "id": "284d588b-6acb-4f33-b59e-84f52b3ac9b2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a quiz using the following details.\n\nTopic:\n{{ $json.body.topic }}\n\nDifficulty:\n{{ $json.body.difficulty }}\n\nNumber of Questions:\n{{ $json.body.questionCount }}\n\nModule:\n{{ $json.body.module }}\n\nIMPORTANT:\n\nGenerate EXACTLY  {{ $json.body.questionCount }}  questions.\n\nDo NOT generate 10 questions unless questionCount is actually 10.\n\nFor example:\n\nIf questionCount = 5 → generate exactly 5 questions.\n\nIf questionCount = 10 → generate exactly 10 questions.\n\nIf questionCount = 15 → generate exactly 15 questions.\n\nIf questionCount = 20 → generate exactly 20 questions.\n\nEach question must contain:\n\n- id\n- question\n- options\n- answer\n- explanation\n\nThe options object must contain exactly:\n\nA\nB\nC\nD\n\nThe answer must contain only the correct option letter.\n\nReturn ONLY valid JSON in this structure:\n\n{\n  \"success\": true,\n  \"module\": \"quiz\",\n  \"course\": \"{{ $json.topic }}\",\n  \"language\": \"English\",\n  \"questions\": [\n    {\n      \"id\": 1,\n      \"question\": \"Question text\",\n      \"options\": {\n        \"A\": \"Option A\",\n        \"B\": \"Option B\",\n        \"C\": \"Option C\",\n        \"D\": \"Option D\"\n      },\n      \"answer\": \"A\",\n      \"explanation\": \"Explanation.\"\n    }\n  ]\n}\n\nThe questions array MUST contain exactly {{ $json.questionCount }} questions.",
+        "options": {
+          "systemMessage": "You are Skillora AI's Quiz Generator.\n\nYour job is to generate multiple-choice quiz questions based ONLY on the topic, difficulty, and question count provided by the user.\n\nIMPORTANT RULES:\n\n1. Generate EXACTLY the number of questions requested by the user.\n\n2. NEVER assume the question count is 10.\n\n3. The requested question count is provided dynamically in:\n   questionCount\n\n4. If questionCount is 5, generate exactly 5 questions.\n\n5. If questionCount is 10, generate exactly 10 questions.\n\n6. If questionCount is 15, generate exactly 15 questions.\n\n7. If questionCount is 20, generate exactly 20 questions.\n\n8. Do not generate fewer questions.\n\n9. Do not generate more questions.\n\n10. Every question must have exactly four options:\n    A\n    B\n    C\n    D\n\n11. Every question must have exactly one correct answer.\n\n12. The answer field must contain ONLY:\n    A\n    B\n    C\n    or\n    D\n\n13. The explanation must briefly explain why the correct answer is correct.\n\n14. Questions must match the requested difficulty.\n\n15. Questions must be relevant to the requested topic.\n\n16. Avoid duplicate questions.\n\n17. Return ONLY valid JSON.\n\n18. Do not use Markdown.\n\n19. Do not add introductory or concluding text.\n\n20. Do not wrap the JSON inside ```json.\n\n21. The final response MUST contain exactly the requested number of questions.\n\nRequired JSON structure:\n\n{\n  \"success\": true,\n  \"module\": \"quiz\",\n  \"course\": \"topic name\",\n  \"language\": \"English\",\n  \"questions\": [\n    {\n      \"id\": 1,\n      \"question\": \"Question text\",\n      \"options\": {\n        \"A\": \"Option A\",\n        \"B\": \"Option B\",\n        \"C\": \"Option C\",\n        \"D\": \"Option D\"\n      },\n      \"answer\": \"A\",\n      \"explanation\": \"Explanation of the correct answer.\"\n    }\n  ]\n}\n\nBefore returning the response, verify:\n\n- Number of questions = requested questionCount\n- Every question has A, B, C and D\n- Every answer is A, B, C or D\n- Every question has an explanation\n- No duplicate questions\n- Valid JSON only"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -992,
+        1584
+      ],
+      "id": "cfd8b173-ab21-4c24-bedb-f923f169d887",
+      "name": "QUIZ GENERATOR"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate study notes using the following details:\n\nTopic: {{ $json.body.topic }}\n\nDifficulty: {{ $json.body.difficulty }}\n\nLanguage: {{ $json.body.language }}\n\nNotes Format: {{ $json.body.format }}\n\nGenerate the actual study notes based on these inputs.\n\nReturn ONLY the required JSON object with the \"notes\" property.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are Skillora AI, an intelligent study notes generator.\n\nYour task is to generate high-quality educational notes based on the user's topic, difficulty level, language, and requested format.\n\nFollow these rules:\n\n1. Generate notes specifically for the requested topic.\n2. Match the requested difficulty:\n   - Beginner: simple explanations and basic examples.\n   - Intermediate: deeper explanations with practical examples.\n   - Advanced: detailed technical explanations and advanced concepts.\n3. Generate the notes in the requested language.\n4. Follow the requested format:\n   - Short Notes: concise and easy-to-revise points.\n   - Detailed Notes: complete explanations with headings, examples, and important concepts.\n   - Interview Notes: important concepts followed by common interview questions and answers.\n   - Exam Notes: exam-focused definitions, key points, important concepts, examples, and likely questions.\n5. Use clear headings, subheadings, bullet points, numbered lists, and examples where appropriate.\n6. Do not invent false information.\n7. Keep the content educational, accurate, and easy to understand.\n\nIMPORTANT OUTPUT RULE:\n\nReturn ONLY a valid JSON object.\n\nThe JSON object MUST contain exactly one property named \"notes\".\n\nThe value of \"notes\" must contain the ACTUAL generated study notes.\n\nCorrect format:\n\n{\n  \"notes\": \"Actual study notes generated for the requested topic...\"\n}\n\nDO NOT return a JSON schema.\nDO NOT return \"type\".\nDO NOT return \"properties\".\nDO NOT return \"required\".\nDO NOT return an \"output\" object.\nDO NOT wrap the JSON inside Markdown code fences.\nDO NOT add explanations before or after the JSON."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -816,
+        560
+      ],
+      "id": "39da99d2-6e1b-437f-8892-bdc4cff3f07e",
+      "name": "NOTES GENERATOR"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        2256
+      ],
+      "id": "c48204a7-2a85-4291-8680-78114bab3b3f",
+      "name": "Mistral Cloud Chat Model2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "qV13d64OkexFclAw",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        96,
+        2096
+      ],
+      "id": "5057ed83-d741-4921-9931-17e1394c99fe",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"career_category\": {\n      \"type\": \"string\"\n    },\n    \"career_role\": {\n      \"type\": \"string\"\n    },\n    \"roadmap_title\": {\n      \"type\": \"string\"\n    },\n    \"description\": {\n      \"type\": \"string\"\n    },\n    \"total_duration\": {\n      \"type\": \"string\"\n    },\n    \"progress\": {\n      \"type\": \"number\"\n    },\n    \"milestones\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"title\": {\n            \"type\": \"string\"\n          },\n          \"description\": {\n            \"type\": \"string\"\n          },\n          \"duration\": {\n            \"type\": \"string\"\n          },\n          \"status\": {\n            \"type\": \"string\"\n          },\n          \"progress\": {\n            \"type\": \"number\"\n          }\n        },\n        \"required\": [\n          \"title\",\n          \"description\",\n          \"duration\",\n          \"status\",\n          \"progress\"\n        ]\n      }\n    },\n    \"resources\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"title\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\"\n          },\n          \"url\": {\n            \"type\": \"string\"\n          }\n        },\n        \"required\": [\n          \"title\",\n          \"type\",\n          \"url\"\n        ]\n      }\n    },\n    \"ai_suggestion\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"career_category\",\n    \"career_role\",\n    \"roadmap_title\",\n    \"description\",\n    \"total_duration\",\n    \"progress\",\n    \"milestones\",\n    \"resources\",\n    \"ai_suggestion\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -400,
+        2256
+      ],
+      "id": "0a9ec8ad-fe19-4247-82f8-e3e542984801",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({\n  success: true,\n  module: \"learn\",\n  message: $json.output\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        288,
+        2608
+      ],
+      "id": "1a238e90-1cc1-4460-80e9-fc587b91653b",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        2704
+      ],
+      "id": "28b7950b-7b02-4e31-90b3-a02d0f104632",
+      "name": "Mistral Cloud Chat Model3",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "qV13d64OkexFclAw",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.4,
+      "position": [
+        -240,
+        2704
+      ],
+      "id": "d94ff33f-0c7a-4b92-a768-b9a922b3d8d1",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "8iS6lH4T5oZ6w5jE",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"user_message\": \"={{ $json.body.message }}\",\n  \"module\": \"assistant\",\n  \"sessionId\": \"={{ $json.sessionId || 'skillora-' + Date.now() }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1168,
+        2560
+      ],
+      "id": "e623e0eb-937a-4fe7-858d-957e31ea5c03",
+      "name": "session set"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a personalized career roadmap for the following career goal.\n\nCareer Category: {{ $json.career_category }}\n\nCareer Role: {{ $json.career_role }}\n\nGenerate the actual roadmap data for this career goal.\n\nDo not generate a schema.\nDo not generate schema definitions.\nDo not return an output wrapper.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are Skillora AI's Career Roadmap Generator.\n\nGenerate a personalized learning roadmap for the career role provided by the user.\n\nThe user will provide:\n- career_category\n- career_role\n\nYou must generate actual roadmap DATA.\n\nIMPORTANT OUTPUT RULES:\n\n1. Return ONLY the roadmap object.\n2. Do NOT return an \"output\" property.\n3. Do NOT return JSON inside a string.\n4. Do NOT return a JSON schema.\n5. Do NOT return fields containing \"type\", \"properties\", \"items\", or \"enum\".\n6. Do NOT describe the schema.\n7. Do NOT return Markdown.\n8. Do NOT use ```json.\n9. Do NOT add explanations before or after the JSON.\n10. Every field must contain the actual requested value.\n\nFor example:\n\nCORRECT:\n\"career_category\": \"DevOps\"\n\nINCORRECT:\n\"career_category\": {\n  \"type\": \"DevOps\"\n}\n\nCORRECT:\n\"progress\": 0\n\nINCORRECT:\n\"progress\": {\n  \"type\": \"0\"\n}\n\nCORRECT:\n\"milestones\": [\n  {\n    \"title\": \"Linux Fundamentals\",\n    \"description\": \"Learn Linux...\",\n    \"duration\": \"2 months\",\n    \"status\": \"current\",\n    \"progress\": 0\n  }\n]\n\nINCORRECT:\n\"milestones\": {\n  \"type\": \"array\",\n  \"items\": [...]\n}\n\nGenerate:\n- career_category\n- career_role\n- roadmap_title\n- description\n- total_duration\n- progress\n- milestones\n- resources\n- ai_suggestion\n\nThe roadmap must contain 6 to 10 milestones.\n\nThe first milestone must have status \"current\".\nAll other milestones must initially have status \"locked\".\nAll initial progress values must be 0.\n\nThe overall progress must be the number 0, not a string.\n\nEach resource must contain:\n- title\n- type\n- url\n\nEach milestone must contain:\n- title\n- description\n- duration\n- status\n- progress\n\nDo not create or return schema definitions.\nGenerate the actual roadmap data only."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -624,
+        2096
+      ],
+      "id": "ac29b73f-4a32-4ef6-96d2-3c12410bb65b",
+      "name": "ROADMAP GENERATOR"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.user_message }}",
+        "options": {
+          "systemMessage": "You are Skillora AI Assistant, a friendly and intelligent personal learning coach for college students.\n\nYour job is to help students with:\n- Programming and coding\n- Technical concepts\n- College subjects\n- Study plans and revision\n- Career guidance\n- Learning roadmaps\n- Interview preparation\n- Project ideas and guidance\n- Quizzes and practice questions\n- Explaining difficult topics in simple language\n\nIMPORTANT RULES:\n\n1. Always understand the student's question before answering.\n2. Explain difficult concepts in simple, beginner-friendly language.\n3. Give practical examples whenever useful.\n4. For programming questions, provide clean and understandable code and explain how it works.\n5. For academic questions, structure answers clearly with headings, points, examples, and steps.\n6. For career questions, provide realistic step-by-step guidance.\n7. If the student asks for a roadmap, create a structured learning path from beginner to advanced.\n8. Remember the conversation context provided by the memory system and use it to maintain continuity.\n9. Do not unnecessarily repeat information that has already been discussed.\n10. If the student makes a mistake, correct it politely and explain why.\n11. Keep responses relevant to the student's question.\n12. Be encouraging, supportive, and friendly.\n13. Do not claim that you performed an action that you did not actually perform.\n14. If you do not know something, clearly say so instead of inventing information.\n\nYour response should feel like a personal AI learning coach rather than a generic chatbot."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -464,
+        2576
+      ],
+      "id": "b5042fd4-e4d6-4b0f-b2e2-ccf32bc09fd6",
+      "name": "AI COACH AGENT"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"module\": \"= {{ $json.body.module }}    \",\n  \"career_category\": \"={{ $json.body.career_category }}     \",\n  \"career_role\": \"={{ $json.body.career_role }} \"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1152,
+        2096
+      ],
+      "id": "cda10a4e-216e-418a-96bb-e40f0ec78473",
+      "name": "ROADMAP CONTENT"
+    },
+    {
+      "parameters": {
+        "content": "Receives and routes Skillora AI requests to the appropriate module.",
+        "height": 208,
+        "width": 304,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2208,
+        1536
+      ],
+      "typeVersion": 1,
+      "id": "d3c3b60c-75a0-44af-9a94-4e72cbbf1da5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Routes requests to the selected Notes, YouTube, Quiz, Roadmap, or AI Coach workflow.",
+        "height": 256,
+        "width": 368,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1808,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "10fbe4f6-ce80-45d2-a197-6134c4322588",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\nAI Language Model & Structured Output — The Mistral Cloud Chat Model converts user topics into clear, well-structured, student-friendly notes, while the workflow transforms the AI response into consistent JSON format for direct use in the Skillora AI interface.",
+        "height": 240,
+        "width": 816,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        832
+      ],
+      "typeVersion": 1,
+      "id": "10bc5120-20af-43f4-9233-28fca094a192",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "Return Structured Notes — Sends the generated notes as clean JSON back to the Skillora AI frontend, where they are instantly displayed to the student.",
+        "height": 192,
+        "width": 416,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -272,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "b5662cba-ffd5-43f0-a2ba-096963152f35",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\nFetches relevant educational videos based on topic and language, formats key details, and returns them to the Learn module.",
+        "height": 256,
+        "width": 848,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1072,
+        1152
+      ],
+      "typeVersion": 1,
+      "id": "319fa1a9-ef7c-4eae-b6dc-4174992e73d3",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "Quiz Generator — Uses the selected topic and difficulty with Mistral AI to dynamically generate unique, context-aware MCQs with four options, the correct answer, and an explanation.",
+        "height": 336,
+        "width": 592,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1184,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "9a88f688-142a-4694-b772-c8b68053cab1",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "Validates and formats the AI-generated quiz into clean structured JSON, then returns the questions, options, answers, and explanations to the Skillora AI Quiz page for immediate use.",
+        "height": 224,
+        "width": 512,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "783397e9-7e42-4041-b925-4256017d6b5a",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "Receives the selected career path, skill level, learning goal, and preferred language, then prepares the user preferences and prompt for personalized roadmap generation.",
+        "height": 288,
+        "width": 336,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1264,
+        1952
+      ],
+      "typeVersion": 1,
+      "id": "e07747a2-c1ac-4ddb-b5b2-e4adff27c0dc",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "Uses Mistral AI to analyze the selected career path and generate a practical, structured roadmap with learning stages, ordered topics, technologies, projects, milestones, and progress, then converts it into JSON for the Skillora AI Roadmap page.",
+        "height": 400,
+        "width": 608,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -800,
+        1968
+      ],
+      "typeVersion": 1,
+      "id": "5428178a-7a48-4dc3-8f32-6392eee9cf92",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "Returns the personalized roadmap with stages, topics, projects, milestones, and technologies to the Skillora AI frontend.",
+        "height": 336,
+        "width": 384,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        1984
+      ],
+      "typeVersion": 1,
+      "id": "50ac530a-7830-4fae-9a18-2845182ea8a4",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "content": "Creates or retrieves an independent learner session to maintain conversation history, context, and personalized AI Coach responses.",
+        "height": 256,
+        "width": 320,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        2432
+      ],
+      "typeVersion": 1,
+      "id": "f60cfa18-c9e8-440a-aac1-99ed356849ff",
+      "name": "Sticky Note25"
+    },
+    {
+      "parameters": {
+        "content": "Instantly returns personalized AI guidance to the Skillora AI frontend.",
+        "height": 208,
+        "width": 368,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        2528
+      ],
+      "typeVersion": 1,
+      "id": "4e826115-d66e-4d60-b127-d357c856f3ca",
+      "name": "Sticky Note29"
+    },
+    {
+      "parameters": {
+        "content": "Uses Mistral AI to turn topics into concise, structured, student-friendly notes with key points and summaries in multiple languages.",
+        "height": 224,
+        "width": 416,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -912,
+        464
+      ],
+      "typeVersion": 1,
+      "id": "658953cc-067e-4544-9552-0de414982208",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Uses Mistral AI with conversation memory to provide personalized, context-aware guidance on programming, debugging, interviews, career development, projects, and learning strategies while maintaining conversation flow.",
+        "height": 336,
+        "width": 688,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        2480
+      ],
+      "typeVersion": 1,
+      "id": "0f24df58-d0f1-4276-8e50-e48e2e7f24c4",
+      "name": "Sticky Note28"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "NOTES GENERATOR",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "QUIZ GENERATOR",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ROADMAP CONTENT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "session set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "NOTES GENERATOR",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "NOTES GENERATOR",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "YOUTUBE VIDEO RESPOND",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "QUIZ GENERATOR",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QUIZ GENERATOR": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NOTES GENERATOR": {
+      "main": [
+        [
+          {
+            "node": "NOTES RESPOND",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ROADMAP GENERATOR",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "ROADMAP GENERATOR",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI COACH AGENT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI COACH AGENT",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "session set": {
+      "main": [
+        [
+          {
+            "node": "AI COACH AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROADMAP GENERATOR": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI COACH AGENT": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ROADMAP CONTENT": {
+      "main": [
+        [
+          {
+            "node": "ROADMAP GENERATOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "0f7b6feb-f164-4978-81da-8c657665b663",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bd7d9eae46b90ca1f4fb0be27d27d1dc618d50d680d120f704269f7f7553e4e3"
+  },
+  "nodeGroups": [],
+  "id": "ZxLWhMhohotT72Q3",
+  "tags": []
+}

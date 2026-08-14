@@ -1,16 +1,85 @@
-# React + Vite
+Skillora AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Skillora AI is an AI-powered personalized learning platform designed to help students learn, practice, plan their careers, and receive intelligent guidance through multiple AI-powered learning modules.
 
-Currently, two official plugins are available:
+Features
+🤖 AI-powered personal learning assistant
+📝 AI-generated study notes
+🗺️ Personalized learning roadmaps
+🧠 AI-generated interactive quizzes
+▶️ Educational YouTube resource recommendations
+📚 Topic-based learning resources
+📊 Learning progress tracking
+🎯 Career and skill-based learning paths
+💬 Context-aware AI Coach
+👤 Student profile and achievements
+📈 Dashboard with learning statistics
+🔐 User authentication and protected routes
+🌐 Multi-language AI content generation
+⚡ n8n workflow automation
+🗄️ Supabase integration
+Tech Stack
+Frontend
+React
+Vite
+JavaScript
+CSS
+Tailwind CSS
+React Router
+Lucide React
+Backend & Database
+Supabase
+REST APIs
+Axios
+AI & Automation
+Mistral AI
+n8n
+AI-powered workflows
+YouTube Data API
+📂 Project Structure
+src/
+├── assets/
+├── components/
+│   ├── assistant/
+│   ├── common/
+│   ├── dashboard/
+│   ├── learn/
+│   ├── notes/
+│   ├── profile/
+│   ├── quiz/
+│   ├── roadmap/
+│   └── settings/
+├── context/
+├── layouts/
+├── pages/
+├── services/
+├── styles/
+├── supabase/
+├── utils/
+├── App.jsx
+├── App.css
+├── index.css
+└── main.jsx
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+skillora-ai-workflow.json
+🤖 AI Learning Modules
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Skillora AI provides multiple personalized learning modules:
 
-## Expanding the Oxlint configuration
+AI Notes Generator — Creates concise and structured study notes.
+AI Quiz Generator — Generates topic-based MCQs with answers and explanations.
+AI Roadmap Generator — Creates step-by-step learning paths based on career goals and skill levels.
+AI Coach — Provides programming help, debugging assistance, interview preparation, career guidance, and learning suggestions.
+YouTube Resources — Finds relevant educational videos based on the learner's selected topic and preferences.
+⚙️ Automation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Skillora AI uses n8n workflows to connect the frontend with AI services and APIs. Requests are routed according to the selected learning module, processed by the required AI workflow, converted into structured responses, and returned to the frontend.
+
+🗄️ Database
+
+Supabase is used for authentication, user profiles, learning data, progress tracking, and application-related data.
+
+🎯 Goal
+
+Skillora AI aims to provide students with a single personalized learning platform where they can learn new topics, generate study materials, practice through quizzes, follow career roadmaps, access educational resources, and interact with an AI learning coach.

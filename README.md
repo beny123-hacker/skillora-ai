@@ -18,6 +18,8 @@ Features
 🌐 Multi-language AI content generation
 ⚡ n8n workflow automation
 🗄️ Supabase integration
+
+
 Tech Stack
 Frontend
 React
@@ -27,6 +29,9 @@ CSS
 Tailwind CSS
 React Router
 Lucide React
+
+
+
 Backend & Database
 Supabase
 REST APIs
@@ -36,7 +41,9 @@ Mistral AI
 n8n
 AI-powered workflows
 YouTube Data API
+
 📂 Project Structure
+
 src/
 ├── assets/
 ├── components/
@@ -61,8 +68,6 @@ src/
 ├── index.css
 └── main.jsx
 
-
-skillora-ai-workflow.json
 🤖 AI Learning Modules
 
 Skillora AI provides multiple personalized learning modules:
@@ -72,6 +77,9 @@ AI Quiz Generator — Generates topic-based MCQs with answers and explanations.
 AI Roadmap Generator — Creates step-by-step learning paths based on career goals and skill levels.
 AI Coach — Provides programming help, debugging assistance, interview preparation, career guidance, and learning suggestions.
 YouTube Resources — Finds relevant educational videos based on the learner's selected topic and preferences.
+
+
+
 ⚙️ Automation
 
 Skillora AI uses n8n workflows to connect the frontend with AI services and APIs. Requests are routed according to the selected learning module, processed by the required AI workflow, converted into structured responses, and returned to the frontend.

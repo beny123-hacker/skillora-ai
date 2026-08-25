@@ -3,9 +3,12 @@ import {
   FaFire,
   FaSearch,
   FaGlobe,
+  FaPlay,
+  FaBrain,
+  FaLayerGroup,
 } from "react-icons/fa";
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/Authcontext";
 
 function LearnHero({
   search = "",
@@ -30,170 +33,151 @@ function LearnHero({
 
   const firstName =
     user?.user_metadata?.full_name?.split(" ")[0] ||
+    user?.user_metadata?.name?.split(" ")[0] ||
     "Learner";
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter" && !loading) {
+      event.preventDefault();
       onSearch?.();
     }
   };
 
+  const quickSearches = [
+    "Python",
+    "React",
+    "Java",
+    "Machine Learning",
+    "Node.js",
+  ];
+
   return (
-    <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 p-8 lg:p-10">
+    <section className="learn-premium-hero">
 
-      {/* Background Blur */}
+      {/* Decorative background effects */}
 
-      <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+      <div className="learn-hero-glow learn-hero-glow-one" />
+      <div className="learn-hero-glow learn-hero-glow-two" />
 
-      <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-purple-300/10 blur-3xl" />
+      <div className="learn-hero-content">
 
-      <div className="relative grid items-center gap-10 lg:grid-cols-2">
+        {/* =====================================================
+            LEFT SIDE
+        ===================================================== */}
 
-        {/* =================================================
-            LEFT CONTENT
-        ================================================= */}
+        <div className="learn-hero-left">
 
-        <div>
-
-          {/* Badge */}
-
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm text-white backdrop-blur-md">
-
-            🔥 AI Personalized Learning
-
-          </span>
+          <div className="learn-hero-badge">
+            <span className="learn-badge-dot" />
+            AI PERSONALIZED LEARNING
+          </div>
 
 
-          {/* Heading */}
-
-          <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl">
-
+          <h1 className="learn-hero-title">
             {greeting},
-
             <br />
 
-            {firstName} 👋
+            <span>{firstName}</span>
 
+            <span className="learn-wave">
+              👋
+            </span>
           </h1>
 
 
-          {/* Description */}
-
-          <p className="mt-6 max-w-xl text-lg leading-8 text-indigo-100">
-
-            Search for any course or technology and discover
-            relevant YouTube learning resources in your
-            preferred language.
-
+          <p className="learn-hero-description">
+            Discover courses, explore new technologies, and build
+            skills with personalized learning resources designed
+            around your interests.
           </p>
 
 
-          {/* =================================================
-              SEARCH BOX
-          ================================================= */}
+          {/* =====================================================
+              SEARCH AREA
+          ===================================================== */}
 
-          <div className="mt-8 rounded-2xl bg-white p-3 shadow-xl">
+          <div className="learn-search-container">
 
-            <div className="flex flex-col gap-3">
+            <div className="learn-search-row">
 
-              {/* Search */}
+              <div className="learn-search-icon">
+                <FaSearch />
+              </div>
 
-              <div className="flex overflow-hidden rounded-xl border border-gray-200">
 
-                <div className="flex items-center px-4 text-gray-400">
+              <input
+                type="text"
+                value={search}
+                onChange={(event) =>
+                  setSearch?.(event.target.value)
+                }
+                onKeyDown={handleKeyDown}
+                placeholder="What do you want to learn today?"
+                className="learn-search-input"
+              />
 
-                  <FaSearch />
+
+              <button
+                type="button"
+                onClick={onSearch}
+                disabled={loading}
+                className="learn-search-button"
+              >
+                {loading ? (
+                  "Searching..."
+                ) : (
+                  <>
+                    Search
+                    <FaArrowRight />
+                  </>
+                )}
+              </button>
+
+            </div>
+
+
+            <div className="learn-search-bottom">
+
+              {/* LANGUAGE */}
+
+              <div className="learn-language-select">
+
+                <FaGlobe />
+
+                <div>
+
+                  <span>
+                    Learning Language
+                  </span>
+
+                  <select
+                    value={language}
+                    onChange={(event) =>
+                      setLanguage?.(
+                        event.target.value
+                      )
+                    }
+                  >
+                    <option value="English">
+                      English
+                    </option>
+
+                    <option value="Tamil">
+                      Tamil
+                    </option>
+
+                    <option value="Hindi">
+                      Hindi
+                    </option>
+                  </select>
 
                 </div>
-
-
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(event) =>
-                    setSearch?.(event.target.value)
-                  }
-                  onKeyDown={handleKeyDown}
-                  placeholder="Search any course or technology..."
-                  className="min-w-0 flex-1 px-3 py-4 text-gray-800 outline-none placeholder:text-gray-400"
-                />
-
-
-                <button
-                  type="button"
-                  onClick={onSearch}
-                  disabled={loading}
-                  className="bg-indigo-600 px-6 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-
-                  {loading ? "Searching..." : "Search"}
-
-                </button>
 
               </div>
 
 
-              {/* =================================================
-                  LANGUAGE SELECTOR
-              ================================================= */}
-
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-
-                <div className="flex flex-1 items-center gap-3 rounded-xl border border-gray-200 px-4 py-3">
-
-                  <FaGlobe className="text-indigo-500" />
-
-                  <div className="flex-1">
-
-                    <p className="text-xs font-medium text-gray-400">
-
-                      Learning Language
-
-                    </p>
-
-
-                    <select
-                      value={language}
-                      onChange={(event) =>
-                        setLanguage?.(event.target.value)
-                      }
-                      className="w-full cursor-pointer bg-transparent text-sm font-semibold text-gray-800 outline-none"
-                    >
-
-                      <option value="English">
-                        🇬🇧 English
-                      </option>
-
-                      <option value="Tamil">
-                        🇮🇳 Tamil
-                      </option>
-
-                      <option value="Hindi">
-                        🇮🇳 Hindi
-                      </option>
-
-                    </select>
-
-                  </div>
-
-                </div>
-
-
-                {/* Search Button for mobile / extra visibility */}
-
-                <button
-                  type="button"
-                  onClick={onSearch}
-                  disabled={loading}
-                  className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60 sm:hidden"
-                >
-
-                  {loading
-                    ? "Searching..."
-                    : "Find Resources"}
-
-                </button>
-
+              <div className="learn-search-hint">
+                Press Enter to search
               </div>
 
             </div>
@@ -201,23 +185,18 @@ function LearnHero({
           </div>
 
 
-          {/* =================================================
+          {/* =====================================================
               QUICK SEARCHES
-          ================================================= */}
+          ===================================================== */}
 
-          <div className="mt-5 flex flex-wrap items-center gap-2">
+          <div className="learn-quick-searches">
 
-            <span className="text-sm text-indigo-100">
-              Try:
+            <span className="quick-search-label">
+              Popular:
             </span>
 
-            {[
-              "Python",
-              "React",
-              "Java",
-              "Machine Learning",
-              "Node.js",
-            ].map((item) => (
+
+            {quickSearches.map((item) => (
 
               <button
                 key={item}
@@ -225,20 +204,13 @@ function LearnHero({
                 onClick={() => {
                   setSearch?.(item);
 
-                  /*
-                   * Small timeout allows React to update
-                   * the search state before triggering search.
-                   */
-
                   setTimeout(() => {
                     onSearch?.();
                   }, 0);
                 }}
-                className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/20"
+                className="quick-search-chip"
               >
-
                 {item}
-
               </button>
 
             ))}
@@ -246,18 +218,20 @@ function LearnHero({
           </div>
 
 
-          {/* =================================================
-              BUTTONS
-          ================================================= */}
+          {/* =====================================================
+              ACTIONS
+          ===================================================== */}
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="learn-hero-actions">
 
             <button
               type="button"
               onClick={onContinue}
               disabled={loading}
-              className="flex items-center gap-3 rounded-2xl bg-white px-7 py-4 font-semibold text-indigo-700 transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60"
+              className="learn-primary-action"
             >
+
+              <FaPlay />
 
               Continue Learning
 
@@ -273,13 +247,12 @@ function LearnHero({
                   .getElementById("learning-categories")
                   ?.scrollIntoView({
                     behavior: "smooth",
+                    block: "start",
                   });
               }}
-              className="rounded-2xl border border-white px-7 py-4 text-white transition hover:bg-white hover:text-indigo-700"
+              className="learn-secondary-action"
             >
-
               Explore Categories
-
             </button>
 
           </div>
@@ -287,157 +260,132 @@ function LearnHero({
         </div>
 
 
-        {/* =================================================
-            RIGHT SIDE — AI MISSION
-        ================================================= */}
+        {/* =====================================================
+            RIGHT SIDE — LEARNING INSIGHT CARD
+        ===================================================== */}
 
-        <div>
+        <div className="learn-hero-right">
 
-          <div className="rounded-3xl border border-white/20 bg-white/10 p-8 backdrop-blur-xl">
+          <div className="learn-insight-card">
 
-            <div className="flex items-center justify-between">
+            <div className="insight-card-header">
 
-              <h2 className="text-2xl font-bold text-white">
+              <div>
 
-                Today's Learning
-
-              </h2>
-
-              <span className="rounded-full bg-green-400/20 px-3 py-1 text-xs font-semibold text-green-200">
-
-                Active
-
-              </span>
-
-            </div>
-
-
-            {/* Learning steps */}
-
-            <div className="mt-8 space-y-5">
-
-              <div className="flex items-center justify-between">
-
-                <span className="text-indigo-100">
-
-                  Search a Course
-
+                <span className="insight-label">
+                  YOUR LEARNING SPACE
                 </span>
 
-                <span className="text-green-300">
-
-                  ✓
-
-                </span>
+                <h2>
+                  Learn smarter.
+                  <br />
+                  Grow faster.
+                </h2>
 
               </div>
 
 
-              <div className="flex items-center justify-between">
-
-                <span className="text-indigo-100">
-
-                  Watch YouTube Lessons
-
-                </span>
-
-                <span className="rounded-full bg-yellow-400 px-3 py-1 text-xs text-black">
-
-                  Current
-
-                </span>
-
-              </div>
-
-
-              <div className="flex items-center justify-between">
-
-                <span className="text-indigo-100">
-
-                  Complete the Course
-
-                </span>
-
-                <span className="text-gray-300">
-
-                  Pending
-
-                </span>
-
+              <div className="insight-ai-icon">
+                <FaBrain />
               </div>
 
             </div>
 
 
-            {/* Progress */}
+            <p className="insight-description">
+              Search for any technology and instantly discover
+              learning resources based on your preferred language
+              and interests.
+            </p>
 
-            <div className="mt-10">
 
-              <div className="mb-3 flex justify-between text-white">
+            {/* LEARNING FEATURES */}
 
-                <span>
-                  Course Progress
-                </span>
+            <div className="learning-feature-list">
 
-                <span>
-                  0%
-                </span>
+              <div className="learning-feature">
+
+                <div className="feature-icon feature-icon-purple">
+                  <FaSearch />
+                </div>
+
+                <div>
+                  <h3>
+                    Discover Resources
+                  </h3>
+
+                  <p>
+                    Find courses for any skill.
+                  </p>
+                </div>
 
               </div>
 
 
-              <div className="h-3 overflow-hidden rounded-full bg-white/20">
+              <div className="learning-feature">
 
-                <div
-                  className="h-full rounded-full bg-green-400"
-                  style={{
-                    width: "0%",
-                  }}
-                />
+                <div className="feature-icon feature-icon-blue">
+                  <FaLayerGroup />
+                </div>
+
+                <div>
+                  <h3>
+                    Explore Categories
+                  </h3>
+
+                  <p>
+                    Browse structured learning paths.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div className="learning-feature">
+
+                <div className="feature-icon feature-icon-orange">
+                  <FaFire />
+                </div>
+
+                <div>
+                  <h3>
+                    Build Consistency
+                  </h3>
+
+                  <p>
+                    Keep learning and growing every day.
+                  </p>
+                </div>
 
               </div>
 
             </div>
 
 
-            {/* Stats */}
+            {/* BOTTOM STATUS */}
 
-            <div className="mt-10 grid grid-cols-2 gap-5">
+            <div className="learning-status">
 
-              <div className="rounded-2xl bg-white/10 p-5">
+              <div className="learning-status-left">
 
-                <h3 className="text-3xl font-bold text-white">
+                <span className="status-indicator" />
 
-                  {youtubeText()}
+                <div>
 
-                </h3>
+                  <span className="status-title">
+                    Learning Hub Active
+                  </span>
 
-                <p className="mt-2 text-indigo-100">
+                  <span className="status-subtitle">
+                    Ready for your next skill
+                  </span>
 
-                  YouTube Resources
-
-                </p>
-
-              </div>
-
-
-              <div className="rounded-2xl bg-white/10 p-5">
-
-                <h3 className="flex items-center gap-2 text-3xl font-bold text-white">
-
-                  7
-
-                  <FaFire className="text-orange-400" />
-
-                </h3>
-
-                <p className="mt-2 text-indigo-100">
-
-                  Day Streak
-
-                </p>
+                </div>
 
               </div>
+
+
+              <FaArrowRight className="status-arrow" />
 
             </div>
 
@@ -450,15 +398,5 @@ function LearnHero({
     </section>
   );
 }
-
-
-// ======================================================
-// SMALL DISPLAY HELPER
-// ======================================================
-
-function youtubeText() {
-  return "▶️";
-}
-
 
 export default LearnHero;

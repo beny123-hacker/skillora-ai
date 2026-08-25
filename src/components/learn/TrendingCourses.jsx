@@ -1,147 +1,200 @@
 import React from "react";
 import {
   FaArrowRight,
-  FaPlayCircle,
+  FaPlay,
   FaYoutube,
+  FaFire,
+  FaClock,
+  FaGraduationCap,
+  FaChartLine,
+  FaCompass,
+  FaBolt,
+  FaCheckCircle,
 } from "react-icons/fa";
 
-function TrendingCourses({
-  onStartCourse,
-  courses = [],
-}) {
+function TrendingCourses({ onStartCourse, courses = [] }) {
   const trendingCourses = courses.slice(0, 6);
 
   return (
-    <section className="w-full">
+    <section className="trending-section">
+      {/* Background Effects */}
 
-      {/* =========================
-          HEADER
-      ========================= */}
+      <div className="trending-orb trending-orb-one" />
+      <div className="trending-orb trending-orb-two" />
 
-      <div className="mb-6 flex items-end justify-between">
+      {/* ================= HEADER ================= */}
 
-        <div>
+      <div className="trending-header">
+        <div className="trending-header-content">
+          <div className="trending-eyebrow">
+            <FaFire />
+            <span>POPULAR RIGHT NOW</span>
+          </div>
 
-          <span className="text-xs font-semibold tracking-widest text-indigo-400">
-            TRENDING NOW
-          </span>
+          <div className="trending-title-row">
+            <div className="trending-main-icon">
+              <FaBolt />
+            </div>
 
-          <h2 className="mt-2 text-2xl font-bold text-white">
-            Trending Courses 🔥
-          </h2>
+            <div>
+              <h2>
+                Trending
+                <span> Courses</span>
+              </h2>
 
-          <p className="mt-2 text-sm text-slate-400">
-            Choose a course and learn through structured YouTube lessons.
-          </p>
-
+              <p>
+                Discover the technologies learners are exploring right now and
+                start building skills that matter in today's digital world.
+              </p>
+            </div>
+          </div>
         </div>
 
+        {/* Explore Status */}
+
+        <div className="trending-status">
+          <div className="trending-status-icon">
+            <FaCompass />
+          </div>
+
+          <div>
+            <span>EXPLORE NOW</span>
+
+            <strong>
+              {trendingCourses.length} Courses Available
+            </strong>
+          </div>
+        </div>
       </div>
 
-      {/* =========================
-          COURSE GRID
-      ========================= */}
+      {/* ================= COURSE GRID ================= */}
 
       {trendingCourses.length > 0 ? (
-
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-
-          {trendingCourses.map((course) => (
-
-            <div
-              key={course.id}
-              className="group rounded-2xl border border-white/10 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/5"
+        <div className="trending-grid">
+          {trendingCourses.map((course, index) => (
+            <article
+              key={course.id || `${course.title}-${index}`}
+              className="trending-card"
             >
+              {/* Card Background */}
 
-              {/* Top */}
+              <div className="trending-card-glow" />
 
-              <div className="flex items-start justify-between">
+              {/* ================= TOP ================= */}
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-2xl text-indigo-400">
-                  🎓
+              <div className="trending-card-top">
+                <div className="trending-course-icon">
+                  <FaGraduationCap />
                 </div>
 
-                <span className="rounded-full bg-orange-500/10 px-3 py-1 text-xs font-semibold text-orange-300">
-                  Trending
-                </span>
+                <div className="trending-badges">
+                  <span className="trending-badge">
+                    <FaFire />
+                    Trending
+                  </span>
 
+                  <span className="trending-rank">
+                    #{index + 1} Popular
+                  </span>
+                </div>
               </div>
 
-              {/* Course Info */}
+              {/* ================= CONTENT ================= */}
 
-              <h3 className="mt-5 text-lg font-bold text-white transition group-hover:text-indigo-300">
-                {course.title}
-              </h3>
+              <div className="trending-card-content">
+                <div className="trending-popularity">
+                  <span className="trending-pulse" />
+                  <span>Growing in demand</span>
+                </div>
 
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                {course.description}
-              </p>
+                <h3>{course.title}</h3>
 
-              {/* Course Details */}
+                <p>
+                  {course.description ||
+                    "Learn through structured lessons, curated resources, and practical content designed to strengthen your skills."}
+                </p>
+              </div>
 
-              <div className="mt-5 flex flex-wrap gap-3">
+              {/* ================= COURSE DETAILS ================= */}
 
-                <span className="rounded-lg bg-white/5 px-3 py-2 text-xs font-medium text-slate-400">
-                  {course.level}
-                </span>
+              <div className="trending-details">
+                <div className="trending-detail">
+                  <span className="trending-detail-label">
+                    Level
+                  </span>
 
-                <span className="rounded-lg bg-white/5 px-3 py-2 text-xs font-medium text-slate-400">
-                  {course.duration || "Self-paced"}
-                </span>
+                  <strong>
+                    {course.level || "Beginner"}
+                  </strong>
+                </div>
 
-                <span className="flex items-center gap-1 rounded-lg bg-red-500/10 px-3 py-2 text-xs font-medium text-red-300">
+                <div className="trending-detail">
+                  <FaClock />
+
+                  <strong>
+                    {course.duration || "Self-paced"}
+                  </strong>
+                </div>
+
+                <div className="trending-detail trending-video-detail">
                   <FaYoutube />
-                  {course.videos?.length || 0} Videos
-                </span>
 
+                  <strong>
+                    {course.videos?.length || 0} Videos
+                  </strong>
+                </div>
               </div>
 
-              {/* Start Button */}
+              {/* ================= COURSE STATUS ================= */}
+
+              <div className="trending-course-status">
+                <div className="trending-status-left">
+                  <FaChartLine />
+
+                  <span>Ready to start learning</span>
+                </div>
+
+                <FaCheckCircle />
+              </div>
+
+              <div className="trending-card-spacer" />
+
+              {/* ================= BUTTON ================= */}
 
               <button
                 type="button"
                 onClick={() => onStartCourse?.(course)}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500"
+                className="trending-start-button"
               >
+                <div className="trending-play-icon">
+                  <FaPlay />
+                </div>
 
-                <FaPlayCircle />
+                <span>Start Learning</span>
 
-                Start Learning
-
-                <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-
+                <FaArrowRight className="trending-arrow" />
               </button>
-
-            </div>
-
+            </article>
           ))}
-
         </div>
-
       ) : (
-
-        /* =========================
-           EMPTY STATE
-        ========================= */
-
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
-
-          <div className="text-4xl">
-            🎓
+        <div className="trending-empty">
+          <div className="trending-empty-icon">
+            <FaFire />
           </div>
 
-          <h3 className="mt-4 text-xl font-bold text-white">
-            No courses available
-          </h3>
+          <div>
+            <span>EXPLORE NEW SKILLS</span>
 
-          <p className="mt-2 text-slate-400">
-            Search for a course to start learning.
-          </p>
+            <h3>No trending courses available yet</h3>
 
+            <p>
+              Start exploring technologies and discover curated learning
+              resources tailored to help you grow.
+            </p>
+          </div>
         </div>
-
       )}
-
     </section>
   );
 }

@@ -11,7 +11,7 @@ import {
   FaPhone,
   FaLock,
 } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 
 function Register() {
   const navigate = useNavigate();

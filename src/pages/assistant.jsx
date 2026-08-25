@@ -1,79 +1,87 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 import ChatWindow from "../components/assistant/ChatWindow";
+import "../styles/assistant.css";
 
 function Assistant() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white">
+    <div className="ai-coach-page">
+      <div className="ai-coach-glow ai-coach-glow-one" />
+      <div className="ai-coach-glow ai-coach-glow-two" />
 
-      <main className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-4 py-5 sm:px-6 lg:px-8">
-
-        {/* =====================================================
-            TOP BAR
-        ===================================================== */}
-
-        <div className="mb-5 flex items-center justify-between gap-4">
-
-          {/* LEFT */}
-          <div className="flex items-center gap-3">
-
-            {/* Back Button */}
+      <main className="ai-coach-shell">
+        {/* TOP NAVIGATION */}
+        <header className="ai-coach-topbar">
+          <div className="ai-coach-brand-group">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-lg text-slate-300 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-white"
+              className="ai-coach-back"
               title="Go back"
             >
-              ←
+              <span>←</span>
             </button>
 
-            {/* AI Icon */}
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-xl shadow-lg shadow-blue-500/10">
-              🤖
+            <div className="ai-coach-brand-icon">
+              <div className="ai-coach-brand-icon-inner">
+                ✦
+              </div>
             </div>
 
-            {/* Heading */}
-            <div>
-              <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
-                AI Assistant
-              </h1>
+            <div className="ai-coach-brand-text">
+              <div className="ai-coach-eyebrow">
+                SKILLORA AI
+              </div>
 
-              <p className="text-xs text-slate-400 sm:text-sm">
-                Your personal AI-powered learning companion
+              <h1>AI Coach</h1>
+
+              <p>
+                Your intelligent learning companion
+              </p>
+            </div>
+          </div>
+
+          <div className="ai-coach-status">
+            <span className="ai-coach-status-dot" />
+            <span>AI Online</span>
+          </div>
+        </header>
+
+        {/* MAIN CONTENT */}
+        <section className="ai-coach-content">
+          <div className="ai-coach-intro">
+            <div>
+              <span className="ai-coach-section-label">
+                PERSONALIZED LEARNING
+              </span>
+
+              <h2>
+                Learn smarter.
+                <span> Ask anything.</span>
+              </h2>
+
+              <p>
+                Get instant explanations, coding help, study guidance,
+                career direction, and personalized learning support.
               </p>
             </div>
 
+            <div className="ai-coach-intro-badge">
+              <span className="ai-coach-spark">✦</span>
+              <div>
+                <strong>Powered by AI</strong>
+                <small>Built for your learning journey</small>
+              </div>
+            </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="hidden items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5 sm:flex">
-
-            <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-
-            <span className="text-xs font-medium text-green-300">
-              AI Online
-            </span>
-
+          <div className="ai-coach-chat-wrapper">
+            <ChatWindow />
           </div>
-
-        </div>
-
-
-        {/* =====================================================
-            CHAT WINDOW
-        ===================================================== */}
-
-        <div className="min-h-0 flex-1">
-
-          <ChatWindow />
-
-        </div>
-
+        </section>
       </main>
-
     </div>
   );
 }

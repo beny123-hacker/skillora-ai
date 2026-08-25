@@ -2,66 +2,101 @@ import React from "react";
 
 const suggestions = [
   {
-    icon: "📚",
-    text: "Explain a topic",
-    prompt: "Explain a difficult topic to me in simple words.",
+    icon: "◎",
+    title: "Learn a concept",
+    description:
+      "Break down a difficult topic into simple ideas.",
+    prompt:
+      "Explain a difficult topic to me in simple words with an easy example.",
+    accent: "blue",
   },
   {
-    icon: "💻",
-    text: "Help with coding",
-    prompt: "Help me understand and solve a programming problem.",
+    icon: "</>",
+    title: "Coding mentor",
+    description:
+      "Understand code, debug problems, and improve logic.",
+    prompt:
+      "Help me understand and solve a programming problem step by step.",
+    accent: "purple",
   },
   {
-    icon: "🎯",
-    text: "Career guidance",
-    prompt: "Suggest a career roadmap based on my skills and interests.",
+    icon: "↗",
+    title: "Career direction",
+    description:
+      "Build a practical roadmap for your career goals.",
+    prompt:
+      "Suggest a career roadmap based on my skills and interests.",
+    accent: "cyan",
   },
   {
-    icon: "📝",
-    text: "Create study notes",
-    prompt: "Create short and easy-to-understand study notes for me.",
+    icon: "✎",
+    title: "Study smarter",
+    description:
+      "Create concise notes and revision material.",
+    prompt:
+      "Create short and easy-to-understand study notes for me.",
+    accent: "emerald",
   },
 ];
 
 function PromptSuggestions({ onSelectPrompt }) {
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6">
+    <div className="premium-empty-state">
+      <div className="premium-empty-hero">
+        <div className="premium-empty-orbit">
+          <div className="premium-empty-orbit-ring" />
+          <div className="premium-empty-icon">
+            ✦
+          </div>
+        </div>
 
-      <div className="mb-4 text-center">
-        <h3 className="text-sm font-semibold text-slate-300">
-          How can I help you today? 🤖
+        <div className="premium-empty-label">
+          AI COACH
+        </div>
+
+        <h3>
+          What would you like
+          <span> to learn today?</span>
         </h3>
 
-        <p className="mt-1 text-xs text-slate-500">
-          Choose a suggestion or type your own question below.
+        <p>
+          Ask a question, explore a concept, solve a problem,
+          or let your AI Coach guide your next learning step.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="premium-suggestion-grid">
         {suggestions.map((suggestion) => (
           <button
-            key={suggestion.text}
+            key={suggestion.title}
             type="button"
-            onClick={() => onSelectPrompt(suggestion.prompt)}
-            className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-800/70 p-4 text-left transition duration-200 hover:-translate-y-0.5 hover:border-blue-500/40 hover:bg-slate-800"
+            onClick={() =>
+              onSelectPrompt(suggestion.prompt)
+            }
+            className={`premium-suggestion-card accent-${suggestion.accent}`}
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-lg transition group-hover:scale-110">
-              {suggestion.icon}
+            <div className="premium-suggestion-top">
+              <div className="premium-suggestion-icon">
+                {suggestion.icon}
+              </div>
+
+              <span className="premium-suggestion-arrow">
+                ↗
+              </span>
             </div>
 
-            <div>
-              <p className="text-sm font-semibold text-slate-200">
-                {suggestion.text}
-              </p>
+            <div className="premium-suggestion-content">
+              <h4>
+                {suggestion.title}
+              </h4>
 
-              <p className="mt-1 text-xs text-slate-500">
-                Click to get started
+              <p>
+                {suggestion.description}
               </p>
             </div>
           </button>
         ))}
       </div>
-
     </div>
   );
 }

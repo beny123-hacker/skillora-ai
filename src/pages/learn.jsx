@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
 import DashboardLayout from "../layouts/DashboardLayout";
+import "../styles/learn.css";
 
-import Footer from "../components/common/Footer";
+import Footer from "../components/common/footer";
 import AIAssistantButton from "../components/common/AIAssistantButton";
 
 import LearnHero from "../components/learn/LearnHero";
@@ -19,7 +20,7 @@ import YoutubePlayer from "../components/learn/YoutubePlayer";
 import CourseProgress from "../components/learn/CourseProgress";
 
 import { supabase } from "../supabase/supabase";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 
 const N8N_WEBHOOK_URL =
   "http://localhost:5678/webhook-test/skillora-ai";

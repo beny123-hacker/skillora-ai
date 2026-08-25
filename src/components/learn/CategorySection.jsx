@@ -7,133 +7,268 @@ import {
   FaShieldAlt,
   FaDatabase,
   FaCogs,
+  FaArrowRight,
+  FaCheck,
 } from "react-icons/fa";
+
 
 const categories = [
   {
     title: "Frontend",
     subtitle: "React • JavaScript • CSS",
+    description:
+      "Build modern and responsive user interfaces.",
     icon: <FaLaptopCode />,
-    color: "from-blue-500 to-cyan-500",
+    color: "blue",
   },
+
   {
     title: "Backend",
     subtitle: "Node • Java • APIs",
+    description:
+      "Create powerful servers and scalable applications.",
     icon: <FaServer />,
-    color: "from-green-500 to-emerald-500",
+    color: "green",
   },
+
   {
     title: "AI / ML",
     subtitle: "Python • ML • Deep Learning",
+    description:
+      "Explore artificial intelligence and machine learning.",
     icon: <FaRobot />,
-    color: "from-purple-500 to-pink-500",
+    color: "purple",
   },
+
   {
     title: "Cloud",
     subtitle: "AWS • Azure • GCP",
+    description:
+      "Learn cloud infrastructure and deployment.",
     icon: <FaCloud />,
-    color: "from-sky-500 to-indigo-500",
+    color: "sky",
   },
+
   {
     title: "Mobile",
     subtitle: "Flutter • React Native",
+    description:
+      "Build modern applications for mobile devices.",
     icon: <FaMobileAlt />,
-    color: "from-orange-500 to-red-500",
+    color: "orange",
   },
+
   {
     title: "Cyber Security",
     subtitle: "Security • Ethical Hacking",
+    description:
+      "Understand security, networks, and protection.",
     icon: <FaShieldAlt />,
-    color: "from-red-500 to-rose-500",
+    color: "red",
   },
+
   {
     title: "Data Science",
     subtitle: "Python • Pandas • SQL",
+    description:
+      "Transform data into meaningful insights.",
     icon: <FaDatabase />,
-    color: "from-yellow-500 to-orange-500",
+    color: "yellow",
   },
+
   {
     title: "DevOps",
     subtitle: "Git • Docker • Kubernetes",
+    description:
+      "Learn automation, deployment, and infrastructure.",
     icon: <FaCogs />,
-    color: "from-indigo-500 to-violet-500",
+    color: "indigo",
   },
 ];
+
 
 function CategorySection({
   selectedCategory,
   onSelectCategory,
 }) {
+
   return (
-    <section>
 
-      <div className="mb-8">
+    <section
+      id="learning-categories"
+      className="learn-categories-section"
+    >
 
-        <h2 className="text-3xl font-bold text-white">
-          Explore Categories
-        </h2>
+      {/* =====================================================
+          SECTION HEADER
+      ===================================================== */}
 
-        <p className="mt-2 text-slate-400">
-          Choose a category to discover courses and start learning.
-        </p>
+      <div className="categories-header">
+
+        <div>
+
+          <div className="categories-eyebrow">
+
+            <span className="categories-dot" />
+
+            EXPLORE SKILLS
+
+          </div>
+
+
+          <h2>
+            Find your next
+            <span> learning path.</span>
+          </h2>
+
+
+          <p>
+            Choose a category and discover curated learning
+            resources to help you build real-world skills.
+          </p>
+
+        </div>
+
+
+        {selectedCategory && (
+
+          <button
+            type="button"
+            onClick={() =>
+              onSelectCategory?.(null)
+            }
+            className="clear-category-button"
+          >
+
+            <FaCheck />
+
+            Showing {selectedCategory}
+
+          </button>
+
+        )}
 
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+      {/* =====================================================
+          CATEGORY GRID
+      ===================================================== */}
+
+      <div className="premium-category-grid">
 
         {categories.map((category) => {
 
           const active =
             selectedCategory === category.title;
 
+
           return (
+
             <button
               key={category.title}
               type="button"
+
               onClick={() =>
-                onSelectCategory?.(category.title)
+                onSelectCategory?.(
+                  active
+                    ? null
+                    : category.title
+                )
               }
-              className={`group rounded-3xl border p-6 text-left transition-all duration-300 ${
-                active
-                  ? "border-indigo-500 bg-indigo-500/10"
-                  : "border-slate-800 bg-slate-900 hover:-translate-y-2 hover:border-indigo-500"
-              }`}
+
+              className={`
+                premium-category-card
+                category-${category.color}
+                ${active ? "category-active" : ""}
+              `}
             >
 
-              <div
-                className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${category.color} text-3xl text-white shadow-lg`}
-              >
-                {category.icon}
-              </div>
+              {/* CARD TOP */}
 
-              <h3 className="mt-6 text-2xl font-bold text-white group-hover:text-indigo-400">
-                {category.title}
-              </h3>
+              <div className="category-card-top">
 
-              <p className="mt-2 text-slate-400">
-                {category.subtitle}
-              </p>
+                <div className="category-icon-wrapper">
 
-              <div className="mt-6 h-1 overflow-hidden rounded-full bg-slate-800">
+                  {category.icon}
 
-                <div
-                  className={`h-full bg-gradient-to-r ${category.color} transition-all duration-500 ${
-                    active
-                      ? "w-full"
-                      : "w-0 group-hover:w-full"
-                  }`}
-                />
+                </div>
+
+
+                <div className="category-arrow">
+
+                  <FaArrowRight />
+
+                </div>
 
               </div>
+
+
+              {/* CONTENT */}
+
+              <div className="category-content">
+
+                <h3>
+                  {category.title}
+                </h3>
+
+
+                <p className="category-subtitle">
+                  {category.subtitle}
+                </p>
+
+
+                <p className="category-description">
+                  {category.description}
+                </p>
+
+              </div>
+
+
+              {/* FOOTER */}
+
+              <div className="category-card-footer">
+
+                <span>
+
+                  {active
+                    ? "Viewing courses"
+                    : "Explore courses"}
+
+                </span>
+
+
+                <FaArrowRight />
+
+              </div>
+
+
+              {/* ACTIVE INDICATOR */}
+
+              {active && (
+
+                <div className="category-selected">
+
+                  <FaCheck />
+
+                  Selected
+
+                </div>
+
+              )}
 
             </button>
+
           );
+
         })}
 
       </div>
 
     </section>
+
   );
 }
+
 
 export default CategorySection;

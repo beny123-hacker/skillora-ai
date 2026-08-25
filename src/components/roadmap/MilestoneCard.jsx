@@ -1,165 +1,169 @@
+import React from "react";
+
 import {
-  FaBookOpen,
-  FaClock,
-  FaStar,
-  FaPlay,
-  FaYoutube,
   FaCheckCircle,
+  FaLock,
+  FaPlayCircle,
+  FaClock,
+  FaCode,
 } from "react-icons/fa";
 
 function MilestoneCard({
-  title = "React Fundamentals",
-  description = "Learn components, props, state, hooks and routing.",
-  duration = "5 Hours",
-  progress = 65,
-  xp = 250,
-  completed = false,
+  step = {},
+  index,
+  status,
 }) {
+  const title =
+    step?.title ||
+    step?.name ||
+    step?.skill ||
+    `Milestone ${index + 1}`;
+
+  const description =
+    step?.description ||
+    step?.details ||
+    step?.overview ||
+    "Complete this milestone to continue progressing through your learning roadmap.";
+
+  const duration =
+    step?.duration ||
+    step?.estimatedDuration ||
+    step?.time ||
+    "Flexible";
+
+  const skills =
+    Array.isArray(step?.skills)
+      ? step.skills
+      : Array.isArray(step?.topics)
+      ? step.topics
+      : [];
+
+  const normalizedStatus =
+    String(
+      status || ""
+    ).toLowerCase();
+
+  const isCompleted =
+    normalizedStatus ===
+    "completed";
+
+  const isCurrent =
+    normalizedStatus ===
+    "current";
+
   return (
-    <div
-      className={`rounded-3xl border overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
-        completed
-          ? "border-green-500 bg-green-500/10"
-          : "border-slate-800 bg-slate-900 hover:border-indigo-500"
+    <article
+      className={`milestone-card ${
+        isCompleted
+          ? "milestone-completed"
+          : isCurrent
+          ? "milestone-current"
+          : "milestone-locked"
       }`}
     >
-      {/* Top Bar */}
 
-      <div
-        className={`h-2 ${
-          completed
-            ? "bg-green-500"
-            : "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-        }`}
-      />
+      <div className="milestone-card-top">
 
-      <div className="p-7">
+        <span className="milestone-number">
+          STEP {index + 1}
+        </span>
 
-        {/* Badge */}
+        <span
+          className={`milestone-status ${
+            isCompleted
+              ? "status-completed"
+              : isCurrent
+              ? "status-current"
+              : "status-locked"
+          }`}
+        >
 
-        <div className="flex justify-between items-center">
-
-          <span className="px-4 py-2 rounded-full bg-indigo-500/20 text-indigo-300 text-sm">
-
-            📍 Milestone
-
-          </span>
-
-          {completed && (
-            <span className="text-green-400 flex items-center gap-2">
-
+          {isCompleted && (
+            <>
               <FaCheckCircle />
-
               Completed
-
-            </span>
+            </>
           )}
 
-        </div>
+          {isCurrent && (
+            <>
+              <FaPlayCircle />
+              In Progress
+            </>
+          )}
 
-        {/* Title */}
+          {!isCompleted &&
+            !isCurrent && (
+              <>
+                <FaLock />
+                Locked
+              </>
+            )}
 
-        <h2 className="mt-6 text-2xl font-bold text-white">
-          {title}
-        </h2>
-
-        <p className="mt-4 text-slate-400 leading-7">
-          {description}
-        </p>
-
-        {/* Progress */}
-
-        <div className="mt-7">
-
-          <div className="flex justify-between mb-2">
-
-            <span className="text-slate-400">
-              Progress
-            </span>
-
-            <span className="text-indigo-400 font-semibold">
-              {progress}%
-            </span>
-
-          </div>
-
-          <div className="h-3 rounded-full bg-slate-800 overflow-hidden">
-
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
-              style={{ width: `${progress}%` }}
-            />
-
-          </div>
-
-        </div>
-
-        {/* Stats */}
-
-        <div className="grid grid-cols-2 gap-4 mt-8">
-
-          <div className="bg-slate-800 rounded-2xl p-4">
-
-            <div className="flex items-center gap-2 text-slate-300">
-
-              <FaClock />
-
-              Duration
-
-            </div>
-
-            <p className="mt-2 text-white font-semibold">
-              {duration}
-            </p>
-
-          </div>
-
-          <div className="bg-slate-800 rounded-2xl p-4">
-
-            <div className="flex items-center gap-2 text-slate-300">
-
-              <FaStar className="text-yellow-400" />
-
-              XP Reward
-
-            </div>
-
-            <p className="mt-2 text-white font-semibold">
-              {xp} XP
-            </p>
-
-          </div>
-
-        </div>
-
-        {/* Buttons */}
-
-        <div className="flex gap-3 mt-8">
-
-          <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 rounded-2xl py-3 text-white flex justify-center items-center gap-3 transition">
-
-            <FaPlay />
-
-            Start Learning
-
-          </button>
-
-          <button className="w-14 rounded-2xl bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition">
-
-            <FaYoutube />
-
-          </button>
-
-          <button className="w-14 rounded-2xl bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center transition">
-
-            <FaBookOpen />
-
-          </button>
-
-        </div>
+        </span>
 
       </div>
-    </div>
+
+      <h3>
+        {title}
+      </h3>
+
+      <p className="milestone-description">
+        {description}
+      </p>
+
+      <div className="milestone-footer">
+
+        <div className="milestone-duration">
+
+          <FaClock />
+
+          <div>
+
+            <span>
+              Estimated duration
+            </span>
+
+            <strong>
+              {duration}
+            </strong>
+
+          </div>
+
+        </div>
+
+        {skills.length > 0 && (
+
+          <div className="milestone-skills">
+
+            <FaCode />
+
+            <div className="skills-list">
+
+              {skills.map(
+                (
+                  skill,
+                  skillIndex
+                ) => (
+
+                  <span
+                    key={`${skill}-${skillIndex}`}
+                  >
+                    {skill}
+                  </span>
+
+                )
+              )}
+
+            </div>
+
+          </div>
+
+        )}
+
+      </div>
+
+    </article>
   );
 }
 

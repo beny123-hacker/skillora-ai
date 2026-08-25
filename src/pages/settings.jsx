@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { supabase } from "../supabase/supabase";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 
 const LANGUAGES = ["English", "Hindi", "Spanish", "French", "German"];
 const THEMES = [

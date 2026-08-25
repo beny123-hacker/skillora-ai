@@ -1,12 +1,14 @@
 import React from "react";
+import {
+  FaChartLine,
+  FaCheckCircle,
+  FaRoad,
+  FaStar,
+} from "react-icons/fa";
 
 function ProgressTracker({
   roadmapData = null,
 }) {
-  // =========================================================
-  // GET MILESTONES FROM AI ROADMAP
-  // =========================================================
-
   const milestones =
     roadmapData?.milestones ||
     roadmapData?.roadmap?.milestones ||
@@ -14,200 +16,112 @@ function ProgressTracker({
     roadmapData?.roadmap ||
     [];
 
-  const roadmapSteps = Array.isArray(milestones)
-    ? milestones
-    : [];
+  const roadmapSteps =
+    Array.isArray(milestones)
+      ? milestones
+      : [];
 
-  // =========================================================
-  // TOTAL TOPICS
-  // =========================================================
+  const totalTopics =
+    roadmapSteps.length;
 
-  const totalTopics = roadmapSteps.length;
+  const completedTopics =
+    roadmapSteps.filter(
+      (step) =>
+        step?.completed === true ||
+        String(step?.status || "")
+          .toLowerCase() === "completed"
+    ).length;
 
-  // =========================================================
-  // COMPLETED TOPICS
-  // =========================================================
+  const calculatedProgress =
+    totalTopics > 0
+      ? Math.round(
+          (completedTopics / totalTopics) * 100
+        )
+      : 0;
 
-  const completedTopics = roadmapSteps.filter(
-    (step) =>
-      step?.completed === true ||
-      String(step?.status || "").toLowerCase() ===
-        "completed"
-  ).length;
+  const aiProgress =
+    Number(roadmapData?.progress);
 
-  // =========================================================
-  // PROGRESS
-  // =========================================================
+  const progress =
+    !Number.isNaN(aiProgress)
+      ? Math.min(
+          Math.max(aiProgress, 0),
+          100
+        )
+      : calculatedProgress;
 
-  let calculatedProgress = 0;
-
-  if (totalTopics > 0) {
-    calculatedProgress = Math.round(
-      (completedTopics / totalTopics) * 100
+  const remainingTopics =
+    Math.max(
+      totalTopics - completedTopics,
+      0
     );
-  }
-
-  // Prefer progress returned by AI/n8n
-  const aiProgress = Number(
-    roadmapData?.progress
-  );
-
-  const progress = !Number.isNaN(aiProgress)
-    ? Math.min(Math.max(aiProgress, 0), 100)
-    : calculatedProgress;
-
-  // =========================================================
-  // SAFE PROGRESS
-  // =========================================================
-
-  const safeProgress = Math.min(
-    Math.max(progress, 0),
-    100
-  );
-
-  // =========================================================
-  // EMPTY STATE
-  // =========================================================
-
-  if (!roadmapData || totalTopics === 0) {
-    return (
-      <section className="mt-10">
-
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-            <div>
-
-              <h3 className="text-xl font-bold text-white">
-                Your Progress
-              </h3>
-
-              <p className="mt-1 text-sm text-slate-400">
-                Generate your roadmap to start tracking your
-                learning progress. 🚀
-              </p>
-
-            </div>
-
-            <div className="text-right">
-
-              <p className="text-3xl font-bold text-indigo-400">
-                0%
-              </p>
-
-              <p className="text-xs text-slate-500">
-                Completed
-              </p>
-
-            </div>
-
-          </div>
-
-          <div className="mt-6 h-3 w-full overflow-hidden rounded-full bg-slate-800">
-
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
-              style={{
-                width: "0%",
-              }}
-            />
-
-          </div>
-
-          <div className="mt-5 flex items-center justify-between">
-
-            <div>
-
-              <p className="text-sm text-slate-400">
-                Completed
-              </p>
-
-              <p className="mt-1 text-lg font-semibold text-white">
-                0
-              </p>
-
-            </div>
-
-            <div className="text-right">
-
-              <p className="text-sm text-slate-400">
-                Total Topics
-              </p>
-
-              <p className="mt-1 text-lg font-semibold text-white">
-                0
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-    );
-  }
-
-  // =========================================================
-  // MAIN UI
-  // =========================================================
 
   return (
-    <section className="mt-10">
+    <section className="progress-tracker-section">
 
-      <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+      <div className="progress-tracker-card">
 
-        {/* =================================================
-            HEADER
-        ================================================== */}
-
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="progress-tracker-header">
 
           <div>
 
-            <span className="inline-flex rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-semibold tracking-wide text-indigo-300">
+            <span className="roadmap-label">
+              <FaStar />
               LEARNING PROGRESS
             </span>
 
-            <h3 className="mt-3 text-2xl font-bold text-white">
-              Your Progress
-            </h3>
+            <h2>
+              Keep moving
+              <span> forward.</span>
+            </h2>
 
-            <p className="mt-1 text-sm text-slate-400">
-              Keep going — you're making progress! 🚀
+            <p>
+              Every completed milestone brings you
+              closer to your career goal.
             </p>
 
           </div>
 
-          {/* Percentage */}
+          <div className="tracker-percentage">
 
-          <div className="text-right">
+            <div className="tracker-percentage-icon">
+              <FaChartLine />
+            </div>
 
-            <p className="text-3xl font-bold text-indigo-400">
-              {safeProgress}%
-            </p>
+            <div>
+              <strong>
+                {progress}%
+              </strong>
 
-            <p className="text-xs text-slate-500">
-              Completed
-            </p>
+              <span>
+                Completed
+              </span>
+            </div>
 
           </div>
 
         </div>
 
-        {/* =================================================
-            PROGRESS BAR
-        ================================================== */}
+        <div className="tracker-progress-area">
 
-        <div className="mt-7">
+          <div className="tracker-progress-info">
 
-          <div className="h-4 w-full overflow-hidden rounded-full bg-slate-800">
+            <span>
+              Journey Progress
+            </span>
+
+            <span>
+              {completedTopics} of {totalTopics}
+            </span>
+
+          </div>
+
+          <div className="tracker-progress-bar">
 
             <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-700"
+              className="tracker-progress-fill"
               style={{
-                width: `${safeProgress}%`,
+                width: `${progress}%`,
               }}
             />
 
@@ -215,45 +129,49 @@ function ProgressTracker({
 
         </div>
 
-        {/* =================================================
-            STATS
-        ================================================== */}
+        <div className="tracker-stats-grid">
 
-        <div className="mt-7 grid grid-cols-2 gap-6">
+          <div className="tracker-stat">
 
-          {/* Completed */}
+            <div className="tracker-stat-icon green">
+              <FaCheckCircle />
+            </div>
 
-          <div className="rounded-2xl border border-white/5 bg-slate-950/60 p-5">
+            <div>
+              <span>
+                Completed
+              </span>
 
-            <p className="text-sm text-slate-400">
-              Completed
-            </p>
+              <strong>
+                {completedTopics}
+              </strong>
 
-            <p className="mt-2 text-2xl font-bold text-white">
-              {completedTopics}
-            </p>
-
-            <p className="mt-1 text-xs text-slate-500">
-              Milestones completed
-            </p>
+              <small>
+                Milestones finished
+              </small>
+            </div>
 
           </div>
 
-          {/* Total */}
+          <div className="tracker-stat">
 
-          <div className="rounded-2xl border border-white/5 bg-slate-950/60 p-5">
+            <div className="tracker-stat-icon purple">
+              <FaRoad />
+            </div>
 
-            <p className="text-sm text-slate-400">
-              Total Topics
-            </p>
+            <div>
+              <span>
+                Remaining
+              </span>
 
-            <p className="mt-2 text-2xl font-bold text-white">
-              {totalTopics}
-            </p>
+              <strong>
+                {remainingTopics}
+              </strong>
 
-            <p className="mt-1 text-xs text-slate-500">
-              AI-generated milestones
-            </p>
+              <small>
+                Milestones ahead
+              </small>
+            </div>
 
           </div>
 

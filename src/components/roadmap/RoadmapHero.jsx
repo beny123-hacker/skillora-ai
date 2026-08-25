@@ -1,125 +1,134 @@
+import React from "react";
 import {
   FaRoad,
   FaRobot,
   FaBullseye,
+  FaChartLine,
+  FaStar,
 } from "react-icons/fa";
 
 function RoadmapHero({
   selectedCareer = "",
   roadmapData = null,
 }) {
-  const progress = Number(
-    roadmapData?.progress ?? 0
-  );
+  const rawProgress =
+    Number(
+      roadmapData?.progress ?? 0
+    );
+
+  const progress =
+    Math.min(
+      Math.max(
+        Number.isNaN(rawProgress)
+          ? 0
+          : rawProgress,
+        0
+      ),
+      100
+    );
 
   const milestones =
     roadmapData?.milestones?.length ??
     roadmapData?.steps?.length ??
+    roadmapData?.roadmap?.milestones?.length ??
     0;
 
   return (
-    <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 p-10">
+    <section className="roadmap-hero">
 
-      {/* Background Effects */}
-      <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+      <div className="roadmap-hero-glow glow-one" />
+      <div className="roadmap-hero-glow glow-two" />
 
-      <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-indigo-300/10 blur-3xl" />
+      <div className="roadmap-hero-content">
 
-      <div className="relative grid items-center gap-10 lg:grid-cols-2">
+        <div className="roadmap-hero-left">
 
-        {/* =====================================================
-            LEFT
-        ====================================================== */}
-
-        <div>
-
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-white">
-
-            <FaRobot />
-
-            AI Career Roadmap
-
+          <span className="roadmap-hero-badge">
+            <FaStar />
+            PERSONALIZED CAREER ROADMAP
           </span>
 
-          <h1 className="mt-6 text-5xl font-bold leading-tight text-white">
-
-            Build Your Dream Career
-            <br />
-
-            Step by Step
-
+          <h1>
+            Your path to becoming a
+            <span>
+              {" "}
+              {selectedCareer || "future professional"}.
+            </span>
           </h1>
 
-          <p className="mt-6 text-lg leading-8 text-blue-100">
-
-            Skillora AI creates a personalized roadmap based on
-            your career goal, current skills and learning pace.
-
+          <p>
+            Your AI-powered learning roadmap is designed
+            around your selected career goal. Follow each
+            milestone, build practical skills, and track
+            your progress along the way.
           </p>
 
-          {/* No Generate Roadmap button here */}
+          <div className="roadmap-hero-mini-stats">
+
+            <div>
+              <FaBullseye />
+              <span>
+                {milestones} Milestones
+              </span>
+            </div>
+
+            <div>
+              <FaRobot />
+              <span>
+                AI Personalized
+              </span>
+            </div>
+
+          </div>
 
         </div>
 
-        {/* =====================================================
-            RIGHT
-        ====================================================== */}
+        <div className="roadmap-hero-right">
 
-        <div>
+          <div className="career-roadmap-summary">
 
-          <div className="rounded-3xl border border-white/20 bg-white/10 p-8 backdrop-blur-xl">
+            <div className="summary-top">
 
-            <div className="flex items-center gap-4">
-
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500 text-white">
-
+              <div className="summary-icon">
                 <FaRoad />
-
               </div>
 
               <div>
 
-                <h2 className="text-2xl font-bold text-white">
+                <span>
+                  YOUR SELECTED ROLE
+                </span>
 
-                  Current Goal
-
-                </h2>
-
-                <p className="text-blue-100">
-
+                <h3>
                   {selectedCareer ||
-                    "Select a career role below"}
-
-                </p>
+                    "Career Goal"}
+                </h3>
 
               </div>
 
             </div>
 
-            {/* Progress */}
+            <div className="summary-progress-card">
 
-            <div className="mt-8 space-y-5">
+              <div className="summary-progress-heading">
 
-              <div className="flex justify-between">
+                <div>
+                  <span>
+                    JOURNEY PROGRESS
+                  </span>
 
-                <span className="text-blue-100">
+                  <strong>
+                    {progress}% Complete
+                  </strong>
+                </div>
 
-                  Progress
-
-                </span>
-
-                <span className="text-green-300">
-
-                  {progress}%
-
-                </span>
+                <FaChartLine />
 
               </div>
 
-              <div className="h-3 overflow-hidden rounded-full bg-white/20">
+              <div className="summary-progress-bar">
 
                 <div
-                  className="h-full rounded-full bg-green-400 transition-all duration-500"
                   style={{
                     width: `${progress}%`,
                   }}
@@ -129,44 +138,26 @@ function RoadmapHero({
 
             </div>
 
-            {/* Stats */}
+            <div className="summary-bottom-stats">
 
-            <div className="mt-8 grid grid-cols-2 gap-5">
-
-              <div className="rounded-2xl bg-white/10 p-5">
-
-                <FaBullseye className="text-2xl text-yellow-400" />
-
-                <h3 className="mt-4 text-3xl font-bold text-white">
-
+              <div>
+                <strong>
                   {milestones}
+                </strong>
 
-                </h3>
-
-                <p className="text-blue-100">
-
+                <span>
                   Milestones
-
-                </p>
-
+                </span>
               </div>
 
-              <div className="rounded-2xl bg-white/10 p-5">
-
-                <FaRobot className="text-2xl text-pink-400" />
-
-                <h3 className="mt-4 text-3xl font-bold text-white">
-
+              <div>
+                <strong>
                   AI
+                </strong>
 
-                </h3>
-
-                <p className="text-blue-100">
-
+                <span>
                   Personalized
-
-                </p>
-
+                </span>
               </div>
 
             </div>

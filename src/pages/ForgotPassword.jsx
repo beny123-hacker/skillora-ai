@@ -5,7 +5,7 @@ import {
   FaArrowRight,
   FaArrowLeft,
 } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 
 function ForgotPassword() {
   const navigate = useNavigate();

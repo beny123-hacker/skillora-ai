@@ -7,7 +7,7 @@ import {
   FaAward,
   FaCode,
 } from "react-icons/fa";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/Authcontext";
 
 function ProfileSummaryCard() {
   const { user } = useAuth();

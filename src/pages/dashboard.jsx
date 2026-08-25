@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
+import {
+  FaBookOpen,
+  FaFire,
+  FaBolt,
+  FaChartLine,
+  FaGraduationCap,
+  FaArrowRight,
+  FaQuoteLeft,
+  FaUser,
+} from "react-icons/fa";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 
-import GreetingCard from "../components/dashboard/greetingcard";
-import DashboardStats from "../components/dashboard/DashboardStats";
-import ContinueLearning from "../components/dashboard/continuelearning";
-import ProgressCard from "../components/dashboard/progresscard";
-import RoadmapCard from "../components/dashboard/RoadmapCard";
-import SkillCard from "../components/dashboard/SkillCard";
-import QuoteCard, {
-  TodaysFocusCard,
-} from "../components/dashboard/quotecard";
-
-import AIRecommendation from "../components/dashboard/AIRecommendation";
-import Certificates from "../components/dashboard/Certificates";
-import RecentActivity from "../components/dashboard/RecentActivity";
-import UpcomingQuiz from "../components/dashboard/UpcomingQuiz";
-
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 import { supabase } from "../supabase/supabase";
+
+import "../styles/dashboard.css";
 
 function Dashboard() {
   const { user } = useAuth();
@@ -29,21 +26,6 @@ function Dashboard() {
     learningStreak: 0,
     totalXP: 0,
     overallProgress: 0,
-
-    currentCourse: null,
-
-    weeklyProgress: 0,
-    daysStudied: 0,
-    weeklyXP: 0,
-    weeklyGoalHours: 0,
-
-    roadmap: null,
-
-    skills: [],
-
-    recentActivity: [],
-    upcomingQuiz: null,
-    certificates: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -63,152 +45,81 @@ function Dashboard() {
 
       const userId = user.id;
 
-      /*
-       * ============================================================
-       * PROFILE / XP
-       * ============================================================
-       *
-       * XP is stored directly in profiles.xp
-       */
+      /* ============================================================
+         PROFILE / XP
+         ============================================================ */
 
-      const {
-        data: profile,
-        error: profileError,
-      } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("id, xp, level")
         .eq("id", userId)
         .maybeSingle();
 
       if (profileError) {
-        console.error(
-          "Profile loading error:",
-          profileError
-        );
+        console.error("Profile loading error:", profileError);
       }
 
       const totalXP = Number(profile?.xp || 0);
 
-      /*
-       * ============================================================
-       * COURSE PROGRESS
-       * ============================================================
-       *
-       * Correct table:
-       * course_progress
-       *
-       * Important columns:
-       * completed_lessons
-       * total_lessons
-       * progress_percent
-       * completed
-       */
+      /* ============================================================
+         COURSE PROGRESS
+         ============================================================ */
 
       const {
         data: courseProgress,
         error: courseError,
       } = await supabase
         .from("course_progress")
-        .select(`
-          *,
-          courses (
-            id,
-            title,
-            description
-          )
-        `)
+        .select("*")
         .eq("user_id", userId);
 
       if (courseError) {
-        console.error(
-          "Course progress error:",
-          courseError
-        );
+        console.error("Course progress error:", courseError);
       }
 
       const courses = courseProgress || [];
 
       const totalCourses = courses.length;
 
-      /*
-       * ============================================================
-       * COURSE PROGRESS CALCULATION
-       * ============================================================
-       *
-       * Do NOT blindly trust progress_percent.
-       *
-       * Calculate it from:
-       *
-       * completed_lessons / total_lessons * 100
-       *
-       * Example:
-       *
-       * 1 / 10 = 10%
-       */
+      /* ============================================================
+         CALCULATE COURSE PROGRESS
+         ============================================================ */
 
-      const coursesWithCalculatedProgress =
-        courses.map((course) => {
-          const completedLessons = Math.max(
-            0,
-            Number(
-              course.completed_lessons || 0
-            )
+      const coursesWithCalculatedProgress = courses.map((course) => {
+        const completedLessons = Math.max(
+          0,
+          Number(course.completed_lessons || 0)
+        );
+
+        const totalLessons = Math.max(
+          0,
+          Number(course.total_lessons || 0)
+        );
+
+        let calculatedProgress = 0;
+
+        if (totalLessons > 0) {
+          calculatedProgress = Math.round(
+            (completedLessons / totalLessons) * 100
           );
+        }
 
-          const totalLessons = Math.max(
-            0,
-            Number(
-              course.total_lessons || 0
-            )
-          );
+        if (
+          totalLessons > 0 &&
+          completedLessons >= totalLessons
+        ) {
+          calculatedProgress = 100;
+        }
 
-          let calculatedProgress = 0;
+        return {
+          ...course,
+          calculatedProgress,
+        };
+      });
 
-          if (totalLessons > 0) {
-            calculatedProgress = Math.round(
-              (completedLessons /
-                totalLessons) *
-                100
-            );
-          }
-
-          /*
-           * If all lessons are completed,
-           * force progress to 100.
-           */
-
-          if (
-            totalLessons > 0 &&
-            completedLessons >= totalLessons
-          ) {
-            calculatedProgress = 100;
-          }
-
-          return {
-            ...course,
-
-            /*
-             * Keep a normalized progress value
-             * for the Dashboard components.
-             */
-
-            progress: calculatedProgress,
-
-            calculatedProgress,
-
-            completed_lessons:
-              completedLessons,
-
-            total_lessons:
-              totalLessons,
-          };
-        });
-
-      /*
-       * ============================================================
-       * COMPLETED COURSES
-       * ============================================================
-       */
+      /* ============================================================
+         COMPLETED COURSES
+         ============================================================ */
 
       const completedCourses =
         coursesWithCalculatedProgress.filter(
@@ -217,72 +128,33 @@ function Dashboard() {
             course.calculatedProgress >= 100
         );
 
-      const coursesCompleted =
-        completedCourses.length;
+      const coursesCompleted = completedCourses.length;
 
-      /*
-       * ============================================================
-       * OVERALL PROGRESS
-       * ============================================================
-       *
-       * Average of the REAL course progress values.
-       */
+      /* ============================================================
+         OVERALL PROGRESS
+         ============================================================ */
 
       const overallProgress =
         totalCourses > 0
           ? Math.round(
               coursesWithCalculatedProgress.reduce(
                 (sum, course) =>
-                  sum +
-                  Number(
-                    course.calculatedProgress ||
-                      0
-                  ),
+                  sum + Number(course.calculatedProgress || 0),
                 0
               ) / totalCourses
             )
           : 0;
 
-      /*
-       * ============================================================
-       * CURRENT COURSE
-       * ============================================================
-       */
-
-      const currentCourse =
-        coursesWithCalculatedProgress
-          .filter(
-            (course) =>
-              !course.completed &&
-              Number(
-                course.completed_lessons || 0
-              ) <
-                Number(
-                  course.total_lessons || 0
-                )
-          )
-          .sort(
-            (a, b) =>
-              Number(
-                b.calculatedProgress || 0
-              ) -
-              Number(
-                a.calculatedProgress || 0
-              )
-          )[0] || null;
-
-      /*
-       * ============================================================
-       * LEARNING ACTIVITY
-       * ============================================================
-       */
+      /* ============================================================
+         LEARNING ACTIVITY
+         ============================================================ */
 
       const {
         data: activities,
         error: activityError,
       } = await supabase
         .from("learning_activity")
-        .select("*")
+        .select("created_at")
         .eq("user_id", userId)
         .order("created_at", {
           ascending: false,
@@ -295,14 +167,11 @@ function Dashboard() {
         );
       }
 
-      const recentActivity =
-        activities || [];
+      const recentActivity = activities || [];
 
-      /*
-       * ============================================================
-       * LEARNING STREAK
-       * ============================================================
-       */
+      /* ============================================================
+         LEARNING STREAK
+         ============================================================ */
 
       const learningDates = [
         ...new Set(
@@ -325,10 +194,6 @@ function Dashboard() {
 
       if (learningDates.length > 0) {
         let currentDate = new Date();
-
-        /*
-         * Normalize current date to local midnight.
-         */
 
         currentDate.setHours(
           0,
@@ -355,293 +220,27 @@ function Dashboard() {
         }
       }
 
-      /*
-       * ============================================================
-       * WEEKLY DATA
-       * ============================================================
-       */
-
-      const now = new Date();
-
-      const weekStart = new Date(now);
-
-      weekStart.setDate(
-        now.getDate() - now.getDay()
-      );
-
-      weekStart.setHours(
-        0,
-        0,
-        0,
-        0
-      );
-
-      const weeklyActivities =
-        recentActivity.filter(
-          (item) =>
-            item.created_at &&
-            new Date(item.created_at) >=
-              weekStart
-        );
-
-      const daysStudied =
-        new Set(
-          weeklyActivities.map((item) =>
-            new Date(item.created_at)
-              .toISOString()
-              .split("T")[0]
-          )
-        ).size;
-
-      /*
-       * ============================================================
-       * WEEKLY XP
-       * ============================================================
-       *
-       * Total XP comes from profiles.xp.
-       *
-       * Weekly XP can optionally come from
-       * xp_transactions if that table exists.
-       */
-
-      let weeklyXP = 0;
-
-      try {
-        const {
-          data: xpTransactions,
-          error: xpTransactionError,
-        } = await supabase
-          .from("xp_transactions")
-          .select(
-            "xp_amount, created_at"
-          )
-          .eq("user_id", userId);
-
-        if (
-          !xpTransactionError &&
-          xpTransactions
-        ) {
-          weeklyXP =
-            xpTransactions
-              .filter(
-                (item) =>
-                  item.created_at &&
-                  new Date(
-                    item.created_at
-                  ) >= weekStart
-              )
-              .reduce(
-                (sum, item) =>
-                  sum +
-                  Number(
-                    item.xp_amount || 0
-                  ),
-                0
-              );
-        }
-      } catch (error) {
-        console.warn(
-          "Weekly XP unavailable:",
-          error
-        );
-      }
-
-      /*
-       * ============================================================
-       * ROADMAP
-       * ============================================================
-       */
-
-      const {
-        data: roadmapProgress,
-        error: roadmapError,
-      } = await supabase
-        .from("user_roadmap_progress")
-        .select(`
-          *,
-          roadmap_items (
-            id,
-            title,
-            order_index,
-            roadmap_id
-          ),
-          roadmaps (
-            id,
-            title,
-            description
-          )
-        `)
-        .eq("user_id", userId)
-        .order("created_at", {
-          ascending: true,
-        });
-
-      if (roadmapError) {
-        console.error(
-          "Roadmap error:",
-          roadmapError
-        );
-      }
-
-      const roadmapData =
-        roadmapProgress || [];
-
-      let roadmap = null;
-
-      if (roadmapData.length > 0) {
-        const roadmapInfo =
-          roadmapData[0]?.roadmaps;
-
-        const completedItems =
-          roadmapData.filter(
-            (item) =>
-              item.completed === true
-          ).length;
-
-        roadmap = {
-          title:
-            roadmapInfo?.title ||
-            "Your Career Roadmap",
-
-          description:
-            roadmapInfo?.description ||
-            "",
-
-          items: roadmapData.map(
-            (item) => ({
-              id:
-                item.roadmap_items?.id,
-
-              title:
-                item.roadmap_items?.title ||
-                "Untitled milestone",
-
-              order:
-                item.roadmap_items
-                  ?.order_index || 0,
-
-              completed:
-                item.completed === true,
-            })
-          ),
-
-          progress:
-            roadmapData.length > 0
-              ? Math.round(
-                  (completedItems /
-                    roadmapData.length) *
-                    100
-                )
-              : 0,
-        };
-      }
-
-      /*
-       * ============================================================
-       * SKILLS
-       * ============================================================
-       */
-
-      const skills = [];
-
-      /*
-       * ============================================================
-       * FINAL DASHBOARD DATA
-       * ============================================================
-       */
+      /* ============================================================
+         SET DASHBOARD DATA
+         ============================================================ */
 
       setDashboardData({
         coursesCompleted,
-
         totalCourses,
-
         learningStreak,
-
-        /*
-         * IMPORTANT:
-         *
-         * This comes directly from:
-         * profiles.xp
-         */
-
         totalXP,
-
         overallProgress,
-
-        currentCourse,
-
-        weeklyProgress:
-          overallProgress,
-
-        daysStudied,
-
-        weeklyXP,
-
-        weeklyGoalHours: 0,
-
-        roadmap,
-
-        skills,
-
-        recentActivity,
-
-        upcomingQuiz: null,
-
-        certificates: [],
       });
 
-      /*
-       * ============================================================
-       * DEBUG
-       * ============================================================
-       */
-
-      console.log(
-        "======================================"
-      );
-
-      console.log(
-        "✅ DASHBOARD DATA"
-      );
-
-      console.log(
-        "XP:",
-        totalXP
-      );
-
-      console.log(
-        "Level:",
-        profile?.level
-      );
-
-      console.log(
-        "Total Courses:",
-        totalCourses
-      );
-
-      console.log(
-        "Completed Courses:",
-        coursesCompleted
-      );
-
-      console.log(
-        "Overall Progress:",
-        overallProgress + "%"
-      );
-
-      console.log(
-        "Course Data:",
-        coursesWithCalculatedProgress
-      );
-
-      console.log(
-        "Current Course:",
-        currentCourse
-      );
-
-      console.log(
-        "======================================"
-      );
+      console.log("======================================");
+      console.log("✅ DASHBOARD DATA");
+      console.log("XP:", totalXP);
+      console.log("Level:", profile?.level);
+      console.log("Total Courses:", totalCourses);
+      console.log("Completed Courses:", coursesCompleted);
+      console.log("Learning Streak:", learningStreak);
+      console.log("Overall Progress:", overallProgress + "%");
+      console.log("======================================");
     } catch (error) {
       console.error(
         "Dashboard loading error:",
@@ -652,231 +251,373 @@ function Dashboard() {
     }
   }
 
-  /*
-   * ============================================================
-   * LOADING SCREEN
-   * ============================================================
-   */
+  /* ================================================================
+     USER INFORMATION
+     ================================================================ */
+
+  const userMetadata = user?.user_metadata || {};
+
+  const displayName =
+    userMetadata.full_name ||
+    userMetadata.name ||
+    userMetadata.username ||
+    user?.email?.split("@")[0] ||
+    "Learner";
+
+  const email = user?.email || "";
+
+  const avatarUrl =
+    userMetadata.avatar_url ||
+    userMetadata.picture ||
+    null;
+
+  /* ================================================================
+     GREETING
+     ================================================================ */
+
+  const hour = new Date().getHours();
+
+  let greeting = "Good Evening";
+
+  if (hour < 12) {
+    greeting = "Good Morning";
+  } else if (hour < 18) {
+    greeting = "Good Afternoon";
+  }
+
+  /* ================================================================
+     LOADING
+     ================================================================ */
 
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="flex min-h-[60vh] items-center justify-center">
-          <div className="text-center">
-            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-700 border-t-cyan-400" />
+        <main className="dashboard-premium">
+          <div className="dashboard-loading">
+            <div className="dashboard-loader" />
 
-            <p className="mt-4 text-sm text-slate-400">
-              Loading your dashboard...
+            <p>
+              Preparing your learning dashboard...
             </p>
           </div>
-        </div>
+        </main>
       </DashboardLayout>
     );
   }
 
-  /*
-   * ============================================================
-   * DASHBOARD
-   * ============================================================
-   */
+  /* ================================================================
+     DASHBOARD
+     ================================================================ */
 
   return (
     <DashboardLayout>
-      <div className="w-full space-y-8 px-4 py-6 sm:px-6 lg:px-8">
+      <main className="dashboard-premium">
+        <div className="dashboard-shell">
 
-        {/* ======================================================
-            GREETING
-        ====================================================== */}
+          {/* ======================================================
+              TOP HEADER
+              ====================================================== */}
 
-        <GreetingCard
-          coursesCompleted={
-            dashboardData.coursesCompleted
-          }
-          totalXP={
-            dashboardData.totalXP
-          }
-          learningStreak={
-            dashboardData.learningStreak
-          }
-          overallProgress={
-            dashboardData.overallProgress
-          }
-        />
+          <header className="dashboard-header">
+            <div>
+              <span className="dashboard-eyebrow">
+                <span className="eyebrow-dot" />
+                AI PERSONALIZED DASHBOARD
+              </span>
 
-        {/* ======================================================
-            QUOTE + TODAY'S FOCUS
-        ====================================================== */}
+            
 
-        <div className="grid gap-6 xl:grid-cols-3">
+             
+            </div>
+          </header>
 
-          <div className="xl:col-span-2">
-            <QuoteCard />
-          </div>
+          {/* ======================================================
+              HERO SECTION
+              ====================================================== */}
 
-          <TodaysFocusCard
-            currentCourse={
-              dashboardData.currentCourse
-            }
-          />
+          <section className="dashboard-hero">
 
-        </div>
+            {/* LEFT SIDE */}
 
-        {/* ======================================================
-            STATS
-        ====================================================== */}
+            <div className="dashboard-hero-left">
 
-        <DashboardStats
-          coursesCompleted={
-            dashboardData.coursesCompleted
-          }
-          learningStreak={
-            dashboardData.learningStreak
-          }
-          totalXP={
-            dashboardData.totalXP
-          }
-          overallProgress={
-            dashboardData.overallProgress
-          }
-        />
+              <div className="greeting-content">
+                <span className="greeting-small">
+                  Welcome back
+                </span>
 
-        {/* ======================================================
-            CONTINUE LEARNING
-        ====================================================== */}
+                <h2>
+                  {greeting},{" "}
+                  <span>{displayName}</span>{" "}
+                  <span className="wave">
+                    👋
+                  </span>
+                </h2>
 
-        <ContinueLearning
-          currentCourse={
-            dashboardData.currentCourse
-          }
-        />
+                <p>
+                  Keep learning, strengthen your
+                  skills, and move one step closer
+                  to your career goals.
+                </p>
+              </div>
 
-        {/* ======================================================
-            AI RECOMMENDATION
-        ====================================================== */}
+              {/* QUOTE */}
 
-        <AIRecommendation
-          currentCourse={
-            dashboardData.currentCourse
-          }
-        />
+              <div className="quote-card">
 
-        {/* ======================================================
-            PROGRESS + ROADMAP
-        ====================================================== */}
+                <div className="quote-top">
+                  <div className="quote-icon">
+                    <FaQuoteLeft />
+                  </div>
 
-        <div className="grid gap-6 xl:grid-cols-2">
+                  <span>
+                    DAILY INSPIRATION
+                  </span>
+                </div>
 
-          <ProgressCard
-            weeklyProgress={
-              dashboardData.weeklyProgress
-            }
-            daysStudied={
-              dashboardData.daysStudied
-            }
-            weeklyXP={
-              dashboardData.weeklyXP
-            }
-            weeklyGoalHours={
-              dashboardData.weeklyGoalHours
-            }
-          />
+                <blockquote>
+                  “Success is the sum of small
+                  efforts, repeated day after day.”
+                </blockquote>
 
-          <RoadmapCard
-            roadmap={
-              dashboardData.roadmap
-            }
-          />
+                <div className="quote-author">
+                  — Robert Collier
+                </div>
 
-        </div>
+              </div>
 
-        {/* ======================================================
-            TECHNICAL SKILLS
-        ====================================================== */}
+            </div>
 
-        <section className="space-y-6">
+            {/* RIGHT SIDE — PROFILE */}
 
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-[0.3em] text-indigo-400">
-              Technologies
-            </span>
+            <div className="profile-card">
 
-            <h2 className="mt-2 text-3xl font-bold text-white">
-              Technical Skills
-            </h2>
+              <div className="profile-glow" />
 
-            <p className="mt-2 max-w-2xl text-slate-400">
-              Skills will appear here as you
-              progress through your courses
-              and roadmaps.
-            </p>
-          </div>
+              <div className="profile-avatar-wrapper">
 
-          {dashboardData.skills.length >
-          0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-
-              {dashboardData.skills.map(
-                (skill) => (
-                  <SkillCard
-                    key={skill.id}
-                    skill={skill.title}
-                    progress={
-                      skill.progress
-                    }
-                    level={skill.level}
+                {avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt={displayName}
+                    className="profile-avatar"
                   />
-                )
-              )}
+                ) : (
+                  <div className="profile-avatar profile-avatar-fallback">
+                    <FaUser />
+                  </div>
+                )}
 
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-8 text-center">
+                <span className="online-indicator" />
+              </div>
 
-              <p className="text-lg font-semibold text-white">
-                No skills tracked yet
+              <h3>
+                {displayName}
+              </h3>
+
+              <p className="profile-role">
+                Computer Science Student
               </p>
 
-              <p className="mt-2 text-sm text-slate-500">
-                Start a course or roadmap
-                to build your skill profile.
-              </p>
+              <div className="active-badge">
+                <span />
+                Active Learner
+              </div>
+
+              {/* PROFILE PROGRESS */}
+
+              <div className="profile-progress">
+
+                <div className="progress-heading">
+                  <span>
+                    LEARNING PROGRESS
+                  </span>
+
+                  <strong>
+                    {dashboardData.overallProgress}%
+                  </strong>
+                </div>
+
+                <div className="progress-track">
+                  <div
+                    className="progress-fill"
+                    style={{
+                      width: `${dashboardData.overallProgress}%`,
+                    }}
+                  />
+                </div>
+
+              </div>
+
+              <div className="profile-email">
+                {email}
+              </div>
 
             </div>
-          )}
 
-        </section>
+          </section>
 
-        {/* ======================================================
-            RECENT ACTIVITY + UPCOMING QUIZ
-        ====================================================== */}
+          {/* ======================================================
+              STAT CARDS
+              ====================================================== */}
 
-        <div className="grid gap-6 xl:grid-cols-2">
+          <section className="stats-section">
 
-          <RecentActivity
-            activities={
-              dashboardData.recentActivity
-            }
-          />
+            {/* COURSES */}
 
-          <UpcomingQuiz
-            quiz={
-              dashboardData.upcomingQuiz
-            }
-          />
+            <div className="premium-stat-card">
+
+              <div className="stat-icon courses-icon">
+                <FaBookOpen />
+              </div>
+
+              <div className="stat-content">
+
+                <span>
+                  COURSES COMPLETED
+                </span>
+
+                <strong>
+                  {dashboardData.coursesCompleted}
+                </strong>
+
+                <p>
+                  Courses successfully completed
+                </p>
+
+              </div>
+
+              <div className="stat-arrow">
+                <FaArrowRight />
+              </div>
+
+            </div>
+
+            {/* XP */}
+
+            <div className="premium-stat-card">
+
+              <div className="stat-icon xp-icon">
+                <FaBolt />
+              </div>
+
+              <div className="stat-content">
+
+                <span>
+                  EXPERIENCE POINTS
+                </span>
+
+                <strong>
+                  {dashboardData.totalXP}
+                </strong>
+
+                <p>
+                  Total experience earned
+                </p>
+
+              </div>
+
+              <div className="stat-arrow">
+                <FaArrowRight />
+              </div>
+
+            </div>
+
+            {/* STREAK */}
+
+            <div className="premium-stat-card">
+
+              <div className="stat-icon streak-icon">
+                <FaFire />
+              </div>
+
+              <div className="stat-content">
+
+                <span>
+                  LEARNING STREAK
+                </span>
+
+                <strong>
+                  {dashboardData.learningStreak}
+                </strong>
+
+                <p>
+                  Days of consistent learning
+                </p>
+
+              </div>
+
+              <div className="stat-arrow">
+                <FaArrowRight />
+              </div>
+
+            </div>
+
+          </section>
+
+          {/* ======================================================
+              OVERALL PROGRESS
+              ====================================================== */}
+
+          <section className="overall-card">
+
+            <div className="overall-left">
+
+              <div className="overall-icon">
+                <FaChartLine />
+              </div>
+
+              <div>
+                <span>
+                  YOUR LEARNING JOURNEY
+                </span>
+
+                <h3>
+                  Overall Progress
+                </h3>
+
+                <p>
+                  Every lesson brings you closer
+                  to your career goals.
+                </p>
+              </div>
+
+            </div>
+
+            <div className="overall-progress-area">
+
+              <div className="overall-progress-value">
+                {dashboardData.overallProgress}%
+              </div>
+
+              <div className="overall-progress-track">
+                <div
+                  className="overall-progress-fill"
+                  style={{
+                    width: `${dashboardData.overallProgress}%`,
+                  }}
+                />
+              </div>
+
+            </div>
+
+          </section>
+
+          {/* ======================================================
+              FOOTER MESSAGE
+              ====================================================== */}
+
+          <div className="dashboard-footer-message">
+            <FaGraduationCap />
+
+            <span>
+              Keep going. Your future self will
+              thank you.
+            </span>
+          </div>
 
         </div>
-
-        {/* ======================================================
-            CERTIFICATES
-        ====================================================== */}
-
-        <Certificates
-          certificates={
-            dashboardData.certificates
-          }
-        />
-
-      </div>
+      </main>
     </DashboardLayout>
   );
 }

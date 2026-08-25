@@ -7,7 +7,11 @@ import {
 
 import { supabase } from "../supabase/supabase";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext(undefined);
+
+// =======================================================
+// AUTH PROVIDER
+// =======================================================
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
@@ -16,7 +20,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   // =====================================================
-  // GET PROFILE FROM SUPABASE
+  // GET USER PROFILE
   // =====================================================
 
   const getProfile = async (userId) => {
@@ -25,31 +29,37 @@ export function AuthProvider({ children }) {
       return null;
     }
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .maybeSingle();
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", userId)
+        .maybeSingle();
 
-    if (error) {
-      console.error("Profile fetch error:", error);
+      if (error) {
+        console.error("Profile fetch error:", error);
+        setProfile(null);
+        return null;
+      }
+
+      setProfile(data || null);
+
+      return data || null;
+    } catch (error) {
+      console.error("Profile fetch exception:", error);
       setProfile(null);
       return null;
     }
-
-    setProfile(data || null);
-
-    return data || null;
   };
 
   // =====================================================
-  // INITIAL SESSION
+  // INITIAL AUTHENTICATION
   // =====================================================
 
   useEffect(() => {
     let mounted = true;
 
-    const getInitialSession = async () => {
+    const initializeAuth = async () => {
       try {
         const {
           data: { session: currentSession },
@@ -62,16 +72,21 @@ export function AuthProvider({ children }) {
 
         if (!mounted) return;
 
-        setSession(currentSession || null);
-        setUser(currentSession?.user || null);
+        const currentUser = currentSession?.user || null;
 
-        if (currentSession?.user) {
-          await getProfile(currentSession.user.id);
+        setSession(currentSession || null);
+        setUser(currentUser);
+
+        if (currentUser) {
+          await getProfile(currentUser.id);
         } else {
           setProfile(null);
         }
       } catch (error) {
-        console.error("Authentication initialization error:", error);
+        console.error(
+          "Authentication initialization error:",
+          error
+        );
       } finally {
         if (mounted) {
           setLoading(false);
@@ -79,7 +94,7 @@ export function AuthProvider({ children }) {
       }
     };
 
-    getInitialSession();
+    initializeAuth();
 
     // ===================================================
     // AUTH STATE LISTENER
@@ -91,11 +106,13 @@ export function AuthProvider({ children }) {
       async (_event, newSession) => {
         if (!mounted) return;
 
-        setSession(newSession || null);
-        setUser(newSession?.user || null);
+        const newUser = newSession?.user || null;
 
-        if (newSession?.user) {
-          await getProfile(newSession.user.id);
+        setSession(newSession || null);
+        setUser(newUser);
+
+        if (newUser) {
+          await getProfile(newUser.id);
         } else {
           setProfile(null);
         }
@@ -106,7 +123,7 @@ export function AuthProvider({ children }) {
 
     return () => {
       mounted = false;
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 
@@ -117,10 +134,16 @@ export function AuthProvider({ children }) {
   const signIn = async (identifier, password) => {
     const value = identifier.trim();
 
-    // Check whether the user entered an email or phone number
-    const isEmail = value.includes("@");
+    if (!value || !password) {
+      return {
+        data: null,
+        error: new Error(
+          "Email/phone and password are required."
+        ),
+      };
+    }
 
-    if (isEmail) {
+    if (value.includes("@")) {
       return await supabase.auth.signInWithPassword({
         email: value,
         password,
@@ -147,7 +170,7 @@ export function AuthProvider({ children }) {
   };
 
   // =====================================================
-  // REGISTER USER
+  // REGISTER
   // =====================================================
 
   const signUp = async ({
@@ -158,21 +181,36 @@ export function AuthProvider({ children }) {
     phone,
   }) => {
     try {
-      // -----------------------------------------------
-      // 1. CREATE USER IN SUPABASE AUTH
-      // -----------------------------------------------
+      const cleanEmail = email?.trim();
+      const cleanFullName = fullName?.trim();
+      const cleanUsername = username?.trim();
+      const cleanPhone = phone?.trim() || "";
+
+      if (!cleanEmail || !password || !cleanFullName) {
+        return {
+          data: null,
+          profile: null,
+          error: new Error(
+            "Email, password and full name are required."
+          ),
+        };
+      }
+
+      // -------------------------------------------------
+      // CREATE AUTH USER
+      // -------------------------------------------------
 
       const {
         data: authData,
         error: authError,
       } = await supabase.auth.signUp({
-        email: email.trim(),
+        email: cleanEmail,
         password,
         options: {
           data: {
-            full_name: fullName.trim(),
-            username: username.trim(),
-            phone: phone?.trim() || "",
+            full_name: cleanFullName,
+            username: cleanUsername || "",
+            phone: cleanPhone,
           },
         },
       });
@@ -180,6 +218,7 @@ export function AuthProvider({ children }) {
       if (authError) {
         return {
           data: null,
+          profile: null,
           error: authError,
         };
       }
@@ -189,13 +228,16 @@ export function AuthProvider({ children }) {
       if (!createdUser) {
         return {
           data: authData,
-          error: new Error("User registration failed."),
+          profile: null,
+          error: new Error(
+            "User registration failed."
+          ),
         };
       }
 
-      // -----------------------------------------------
-      // 2. CREATE PROFILE RECORD
-      // -----------------------------------------------
+      // -------------------------------------------------
+      // CREATE PROFILE
+      // -------------------------------------------------
 
       const {
         data: profileData,
@@ -205,10 +247,10 @@ export function AuthProvider({ children }) {
         .insert([
           {
             id: createdUser.id,
-            full_name: fullName.trim(),
-            username: username.trim(),
-            email: email.trim(),
-            phone: phone?.trim() || null,
+            full_name: cleanFullName,
+            username: cleanUsername || "",
+            email: cleanEmail,
+            phone: cleanPhone || null,
             email_verified: false,
             phone_verified: false,
             avatar_url: null,
@@ -223,19 +265,12 @@ export function AuthProvider({ children }) {
           profileError
         );
 
-        // Do NOT delete the Auth account here.
-        // The authentication account has already been created.
-
         return {
           data: authData,
           profile: null,
           error: profileError,
         };
       }
-
-      // -----------------------------------------------
-      // 3. STORE PROFILE IN STATE
-      // -----------------------------------------------
 
       setProfile(profileData);
 
@@ -260,22 +295,35 @@ export function AuthProvider({ children }) {
   // =====================================================
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
 
-    if (error) {
-      console.error("Logout error:", error);
-      return { error };
+      if (error) {
+        console.error("Logout error:", error);
+
+        return {
+          error,
+        };
+      }
+
+      setSession(null);
+      setUser(null);
+      setProfile(null);
+
+      return {
+        error: null,
+      };
+    } catch (error) {
+      console.error("Logout exception:", error);
+
+      return {
+        error,
+      };
     }
-
-    setSession(null);
-    setUser(null);
-    setProfile(null);
-
-    return { error: null };
   };
 
   // =====================================================
-  // PASSWORD RESET EMAIL
+  // RESET PASSWORD
   // =====================================================
 
   const resetPassword = async (email) => {
@@ -305,31 +353,52 @@ export function AuthProvider({ children }) {
     if (!user?.id) {
       return {
         data: null,
-        error: new Error("User is not logged in."),
+        error: new Error(
+          "User is not logged in."
+        ),
       };
     }
 
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("profiles")
-      .update(updates)
-      .eq("id", user.id)
-      .select()
-      .single();
+    try {
+      const {
+        data,
+        error,
+      } = await supabase
+        .from("profiles")
+        .update(updates)
+        .eq("id", user.id)
+        .select()
+        .single();
 
-    if (error) {
-      console.error("Profile update error:", error);
-      return { data: null, error };
+      if (error) {
+        console.error(
+          "Profile update error:",
+          error
+        );
+
+        return {
+          data: null,
+          error,
+        };
+      }
+
+      setProfile(data);
+
+      return {
+        data,
+        error: null,
+      };
+    } catch (error) {
+      console.error(
+        "Profile update exception:",
+        error
+      );
+
+      return {
+        data: null,
+        error,
+      };
     }
-
-    setProfile(data);
-
-    return {
-      data,
-      error: null,
-    };
   };
 
   // =====================================================
@@ -337,7 +406,9 @@ export function AuthProvider({ children }) {
   // =====================================================
 
   const refreshProfile = async () => {
-    if (!user?.id) return null;
+    if (!user?.id) {
+      return null;
+    }
 
     return await getProfile(user.id);
   };
@@ -347,23 +418,19 @@ export function AuthProvider({ children }) {
   // =====================================================
 
   const value = {
-    // Authentication state
     session,
     user,
     profile,
     loading,
 
-    // Authentication functions
     signIn,
     signInWithGoogle,
     signUp,
     signOut,
 
-    // Password functions
     resetPassword,
     updatePassword,
 
-    // Profile functions
     updateProfile,
     refreshProfile,
   };
@@ -376,13 +443,13 @@ export function AuthProvider({ children }) {
 }
 
 // =======================================================
-// USE AUTH HOOK
+// USE AUTH
 // =======================================================
 
 export function useAuth() {
   const context = useContext(AuthContext);
 
-  if (!context) {
+  if (context === undefined) {
     throw new Error(
       "useAuth must be used inside an AuthProvider"
     );

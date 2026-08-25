@@ -10,7 +10,7 @@ import Achievements from "../components/profile/Achievements";
 import Certificates from "../components/profile/Certificates";
 
 import { supabase } from "../supabase/supabase";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 
 function Profile() {
 

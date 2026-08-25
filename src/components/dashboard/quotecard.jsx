@@ -7,119 +7,95 @@ import {
 
 const QuoteCard = () => {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#4F46E5] via-[#6D28D9] to-[#312E81] p-8 shadow-2xl">
+    <section className="relative min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#17143b] via-[#17122f] to-[#0b1020] p-7 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
 
-      {/* Background Glow */}
+      <div className="pointer-events-none absolute right-[-80px] top-[-100px] h-64 w-64 rounded-full bg-purple-500/10 blur-[100px]" />
 
-      <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-[120px]" />
-
-      <div className="absolute bottom-0 left-0 h-60 w-60 rounded-full bg-cyan-400/10 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-[-100px] left-[25%] h-56 w-56 rounded-full bg-cyan-400/5 blur-[100px]" />
 
       <div className="relative">
 
-        <div className="inline-flex items-center gap-3 rounded-full bg-white/15 px-5 py-2 backdrop-blur">
+        <div className="flex items-center justify-between gap-4">
 
-          <FaBrain className="text-cyan-300" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/10 bg-cyan-400/[0.05] px-4 py-2">
 
-          <span className="text-sm font-semibold text-white">
-            AI Daily Inspiration
+            <FaBrain className="text-cyan-400" />
+
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-cyan-300">
+              Daily Inspiration
+            </span>
+
+          </div>
+
+          <span className="hidden text-xs text-slate-600 sm:block">
+            Powered by Skillora AI
           </span>
 
         </div>
 
-        <FaQuoteLeft className="mt-8 text-5xl text-white/20" />
+        <FaQuoteLeft className="mt-8 text-4xl text-indigo-400/20" />
 
-        <h2 className="mt-5 max-w-3xl text-3xl font-black leading-tight text-white">
+        <blockquote className="mt-4 max-w-4xl text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+          Success is the sum of small efforts, repeated day after day.
+        </blockquote>
 
-          Success is the sum of small efforts,
-          repeated day after day.
-
-        </h2>
-
-        <p className="mt-6 text-lg text-indigo-100">
-
+        <p className="mt-5 text-sm font-medium text-indigo-300">
           — Robert Collier
-
         </p>
 
       </div>
 
-    </div>
+    </section>
   );
 };
 
-/* ================================================= */
-
 export const TodaysFocusCard = () => {
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#121829] p-8 shadow-xl">
+    <section className="min-w-0 rounded-2xl border border-white/[0.07] bg-[#090d1a] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
 
       <div className="flex items-center gap-4">
 
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-2xl text-white shadow-lg">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-400/10">
 
-          <FaBullseye />
+          <FaBullseye className="text-xl text-amber-400" />
 
         </div>
 
-        <div>
+        <div className="min-w-0">
 
-          <h3 className="text-2xl font-bold text-white">
-
-            Today's Focus
-
-          </h3>
-
-          <p className="text-slate-400">
-
-            AI Recommended Task
-
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400">
+            AI Recommendation
           </p>
+
+          <h3 className="mt-1 text-xl font-black text-white">
+            Today's Focus
+          </h3>
 
         </div>
 
       </div>
 
-      <div className="mt-8 rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-5">
+      <div className="mt-6 rounded-xl border border-indigo-400/10 bg-indigo-500/[0.05] p-4">
 
-        <p className="text-slate-300 leading-7">
-
-          Complete one roadmap topic, revise your notes,
-          and solve today's quiz to improve your learning
-          consistency.
-
+        <p className="text-sm leading-6 text-slate-400">
+          Complete one roadmap topic, revise your notes, and solve
+          today's quiz to improve your learning consistency.
         </p>
 
       </div>
 
       <button
-        className="
-          mt-8
-          flex
-          w-full
-          items-center
-          justify-center
-          gap-3
-          rounded-xl
-          bg-gradient-to-r
-          from-indigo-500
-          to-purple-600
-          py-4
-          font-semibold
-          text-white
-          transition
-          duration-300
-          hover:scale-[1.02]
-        "
+        type="button"
+        className="group mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5"
       >
 
         Start Learning
 
-        <FaArrowRight />
+        <FaArrowRight className="transition-transform group-hover:translate-x-1" />
 
       </button>
 
-    </div>
+    </section>
   );
 };
 

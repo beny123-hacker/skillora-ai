@@ -1,130 +1,281 @@
+import React from "react";
+import {
+  FaCode,
+  FaArrowRight,
+  FaExternalLinkAlt,
+  FaLaptopCode,
+  FaTrophy,
+  FaBrain,
+  FaFire,
+  FaChartLine,
+  FaCheckCircle,
+} from "react-icons/fa";
+
 function PracticeProblems() {
   const practicePlatforms = [
     {
       title: "LeetCode",
       description:
-        "Practice coding problems, algorithms, data structures, and technical interview questions.",
-      category: "Coding",
+        "Sharpen your problem-solving skills with algorithms, data structures, coding challenges, and interview preparation.",
+      category: "Coding Practice",
+      icon: <FaLaptopCode />,
       url: "https://leetcode.com/",
-      icon: "💻",
+      accent: "yellow",
+      level: "Interview Ready",
     },
     {
       title: "HackerRank",
       description:
-        "Improve your programming skills with coding challenges and technical assessments.",
-      category: "Coding",
+        "Build practical programming skills through coding challenges, skill assessments, and technology-focused exercises.",
+      category: "Coding Practice",
+      icon: <FaTrophy />,
       url: "https://www.hackerrank.com/",
-      icon: "🏆",
+      accent: "green",
+      level: "Skill Building",
     },
     {
       title: "GeeksforGeeks",
       description:
-        "Practice data structures, algorithms, programming, and computer science problems.",
-      category: "DSA",
+        "Practice programming, data structures, algorithms, computer science concepts, and technical interview questions.",
+      category: "DSA & CS",
+      icon: <FaBrain />,
       url: "https://www.geeksforgeeks.org/",
-      icon: "🧠",
+      accent: "emerald",
+      level: "Concept Mastery",
     },
     {
       title: "CodeChef",
       description:
-        "Solve programming problems and participate in competitive programming contests.",
+        "Challenge yourself with programming problems and improve your competitive coding skills through regular contests.",
       category: "Competitive",
+      icon: <FaCode />,
       url: "https://www.codechef.com/",
-      icon: "👨‍💻",
+      accent: "orange",
+      level: "Competitive",
     },
     {
       title: "Codeforces",
       description:
-        "Practice competitive programming problems and participate in coding contests.",
+        "Solve advanced programming challenges, compete with developers worldwide, and improve your algorithmic thinking.",
       category: "Competitive",
+      icon: <FaFire />,
       url: "https://codeforces.com/",
-      icon: "⚡",
+      accent: "purple",
+      level: "Advanced",
     },
   ];
 
   return (
-    <section className="w-full">
-      <div className="mb-6">
-        <span className="text-xs font-semibold tracking-widest text-emerald-400">
-          PRACTICE & IMPROVE
-        </span>
+    <section className="practice-section w-full">
 
-        <h2 className="mt-2 text-2xl font-bold text-white">
-          Practice Problems 🧩
-        </h2>
+      {/* =========================
+          PREMIUM HEADER
+      ========================= */}
 
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-          Strengthen your programming skills by solving problems on popular
-          coding platforms.
-        </p>
+      <div className="practice-header">
+
+        <div>
+
+          <div className="section-eyebrow practice-eyebrow">
+
+            <span className="section-eyebrow-icon">
+              <FaChartLine />
+            </span>
+
+            <span>PRACTICE • IMPROVE • MASTER</span>
+
+          </div>
+
+
+          <h2 className="practice-title">
+            Turn knowledge into
+            <span> real skills.</span>
+          </h2>
+
+
+          <p className="practice-description">
+            Learning doesn't stop with videos. Challenge yourself with coding
+            problems, strengthen your fundamentals, and build confidence by
+            solving real programming challenges.
+          </p>
+
+        </div>
+
+
+        {/* Practice Stats */}
+
+        <div className="practice-overview">
+
+          <div className="practice-overview-icon">
+            <FaCode />
+          </div>
+
+          <div>
+
+            <span>
+              {practicePlatforms.length} Platforms
+            </span>
+
+            <strong>
+              Practice Without Limits
+            </strong>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {practicePlatforms.map((platform) => (
+
+      {/* =========================
+          PRACTICE PLATFORM GRID
+      ========================= */}
+
+      <div className="practice-grid">
+
+        {practicePlatforms.map((platform, index) => (
+
           <a
             key={platform.title}
             href={platform.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group rounded-2xl border border-white/10 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50"
+            className={`practice-card practice-${platform.accent}`}
           >
-            <div className="flex items-start justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-2xl">
+
+            {/* Background Number */}
+
+            <span className="practice-number">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+
+            {/* =========================
+                CARD TOP
+            ========================= */}
+
+            <div className="practice-card-top">
+
+              <div className="practice-icon">
                 {platform.icon}
               </div>
 
-              <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-                {platform.category}
-              </span>
+
+              <div className="practice-external">
+                <FaExternalLinkAlt />
+              </div>
+
             </div>
 
-            <h3 className="mt-5 text-lg font-bold text-white group-hover:text-emerald-300">
+
+            {/* Category */}
+
+            <div className="practice-category">
+              {platform.category}
+            </div>
+
+
+            {/* Title */}
+
+            <h3>
               {platform.title}
             </h3>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+
+            {/* Description */}
+
+            <p>
               {platform.description}
             </p>
 
-            <div className="mt-6 flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-500">
-                External Practice
+
+            {/* Skill Level */}
+
+            <div className="practice-level">
+
+              <FaCheckCircle />
+
+              <span>
+                {platform.level}
               </span>
 
-              <span className="font-semibold text-emerald-400">
-                Start Practice →
-              </span>
             </div>
+
+
+            {/* Divider */}
+
+            <div className="practice-divider" />
+
+
+            {/* =========================
+                FOOTER
+            ========================= */}
+
+            <div className="practice-footer">
+
+              <span className="practice-footer-label">
+                External Platform
+              </span>
+
+
+              <div className="practice-action">
+
+                Start Practice
+
+                <FaArrowRight />
+
+              </div>
+
+            </div>
+
           </a>
+
         ))}
+
       </div>
 
-      {/* Skillora AI Quiz - Switch 2 will be connected here later */}
-      <div className="mt-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <span className="text-xs font-semibold tracking-widest text-indigo-400">
-              SKILLORA AI
-            </span>
 
-            <h3 className="mt-2 text-lg font-bold text-white">
-              AI Quiz Practice 🤖
-            </h3>
+      {/* =========================
+          BOTTOM PREMIUM BANNER
+      ========================= */}
 
-            <p className="mt-1 text-sm text-slate-400">
-              Test your knowledge with AI-generated questions based on your
-              selected skill.
-            </p>
+      <div className="practice-bottom-banner">
+
+        <div className="practice-banner-content">
+
+          <div className="practice-banner-icon">
+            <FaBrain />
           </div>
 
-          <button
-            type="button"
-            className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500"
-          >
-            Start AI Quiz →
-          </button>
+
+          <div>
+
+            <span>
+              CONSISTENT PRACTICE
+            </span>
+
+            <h3>
+              Small challenges. Big improvements.
+            </h3>
+
+            <p>
+              Build your confidence one problem at a time and transform
+              theoretical knowledge into practical problem-solving skills.
+            </p>
+
+          </div>
+
         </div>
+
+
+        <div className="practice-banner-decoration">
+          <span />
+          <span />
+          <span />
+        </div>
+
       </div>
+
     </section>
   );
 }

@@ -1,8 +1,10 @@
 import React from "react";
 import {
   FaCheckCircle,
-  FaPlayCircle,
+  FaPlay,
   FaTrophy,
+  FaLayerGroup,
+  FaArrowRight,
 } from "react-icons/fa";
 
 function CourseProgress({
@@ -11,133 +13,198 @@ function CourseProgress({
 }) {
   const progress =
     totalVideos > 0
-      ? Math.round((completedVideos / totalVideos) * 100)
+      ? Math.round(
+          (completedVideos / totalVideos) * 100
+        )
       : 0;
 
   const courseCompleted =
     totalVideos > 0 &&
     completedVideos >= totalVideos;
 
+  const remaining =
+    Math.max(totalVideos - completedVideos, 0);
+
   return (
-    <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-950 p-6">
+    <section className="premium-progress-card">
+      <div className="premium-progress-background" />
 
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
+      <div className="premium-progress-content">
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Header */}
+        <div className="premium-progress-header">
 
-        <div className="flex items-center gap-3">
+          <div className="premium-progress-heading">
 
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400">
-            {courseCompleted ? (
-              <FaTrophy />
-            ) : (
-              <FaPlayCircle />
-            )}
-          </div>
-
-          <div>
-
-            <h3 className="font-bold text-white">
-              Course Progress
-            </h3>
-
-            <p className="mt-1 text-xs text-slate-500">
-              {completedVideos} of {totalVideos} lessons completed
-            </p>
-
-          </div>
-
-        </div>
-
-        <span
-          className={`text-2xl font-bold ${
-            courseCompleted
-              ? "text-green-400"
-              : "text-indigo-400"
-          }`}
-        >
-          {progress}%
-        </span>
-
-      </div>
-
-      {/* =====================================================
-          PROGRESS BAR
-      ===================================================== */}
-
-      <div className="mt-6">
-
-        <div className="h-3 overflow-hidden rounded-full bg-slate-800">
-
-          <div
-            className={`h-full rounded-full transition-all duration-700 ${
-              courseCompleted
-                ? "bg-green-500"
-                : "bg-gradient-to-r from-indigo-500 to-purple-500"
-            }`}
-            style={{
-              width: `${progress}%`,
-            }}
-          />
-
-        </div>
-
-      </div>
-
-      {/* =====================================================
-          STATUS
-      ===================================================== */}
-
-      <div className="mt-5">
-
-        {courseCompleted ? (
-
-          <div className="flex items-center gap-3 rounded-2xl border border-green-500/20 bg-green-500/10 p-4">
-
-            <FaCheckCircle className="shrink-0 text-xl text-green-400" />
+            <div
+              className={`premium-progress-icon ${
+                courseCompleted
+                  ? "completed"
+                  : ""
+              }`}
+            >
+              {courseCompleted ? (
+                <FaTrophy />
+              ) : (
+                <FaLayerGroup />
+              )}
+            </div>
 
             <div>
+              <span className="premium-section-label">
+                YOUR JOURNEY
+              </span>
 
-              <p className="font-semibold text-green-300">
-                Course Completed! 🎉
+              <h3>
+                Course Progress
+              </h3>
+
+              <p>
+                Track your learning journey and
+                continue building your skills.
               </p>
-
-              <p className="mt-1 text-sm text-green-400/70">
-                Excellent work! You have completed all the YouTube
-                lessons in this course.
-              </p>
-
             </div>
+
+          </div>
+
+          {/* Percentage */}
+          <div className="premium-progress-percentage">
+            <span className="premium-progress-number">
+              {progress}
+            </span>
+
+            <span className="premium-progress-symbol">
+              %
+            </span>
+
+            <small>
+              COMPLETED
+            </small>
+          </div>
+
+        </div>
+
+        {/* Stats */}
+        <div className="premium-progress-stats">
+
+          <div className="premium-progress-stat">
+            <span className="stat-number">
+              {completedVideos}
+            </span>
+
+            <span className="stat-label">
+              COMPLETED
+            </span>
+          </div>
+
+          <div className="premium-progress-stat-divider" />
+
+          <div className="premium-progress-stat">
+            <span className="stat-number">
+              {totalVideos}
+            </span>
+
+            <span className="stat-label">
+              TOTAL LESSONS
+            </span>
+          </div>
+
+          <div className="premium-progress-stat-divider" />
+
+          <div className="premium-progress-stat">
+            <span className="stat-number">
+              {remaining}
+            </span>
+
+            <span className="stat-label">
+              REMAINING
+            </span>
+          </div>
+
+        </div>
+
+        {/* Progress Bar */}
+        <div className="premium-progress-bar-wrapper">
+
+          <div className="premium-progress-bar-label">
+            <span>Learning Progress</span>
+
+            <span>
+              {completedVideos} of {totalVideos} lessons
+            </span>
+          </div>
+
+          <div className="premium-progress-track">
+            <div
+              className={`premium-progress-fill ${
+                courseCompleted
+                  ? "completed"
+                  : ""
+              }`}
+              style={{
+                width: `${progress}%`,
+              }}
+            >
+              <span className="premium-progress-shine" />
+            </div>
+          </div>
+
+        </div>
+
+        {/* Status */}
+        {courseCompleted ? (
+
+          <div className="premium-course-completed">
+
+            <div className="premium-completed-icon">
+              <FaCheckCircle />
+            </div>
+
+            <div>
+              <h4>
+                Course Completed! 🎉
+              </h4>
+
+              <p>
+                Outstanding work. You have successfully
+                completed every lesson in this course.
+              </p>
+            </div>
+
+            <FaTrophy className="premium-completed-trophy" />
 
           </div>
 
         ) : (
 
-          <div className="flex items-center justify-between rounded-2xl bg-slate-900 p-4">
+          <div className="premium-continue-learning">
 
-            <div className="flex items-center gap-3">
-
-              <FaPlayCircle className="text-indigo-400" />
-
-              <span className="text-sm text-slate-400">
-                Keep learning and complete the next lesson.
-              </span>
-
+            <div className="premium-continue-icon">
+              <FaPlay />
             </div>
 
-            <span className="hidden text-sm font-semibold text-slate-300 sm:block">
-              {totalVideos - completedVideos} remaining
-            </span>
+            <div className="premium-continue-text">
+              <span>
+                NEXT MILESTONE
+              </span>
+
+              <p>
+                Complete your next lesson and keep
+                your learning streak moving.
+              </p>
+            </div>
+
+            <div className="premium-remaining-badge">
+              {remaining} left
+              <FaArrowRight />
+            </div>
 
           </div>
 
         )}
 
       </div>
-
-    </div>
+    </section>
   );
 }
 

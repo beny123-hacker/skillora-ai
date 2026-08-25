@@ -3,30 +3,18 @@ import Navbar from "../components/common/navbar";
 
 function DashboardLayout({ children }) {
   return (
-    <div className="min-h-screen bg-[#070B18] text-white">
-
+    <div className="dashboard-layout">
+      {/* Sidebar */}
       <Sidebar />
 
-      <div
-        className="min-h-screen"
-        style={{
-          marginLeft: "288px",
-        }}
-      >
+      {/* Main application area */}
+      <div className="dashboard-main">
         <Navbar />
 
-        <main className="w-full px-8 py-8 overflow-x-hidden">
-
-          <div className="w-full">
-
-            {children}
-
-          </div>
-
+        <main className="dashboard-content">
+          {children}
         </main>
-
       </div>
-
     </div>
   );
 }

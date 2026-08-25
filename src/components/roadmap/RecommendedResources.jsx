@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FaYoutube,
   FaBookOpen,
@@ -5,207 +6,189 @@ import {
   FaExternalLinkAlt,
   FaRobot,
   FaGraduationCap,
+  FaStar,
 } from "react-icons/fa";
 
 function RecommendedResources({
   roadmapData = null,
 }) {
-  const resources = Array.isArray(roadmapData?.resources)
-    ? roadmapData.resources
-    : [];
+  const resources =
+    Array.isArray(roadmapData?.resources)
+      ? roadmapData.resources
+      : [];
 
   const aiSuggestion =
     roadmapData?.ai_suggestion ||
     roadmapData?.aiSuggestion ||
-    "Keep learning consistently and practice each milestone with real-world projects.";
+    "Keep learning consistently and practice every milestone with real-world projects.";
 
   return (
-    <section className="mt-14">
+    <section className="recommended-resources-section">
 
-      {/* =====================================================
-          HEADER
-      ====================================================== */}
+      <div className="roadmap-section-heading">
 
-      <div className="mb-8">
+        <div>
 
-        <span className="inline-flex rounded-full border border-purple-500/20 bg-purple-500/10 px-4 py-2 text-xs font-semibold tracking-wide text-purple-300">
-          AI CURATED
-        </span>
+          <span className="roadmap-label">
+            <FaStar />
+            AI CURATED
+          </span>
 
-        <h2 className="mt-4 text-3xl font-bold text-white">
-          📚 Recommended Resources
-        </h2>
+          <h2>
+            Recommended
+            <span> resources.</span>
+          </h2>
 
-        <p className="mt-2 text-slate-400">
-          Carefully selected resources based on your AI-generated roadmap.
-        </p>
+          <p>
+            Carefully selected resources to support
+            your personalized learning journey.
+          </p>
+
+        </div>
 
       </div>
 
-      {/* =====================================================
-          RESOURCES
-      ====================================================== */}
-
       {resources.length > 0 ? (
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="resources-grid">
 
-          {resources.map((resource, index) => {
+          {resources.map(
+            (resource, index) => {
 
-            const type =
-              resource?.type || "Learning Resource";
+              const type =
+                resource?.type ||
+                "Learning Resource";
 
-            const title =
-              resource?.title ||
-              `Recommended Resource ${index + 1}`;
+              const title =
+                resource?.title ||
+                `Recommended Resource ${index + 1}`;
 
-            const url =
-              resource?.url || "#";
+              const url =
+                resource?.url ||
+                "#";
 
-            const lowerType =
-              String(type).toLowerCase();
+              const lowerType =
+                String(type).toLowerCase();
 
-            let Icon = FaBookOpen;
-            let color =
-              "from-sky-500 to-cyan-500";
+              let Icon =
+                FaBookOpen;
 
-            if (
-              lowerType.includes("youtube") ||
-              lowerType.includes("video")
-            ) {
-              Icon = FaYoutube;
-              color =
-                "from-red-500 to-red-700";
-            } else if (
-              lowerType.includes("course")
-            ) {
-              Icon = FaGraduationCap;
-              color =
-                "from-purple-500 to-pink-500";
-            } else if (
-              lowerType.includes("coding") ||
-              lowerType.includes("practice")
-            ) {
-              Icon = FaLaptopCode;
-              color =
-                "from-yellow-500 to-orange-500";
-            } else if (
-              lowerType.includes("documentation") ||
-              lowerType.includes("docs")
-            ) {
-              Icon = FaBookOpen;
-              color =
-                "from-sky-500 to-cyan-500";
-            }
+              let iconClass =
+                "resource-icon-blue";
 
-            return (
+              if (
+                lowerType.includes("youtube") ||
+                lowerType.includes("video")
+              ) {
+                Icon = FaYoutube;
+                iconClass =
+                  "resource-icon-red";
+              } else if (
+                lowerType.includes("course")
+              ) {
+                Icon = FaGraduationCap;
+                iconClass =
+                  "resource-icon-purple";
+              } else if (
+                lowerType.includes("coding") ||
+                lowerType.includes("practice")
+              ) {
+                Icon = FaLaptopCode;
+                iconClass =
+                  "resource-icon-gold";
+              }
 
-              <div
-                key={`${title}-${index}`}
-                className="group rounded-3xl border border-slate-800 bg-slate-900 p-7 transition-all duration-300 hover:-translate-y-2 hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-500/5"
-              >
-
-                {/* Icon */}
-
+              return (
                 <div
-                  className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${color} text-3xl text-white shadow-lg`}
+                  className="resource-card"
+                  key={`${title}-${index}`}
                 >
-                  <Icon />
+
+                  <div
+                    className={`resource-icon ${iconClass}`}
+                  >
+                    <Icon />
+                  </div>
+
+                  <div className="resource-type">
+                    {type}
+                  </div>
+
+                  <h3>
+                    {title}
+                  </h3>
+
+                  {url !== "#" ? (
+
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="resource-link"
+                    >
+                      Open Resource
+                      <FaExternalLinkAlt />
+                    </a>
+
+                  ) : (
+
+                    <button
+                      type="button"
+                      disabled
+                      className="resource-link resource-disabled"
+                    >
+                      Link Unavailable
+                    </button>
+
+                  )}
+
                 </div>
-
-                {/* Title */}
-
-                <h3 className="mt-6 text-2xl font-bold text-white">
-                  {title}
-                </h3>
-
-                {/* Type */}
-
-                <p className="mt-3 text-slate-400">
-                  {type}
-                </p>
-
-                {/* Button */}
-
-                {url && url !== "#" ? (
-
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-indigo-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-indigo-700"
-                  >
-                    Open Resource
-
-                    <FaExternalLinkAlt />
-
-                  </a>
-
-                ) : (
-
-                  <button
-                    type="button"
-                    disabled
-                    className="mt-8 inline-flex cursor-not-allowed items-center gap-3 rounded-2xl bg-slate-700 px-6 py-3 font-semibold text-slate-400"
-                  >
-                    Resource Link Unavailable
-                  </button>
-
-                )}
-
-              </div>
-
-            );
-          })}
+              );
+            }
+          )}
 
         </div>
 
       ) : (
 
-        /* =====================================================
-            EMPTY STATE
-        ====================================================== */
+        <div className="roadmap-empty-state">
 
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
-
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-indigo-500/10 text-4xl">
-            📚
+          <div className="empty-state-icon">
+            <FaBookOpen />
           </div>
 
-          <h3 className="mt-6 text-2xl font-bold text-white">
+          <h3>
             No Resources Yet
           </h3>
 
-          <p className="mx-auto mt-3 max-w-xl text-slate-400">
-            Generate your roadmap to receive AI-recommended learning
-            resources.
+          <p>
+            Generate your roadmap to receive
+            personalized AI learning resources.
           </p>
 
         </div>
 
       )}
 
-      {/* =====================================================
-          AI SUGGESTION
-      ====================================================== */}
+      <div className="ai-suggestion-card">
 
-      <div className="mt-10 rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8">
+        <div className="ai-suggestion-icon">
+          <FaRobot />
+        </div>
 
-        <div className="flex flex-col gap-5 md:flex-row md:items-center">
+        <div>
 
-          <FaRobot className="shrink-0 text-5xl text-white" />
+          <span>
+            SKILLORA AI INSIGHT
+          </span>
 
-          <div>
+          <h3>
+            Keep building your future.
+          </h3>
 
-            <h3 className="text-2xl font-bold text-white">
-              Skillora AI Suggestion
-            </h3>
-
-            <p className="mt-2 leading-7 text-indigo-100">
-              {aiSuggestion}
-            </p>
-
-          </div>
+          <p>
+            {aiSuggestion}
+          </p>
 
         </div>
 

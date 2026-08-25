@@ -3,7 +3,6 @@ import {
   FaFire,
   FaStar,
   FaChartLine,
-  FaArrowUp,
 } from "react-icons/fa";
 
 function DashboardStats({
@@ -16,75 +15,70 @@ function DashboardStats({
     {
       title: "Courses Completed",
       value: coursesCompleted,
-      change: "From your learning progress",
-      progress:
-        coursesCompleted > 0 ? 100 : 0,
-      color: "from-cyan-500 to-blue-500",
-      bar: "from-cyan-400 to-blue-500",
+      suffix: coursesCompleted === 1 ? "Course" : "Courses",
+      description: "Courses successfully completed",
+      progress: coursesCompleted > 0 ? 100 : 0,
       icon: <FaBookOpen />,
+      iconStyle: "bg-cyan-400/10 text-cyan-400",
+      progressStyle: "from-cyan-400 to-blue-500",
     },
     {
       title: "Learning Streak",
-      value: `${learningStreak} Days`,
-      change: "Current learning streak",
-      progress:
-        learningStreak > 0
-          ? Math.min(learningStreak * 10, 100)
-          : 0,
-      color: "from-orange-500 to-red-500",
-      bar: "from-orange-400 to-red-500",
+      value: learningStreak,
+      suffix: "Days",
+      description: "Keep your learning momentum",
+      progress: Math.min(learningStreak * 10, 100),
       icon: <FaFire />,
+      iconStyle: "bg-orange-400/10 text-orange-400",
+      progressStyle: "from-orange-400 to-red-500",
     },
     {
       title: "Experience Points",
-      value: `${totalXP.toLocaleString()} XP`,
-      change: "Total XP earned",
-      progress:
-        totalXP > 0
-          ? Math.min(Math.round(totalXP / 10), 100)
-          : 0,
-      color: "from-yellow-500 to-orange-500",
-      bar: "from-yellow-400 to-orange-500",
+      value: totalXP.toLocaleString(),
+      suffix: "XP",
+      description: "Total experience earned",
+      progress: totalXP > 0 ? Math.min(totalXP / 10, 100) : 0,
       icon: <FaStar />,
+      iconStyle: "bg-amber-400/10 text-amber-400",
+      progressStyle: "from-amber-400 to-orange-500",
     },
     {
       title: "Overall Progress",
-      value: `${overallProgress}%`,
-      change: "Average course progress",
+      value: overallProgress,
+      suffix: "%",
+      description: "Average learning progress",
       progress: overallProgress,
-      color: "from-green-500 to-emerald-500",
-      bar: "from-green-400 to-emerald-500",
       icon: <FaChartLine />,
+      iconStyle: "bg-emerald-400/10 text-emerald-400",
+      progressStyle: "from-emerald-400 to-cyan-500",
     },
   ];
 
   return (
-    <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+    <section className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
 
       {stats.map((item) => (
         <div
           key={item.title}
-          className="rounded-2xl border border-slate-800 bg-slate-950 p-6"
+          className="group min-w-0 rounded-2xl border border-white/[0.07] bg-[#090d1a] p-5 transition duration-300 hover:-translate-y-0.5 hover:border-white/[0.12] hover:bg-[#0c1120]"
         >
 
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-4">
 
-            <div>
+            <div className="min-w-0">
 
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <p className="truncate text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
                 {item.title}
               </p>
 
-              <h2 className="mt-3 text-3xl font-black text-white">
-                {item.value}
-              </h2>
+              <div className="mt-3 flex items-baseline gap-2">
 
-              <div className="mt-3 flex items-center gap-2 text-cyan-400">
+                <span className="truncate text-3xl font-black text-white">
+                  {item.value}
+                </span>
 
-                <FaArrowUp className="text-sm" />
-
-                <span className="text-xs font-semibold">
-                  {item.change}
+                <span className="shrink-0 text-xs font-medium text-slate-500">
+                  {item.suffix}
                 </span>
 
               </div>
@@ -92,33 +86,37 @@ function DashboardStats({
             </div>
 
             <div
-              className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.color} text-xl text-white shadow-lg`}
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${item.iconStyle} text-lg`}
             >
               {item.icon}
             </div>
 
           </div>
 
-          <div className="mt-7">
+          <p className="mt-4 truncate text-xs text-slate-500">
+            {item.description}
+          </p>
 
-            <div className="mb-2 flex justify-between">
+          <div className="mt-5">
 
-              <span className="text-sm text-slate-400">
+            <div className="mb-2 flex items-center justify-between">
+
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">
                 Progress
               </span>
 
-              <span className="font-bold text-white">
-                {item.progress}%
+              <span className="text-xs font-bold text-slate-400">
+                {Math.round(item.progress)}%
               </span>
 
             </div>
 
-            <div className="h-2.5 overflow-hidden rounded-full bg-slate-800">
+            <div className="h-1.5 rounded-full bg-white/[0.06]">
 
               <div
-                className={`h-full rounded-full bg-gradient-to-r ${item.bar} transition-all duration-700`}
+                className={`h-full rounded-full bg-gradient-to-r ${item.progressStyle} transition-all duration-700`}
                 style={{
-                  width: `${item.progress}%`,
+                  width: `${Math.min(Math.max(item.progress, 0), 100)}%`,
                 }}
               />
 

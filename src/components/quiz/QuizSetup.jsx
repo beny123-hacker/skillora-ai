@@ -13,10 +13,6 @@ function QuizSetup({
 }) {
   const [customTopic, setCustomTopic] = useState("");
 
-  // =========================================================
-  // CUSTOM TOPIC
-  // =========================================================
-
   const handleCustomTopicChange = (event) => {
     const value = event.target.value;
 
@@ -29,80 +25,107 @@ function QuizSetup({
     }
   };
 
-  // =========================================================
-  // PRESET TOPIC
-  // =========================================================
-
   const handleTopicSelect = (topicId) => {
     setCustomTopic("");
     setSelectedTopic(topicId);
   };
 
-  // =========================================================
-  // UI
-  // =========================================================
+  const selectedTopicData = topics.find(
+    (topic) => topic.id === selectedTopic
+  );
 
   return (
-    <div className="flex min-h-[calc(100vh-220px)] w-full flex-col justify-center">
+    <div className="quiz-setup">
 
       {/* =====================================================
-          HEADER
+          HERO
       ====================================================== */}
 
-      <div className="mb-10 text-center">
+      <section className="quiz-hero">
 
-        <span className="inline-flex rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-xs font-bold tracking-[0.18em] text-indigo-300">
-          ✨ AI POWERED QUIZ
-        </span>
+        <div className="quiz-hero-content">
 
-        <h2 className="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-          Create Your Quiz 🧠
-        </h2>
+          <div className="quiz-eyebrow">
+            <span className="quiz-eyebrow-dot" />
+            AI POWERED LEARNING
+          </div>
 
-        <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-400 sm:text-lg">
-          Choose a topic, customize your difficulty and question count,
-          and let Skillora AI generate a personalized quiz for you.
-        </p>
+          <h1 className="quiz-hero-title">
+            Build your
+            <span> perfect quiz.</span>
+          </h1>
 
-      </div>
+          <p className="quiz-hero-description">
+            Choose what you want to learn, set your challenge level,
+            and let Skillora AI create a personalized quiz for you.
+          </p>
 
-      {/* =====================================================
-          TOPIC SECTION
-      ====================================================== */}
+          <div className="quiz-hero-features">
 
-      <section>
+            <span>
+              <b>✦</b>
+              AI Generated
+            </span>
 
-        <div className="mb-6">
+            <span>
+              <b>◈</b>
+              Personalized
+            </span>
 
-          <div className="flex items-center gap-3">
-
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-lg font-bold text-indigo-400">
-              1
-            </div>
-
-            <div>
-
-              <h3 className="text-xl font-bold text-white sm:text-2xl">
-                Choose a topic
-              </h3>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Select one of the available topics or enter your own.
-              </p>
-
-            </div>
+            <span>
+              <b>⚡</b>
+              Instant Results
+            </span>
 
           </div>
 
         </div>
 
+        <div className="quiz-hero-orb quiz-hero-orb-one" />
+        <div className="quiz-hero-orb quiz-hero-orb-two" />
+
+      </section>
+
+
+      {/* =====================================================
+          TOPIC SECTION
+      ====================================================== */}
+
+      <section className="quiz-section">
+
+        <div className="quiz-section-header">
+
+          <div>
+
+            <div className="quiz-section-kicker">
+              STEP 01
+            </div>
+
+            <h2>
+              What do you want to master?
+            </h2>
+
+            <p>
+              Choose a topic below or create your own learning challenge.
+            </p>
+
+          </div>
+
+          <div className="quiz-topic-count">
+            <span>Available topics</span>
+            <strong>{topics.length}</strong>
+          </div>
+
+        </div>
+
+
         {/* ===================================================
-            PRESET TOPICS
+            TOPIC GRID
         ==================================================== */}
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="quiz-topic-grid">
 
-          {topics.map((topic) => {
+          {topics.map((topic, index) => {
 
             const selected =
               selectedTopic === topic.id && !customTopic;
@@ -112,40 +135,54 @@ function QuizSetup({
                 key={topic.id}
                 type="button"
                 onClick={() => handleTopicSelect(topic.id)}
-                className={`group flex min-h-[190px] flex-col rounded-3xl border p-7 text-left transition-all duration-300 ${
-                  selected
-                    ? "border-indigo-500 bg-indigo-500/10 shadow-xl shadow-indigo-500/10"
-                    : "border-white/10 bg-slate-900/80 hover:-translate-y-1 hover:border-indigo-500/40 hover:bg-slate-900"
+                className={`quiz-topic-card ${
+                  selected ? "is-selected" : ""
                 }`}
               >
 
-                <div className="flex items-start justify-between">
+                <div className="quiz-topic-card-top">
 
-                  <div
-                    className={`flex h-14 w-14 items-center justify-center rounded-2xl text-3xl transition ${
-                      selected
-                        ? "bg-indigo-500/20"
-                        : "bg-white/5 group-hover:bg-indigo-500/10"
-                    }`}
-                  >
+                  <div className="quiz-topic-icon">
                     {topic.icon}
                   </div>
 
-                  {selected && (
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-sm font-bold text-white">
-                      ✓
-                    </div>
-                  )}
+                  <span className="quiz-topic-number">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
 
                 </div>
 
-                <h4 className="mt-6 text-lg font-bold text-white">
-                  {topic.name}
-                </h4>
+                <div className="quiz-topic-content">
 
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  {topic.description}
-                </p>
+                  <h3>
+                    {topic.name}
+                  </h3>
+
+                  <p>
+                    {topic.description}
+                  </p>
+
+                </div>
+
+                <div className="quiz-topic-action">
+
+                  <span>
+                    {selected
+                      ? "Selected"
+                      : "Choose topic"}
+                  </span>
+
+                  <span className="quiz-topic-arrow">
+                    →
+                  </span>
+
+                </div>
+
+                {selected && (
+                  <div className="quiz-topic-selected">
+                    ✓
+                  </div>
+                )}
 
               </button>
             );
@@ -153,40 +190,52 @@ function QuizSetup({
 
         </div>
 
+
         {/* ===================================================
             CUSTOM TOPIC
         ==================================================== */}
 
-        <div className="mt-6 rounded-3xl border border-white/10 bg-slate-900/80 p-7 shadow-lg">
+        <div
+          className={`quiz-custom-topic ${
+            customTopic ? "is-active" : ""
+          }`}
+        >
 
-          <div className="flex items-start gap-4">
+          <div className="quiz-custom-icon">
+            ✦
+          </div>
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-500/10 text-xl">
-              ✨
+          <div className="quiz-custom-content">
+
+            <div>
+
+              <span>
+                CUSTOM TOPIC
+              </span>
+
+              <h3>
+                Learn anything you want
+              </h3>
+
+              <p>
+                Enter a subject, technology, concept, or skill.
+              </p>
+
             </div>
 
-            <div className="flex-1">
-
-              <label
-                htmlFor="custom-topic"
-                className="text-base font-bold text-white"
-              >
-                Or enter your own topic
-              </label>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Enter any subject, technology, or concept you want
-                to practice.
-              </p>
+            <div className="quiz-custom-input-wrapper">
 
               <input
                 id="custom-topic"
                 type="text"
                 value={customTopic}
                 onChange={handleCustomTopicChange}
-                placeholder="Example: Operating Systems, DBMS, Machine Learning..."
-                className="mt-5 w-full rounded-2xl border border-white/10 bg-slate-950 px-5 py-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                placeholder="Try Machine Learning, Cybersecurity, Cloud Computing..."
               />
+
+              <span className="quiz-input-icon">
+                ✦
+              </span>
 
             </div>
 
@@ -196,80 +245,114 @@ function QuizSetup({
 
       </section>
 
+
       {/* =====================================================
-          SETTINGS SECTION
+          SETTINGS
       ====================================================== */}
 
-      <section className="mt-12">
+      <section className="quiz-settings-section">
 
-        <div className="mb-6">
+        <div className="quiz-section-header">
 
-          <div className="flex items-center gap-3">
+          <div>
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 text-lg font-bold text-purple-400">
-              2
+            <div className="quiz-section-kicker purple">
+              STEP 02
             </div>
 
-            <div>
+            <h2>
+              Shape your challenge
+            </h2>
 
-              <h3 className="text-xl font-bold text-white sm:text-2xl">
-                Customize your quiz
-              </h3>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Choose the difficulty and number of questions.
-              </p>
-
-            </div>
+            <p>
+              Adjust the difficulty and length of your quiz.
+            </p>
 
           </div>
 
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+
+        <div className="quiz-settings-grid">
 
           {/* =================================================
               DIFFICULTY
           ================================================== */}
 
-          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-7 shadow-lg">
+          <div className="quiz-setting-card">
 
-            <div className="flex items-center justify-between">
+            <div className="quiz-setting-header">
 
               <div>
 
-                <p className="text-base font-bold text-white">
+                <span className="quiz-setting-label">
                   Difficulty
-                </p>
+                </span>
 
-                <p className="mt-1 text-sm text-slate-500">
-                  How challenging should the questions be?
+                <p>
+                  Choose your challenge level.
                 </p>
 
               </div>
 
-              <span className="text-2xl">🎯</span>
+              <span className="quiz-setting-icon">
+                🎯
+              </span>
 
             </div>
 
-            <div className="mt-6 grid grid-cols-3 gap-3">
+
+            <div className="quiz-difficulty-grid">
 
               {["Easy", "Medium", "Hard"].map((level) => {
 
-                const selected = difficulty === level;
+                const selected =
+                  difficulty === level;
+
+                const levelIcon =
+                  level === "Easy"
+                    ? "🌱"
+                    : level === "Medium"
+                    ? "⚡"
+                    : "🔥";
+
+                const levelDescription =
+                  level === "Easy"
+                    ? "Build confidence"
+                    : level === "Medium"
+                    ? "Balanced challenge"
+                    : "Push your limits";
 
                 return (
                   <button
                     key={level}
                     type="button"
-                    onClick={() => setDifficulty(level)}
-                    className={`rounded-2xl border px-3 py-4 text-sm font-bold transition-all ${
-                      selected
-                        ? "border-indigo-500 bg-indigo-500/15 text-indigo-300 shadow-lg shadow-indigo-500/10"
-                        : "border-white/10 bg-white/[0.02] text-slate-400 hover:border-indigo-500/30 hover:bg-white/[0.04] hover:text-white"
+                    onClick={() =>
+                      setDifficulty(level)
+                    }
+                    className={`quiz-difficulty-option ${
+                      selected ? "is-selected" : ""
                     }`}
                   >
-                    {level}
+
+                    <span className="difficulty-icon">
+                      {levelIcon}
+                    </span>
+
+                    <strong>
+                      {level}
+                    </strong>
+
+                    <small>
+                      {levelDescription}
+                    </small>
+
+                    {selected && (
+                      <span className="difficulty-check">
+                        ✓
+                      </span>
+                    )}
+
                   </button>
                 );
               })}
@@ -278,48 +361,67 @@ function QuizSetup({
 
           </div>
 
+
           {/* =================================================
               QUESTION COUNT
           ================================================== */}
 
-          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-7 shadow-lg">
+          <div className="quiz-setting-card">
 
-            <div className="flex items-center justify-between">
+            <div className="quiz-setting-header">
 
               <div>
 
-                <p className="text-base font-bold text-white">
-                  Number of Questions
-                </p>
+                <span className="quiz-setting-label">
+                  Question Count
+                </span>
 
-                <p className="mt-1 text-sm text-slate-500">
-                  How many questions do you want?
+                <p>
+                  Decide how long your learning challenge will be.
                 </p>
 
               </div>
 
-              <span className="text-2xl">📝</span>
+              <span className="quiz-setting-icon">
+                📝
+              </span>
 
             </div>
 
-            <div className="mt-6 grid grid-cols-4 gap-3">
+
+            <div className="quiz-count-grid">
 
               {[5, 10, 15, 20].map((count) => {
 
-                const selected = questionCount === count;
+                const selected =
+                  questionCount === count;
 
                 return (
                   <button
                     key={count}
                     type="button"
-                    onClick={() => setQuestionCount(count)}
-                    className={`rounded-2xl border px-2 py-4 text-sm font-bold transition-all ${
-                      selected
-                        ? "border-indigo-500 bg-indigo-500/15 text-indigo-300 shadow-lg shadow-indigo-500/10"
-                        : "border-white/10 bg-white/[0.02] text-slate-400 hover:border-indigo-500/30 hover:bg-white/[0.04] hover:text-white"
+                    onClick={() =>
+                      setQuestionCount(count)
+                    }
+                    className={`quiz-count-option ${
+                      selected ? "is-selected" : ""
                     }`}
                   >
-                    {count}
+
+                    <strong>
+                      {count}
+                    </strong>
+
+                    <span>
+                      Questions
+                    </span>
+
+                    {selected && (
+                      <span className="count-check">
+                        ✓
+                      </span>
+                    )}
+
                   </button>
                 );
               })}
@@ -332,85 +434,133 @@ function QuizSetup({
 
       </section>
 
+
       {/* =====================================================
-          SUMMARY
+          FINAL CONFIGURATION
       ====================================================== */}
 
-      <div className="mt-10 rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-6">
+      <section className="quiz-final-card">
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="quiz-final-content">
 
           <div>
 
-            <p className="text-sm font-semibold text-indigo-300">
-              Quiz Configuration
-            </p>
+            <span className="quiz-section-kicker">
+              FINAL CONFIGURATION
+            </span>
 
-            <p className="mt-1 text-sm text-slate-400">
+            <h2>
+              Your quiz is almost ready.
+            </h2>
 
-              {selectedTopic
-                ? `Ready to generate a ${difficulty.toLowerCase()} quiz`
-                : "Select a topic to continue"}
-
+            <p>
+              Review your selections and generate your personalized AI quiz.
             </p>
 
           </div>
 
-          <div className="flex flex-wrap gap-2">
 
-            <span className="rounded-full border border-white/10 bg-slate-900 px-4 py-2 text-sm text-slate-300">
-              {difficulty}
-            </span>
+          <div className="quiz-final-summary">
 
-            <span className="rounded-full border border-white/10 bg-slate-900 px-4 py-2 text-sm text-slate-300">
-              {questionCount} Questions
-            </span>
+            <div className="quiz-summary-item">
+
+              <span>
+                TOPIC
+              </span>
+
+              <strong>
+                {selectedTopicData?.name ||
+                  customTopic ||
+                  "Not selected"}
+              </strong>
+
+            </div>
+
+
+            <div className="quiz-summary-item">
+
+              <span>
+                DIFFICULTY
+              </span>
+
+              <strong>
+                {difficulty}
+              </strong>
+
+            </div>
+
+
+            <div className="quiz-summary-item">
+
+              <span>
+                QUESTIONS
+              </span>
+
+              <strong>
+                {questionCount}
+              </strong>
+
+            </div>
 
           </div>
 
         </div>
 
-      </div>
 
-      {/* =====================================================
-          GENERATE BUTTON
-      ====================================================== */}
+        <div className="quiz-final-action">
 
-      <div className="flex justify-center pb-8 pt-10">
+          <div className="quiz-ready-message">
 
-        <button
-          type="button"
-          onClick={onStartQuiz}
-          disabled={!selectedTopic || loading}
-          className={`group flex min-w-[280px] items-center justify-center gap-3 rounded-2xl px-8 py-5 text-base font-bold transition-all duration-300 ${
-            !selectedTopic || loading
-              ? "cursor-not-allowed bg-indigo-500/20 text-indigo-300/50"
-              : "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-xl shadow-indigo-500/20 hover:-translate-y-1 hover:from-indigo-400 hover:to-purple-500"
-          }`}
-        >
+            <span className="quiz-ready-dot" />
 
-          {loading ? (
-            <>
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            <span>
+              {selectedTopic
+                ? "Ready to test your knowledge?"
+                : "Select a topic to continue"}
+            </span>
 
-              <span>
-                Generating Quiz...
-              </span>
-            </>
-          ) : (
-            <>
-              <span>
-                Generate AI Quiz
-              </span>
+          </div>
 
-              <span className="text-xl transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </>
-          )}
 
-        </button>
+          <button
+            type="button"
+            onClick={onStartQuiz}
+            disabled={!selectedTopic || loading}
+            className={`quiz-generate-button ${
+              !selectedTopic || loading
+                ? "is-disabled"
+                : ""
+            }`}
+          >
 
+            {loading ? (
+              <>
+                <span className="quiz-spinner" />
+
+                <span>
+                  Generating Quiz...
+                </span>
+              </>
+            ) : (
+              <>
+                <span>
+                  Generate AI Quiz
+                </span>
+
+                <span className="generate-arrow">
+                  →
+                </span>
+              </>
+            )}
+
+          </button>
+
+        </div>
+
+      </section>
+
+      <div className="quiz-footer-note">
+        Powered by Skillora AI • Personalized for your learning journey
       </div>
 
     </div>

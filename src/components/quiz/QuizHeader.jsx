@@ -14,79 +14,109 @@ function QuizHeader({
       : 0;
 
   return (
-    <div className="w-full border-b border-white/10 bg-slate-900/80 px-6 py-5 backdrop-blur-xl">
-      <div className="mx-auto max-w-5xl">
+    <div className="relative w-full overflow-hidden border-b border-white/[0.08] bg-[#080d1d]/95 px-4 py-4 backdrop-blur-2xl sm:px-6">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/4 top-[-140px] h-72 w-72 rounded-full bg-indigo-600/10 blur-[100px]" />
+        <div className="absolute right-1/4 top-[-140px] h-72 w-72 rounded-full bg-purple-600/10 blur-[100px]" />
+      </div>
 
-        {/* Top row */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative mx-auto max-w-7xl">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
-          {/* Left */}
           <div className="flex items-center gap-4">
-
             <button
               type="button"
               onClick={onExit}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-300"
+              className="group flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-xl text-slate-300 shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-x-1 hover:border-indigo-400/40 hover:bg-indigo-500/10 hover:text-white"
               title="Exit Quiz"
             >
               ←
             </button>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
-                {topic}
-              </p>
+              <div className="mb-1 flex items-center gap-2">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.9)]" />
 
-              <h1 className="mt-1 text-xl font-bold text-white sm:text-2xl">
+                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-indigo-300">
+                  AI Powered Assessment
+                </p>
+              </div>
+
+              <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
                 {title}
               </h1>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Stay focused and choose the best answer.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.035] px-4 py-3 shadow-xl shadow-black/20">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500">
+                Topic
+              </p>
+
+              <p className="mt-1 text-sm font-semibold text-white">
+                {topic}
+              </p>
             </div>
 
+            <div className="rounded-2xl border border-purple-400/15 bg-purple-500/[0.07] px-4 py-3 shadow-xl shadow-purple-950/20">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-purple-300/70">
+                Difficulty
+              </p>
+
+              <p className="mt-1 text-sm font-semibold text-purple-200">
+                {difficulty}
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-indigo-400/20 bg-indigo-500/[0.08] px-4 py-3 shadow-xl shadow-indigo-950/30">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-indigo-300/70">
+                Question
+              </p>
+
+              <p className="mt-1 text-sm font-bold text-indigo-200">
+                {currentQuestion}
+                <span className="mx-1 text-slate-600">/</span>
+                {totalQuestions}
+              </p>
+            </div>
           </div>
-
-          {/* Right */}
-          <div className="flex items-center gap-2">
-
-            <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-300">
-              {difficulty}
-            </span>
-
-            <span className="rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-3 py-2 text-xs font-semibold text-indigo-300">
-              {currentQuestion} / {totalQuestions}
-            </span>
-
-          </div>
-
         </div>
 
-        {/* Progress section */}
-        <div className="mt-5">
+        <div className="mt-6">
+          <div className="mb-2.5 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold text-slate-300">
+                Quiz Progress
+              </p>
 
-          <div className="mb-2 flex items-center justify-between">
+              <p className="mt-0.5 text-[10px] text-slate-500">
+                Complete every question to finish your assessment
+              </p>
+            </div>
 
-            <span className="text-xs text-slate-400">
-              Quiz Progress
-            </span>
-
-            <span className="text-xs font-semibold text-indigo-400">
-              {progress}%
-            </span>
-
+            <div className="rounded-full border border-indigo-400/15 bg-indigo-500/[0.08] px-3 py-1">
+              <span className="text-xs font-bold text-indigo-300">
+                {progress}%
+              </span>
+            </div>
           </div>
 
-          <div className="h-2 w-full overflow-hidden rounded-full bg-white/5">
-
+          <div className="relative h-3 w-full overflow-hidden rounded-full border border-white/[0.04] bg-white/[0.04]">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
+              className="relative h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 shadow-[0_0_20px_rgba(139,92,246,0.55)] transition-all duration-700 ease-out"
               style={{
                 width: `${progress}%`,
               }}
-            />
-
+            >
+              <div className="absolute right-0 top-0 h-full w-8 bg-white/20 blur-md" />
+            </div>
           </div>
-
         </div>
-
       </div>
     </div>
   );

@@ -1,0 +1,1436 @@
+
+/* =========================================================
+   NOTES MODULE
+   Premium AI Notes Experience
+========================================================= */
+
+/* =========================
+   ROOT
+========================= */
+
+.notes-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(99, 102, 241, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(139, 92, 246, 0.1),
+      transparent 25%
+    ),
+    #020617;
+  color: #f8fafc;
+}
+
+.notes-page * {
+  box-sizing: border-box;
+}
+
+.notes-container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.notes-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 32px;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.96),
+      rgba(30, 27, 75, 0.78)
+    );
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+
+/* =========================
+   HERO GLOW
+========================= */
+
+.notes-hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.notes-glow-one {
+  width: 300px;
+  height: 300px;
+  top: -130px;
+  left: -100px;
+  background: rgba(99, 102, 241, 0.28);
+}
+
+.notes-glow-two {
+  width: 280px;
+  height: 280px;
+  bottom: -150px;
+  right: -80px;
+  background: rgba(168, 85, 247, 0.2);
+}
+
+
+/* =========================
+   HERO CONTENT
+========================= */
+
+.notes-hero-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 800px;
+  text-align: center;
+}
+
+.notes-badge {
+  width: fit-content;
+  margin: 0 auto 22px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 9px 16px;
+
+  border-radius: 999px;
+
+  background: rgba(99, 102, 241, 0.1);
+
+  border: 1px solid rgba(129, 140, 248, 0.3);
+
+  color: #a5b4fc;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.notes-hero h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(2.3rem, 5vw, 4.4rem);
+  line-height: 1.08;
+
+  font-weight: 800;
+
+  letter-spacing: -0.045em;
+}
+
+.notes-hero h1 span {
+  background:
+    linear-gradient(
+      90deg,
+      #818cf8,
+      #a78bfa,
+      #c084fc
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+.notes-hero p {
+  max-width: 650px;
+
+  margin: 24px auto 32px;
+
+  color: #94a3b8;
+
+  font-size: 1rem;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   GENERATE BUTTON
+========================================================= */
+
+.generate-notes-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-width: 210px;
+
+  padding: 15px 24px;
+
+  border: none;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6
+    );
+
+  color: #ffffff;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 14px 35px rgba(99, 102, 241, 0.3);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.generate-notes-button:hover {
+  transform: translateY(-3px);
+
+  filter: brightness(1.08);
+
+  box-shadow:
+    0 20px 45px rgba(99, 102, 241, 0.42);
+}
+
+.generate-notes-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   GENERATOR SECTION
+========================================================= */
+
+.notes-generator-section {
+  position: relative;
+
+  margin-top: 32px;
+}
+
+
+/* =========================================================
+   GENERATOR WRAPPER
+========================================================= */
+
+.notes-generator-wrapper {
+  position: relative;
+
+  padding: 34px;
+
+  border-radius: 26px;
+
+  border:
+    1px solid rgba(148, 163, 184, 0.13);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 42, 0.95),
+      rgba(17, 24, 39, 0.88)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.notes-close-button {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  border:
+    1px solid rgba(148, 163, 184, 0.16);
+
+  background:
+    rgba(30, 41, 59, 0.55);
+
+  color: #94a3b8;
+
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition:
+    all 0.2s ease;
+}
+
+.notes-close-button:hover {
+  background:
+    rgba(99, 102, 241, 0.15);
+
+  border-color:
+    rgba(129, 140, 248, 0.4);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   EMPTY PREVIEW
+========================================================= */
+
+.notes-empty-preview {
+  min-height: 280px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 50px 30px;
+
+  border-radius: 26px;
+
+  border:
+    1px dashed rgba(148, 163, 184, 0.18);
+
+  background:
+    rgba(15, 23, 42, 0.5);
+}
+
+.notes-empty-icon {
+  width: 68px;
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 22px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.2),
+      rgba(139, 92, 246, 0.15)
+    );
+
+  border:
+    1px solid rgba(129, 140, 248, 0.22);
+
+  color: #a5b4fc;
+
+  font-size: 1.7rem;
+
+  box-shadow:
+    0 15px 40px rgba(99, 102, 241, 0.12);
+}
+
+.notes-empty-preview h2 {
+  max-width: 550px;
+
+  margin: 0;
+
+  color: #e2e8f0;
+
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+
+  font-weight: 700;
+
+  letter-spacing: -0.025em;
+}
+
+.notes-empty-preview p {
+  max-width: 550px;
+
+  margin: 14px 0 0;
+
+  color: #64748b;
+
+  font-size: 0.95rem;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   AI NOTES GENERATOR
+   Supports common class names inside AINotesGenerator
+========================================================= */
+
+.notes-generator,
+.ai-notes-generator,
+.ai-notes-card {
+  width: 100%;
+}
+
+
+/* Generator Heading */
+
+.notes-generator h2,
+.ai-notes-generator h2,
+.ai-notes-card h2 {
+  margin: 0 0 8px;
+
+  color: #f8fafc;
+
+  font-size: 1.65rem;
+
+  font-weight: 750;
+}
+
+.notes-generator > p,
+.ai-notes-generator > p,
+.ai-notes-card > p {
+  margin: 0 0 26px;
+
+  color: #94a3b8;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   FORM CONTROLS
+========================================================= */
+
+.notes-generator input,
+.notes-generator textarea,
+.notes-generator select,
+.ai-notes-generator input,
+.ai-notes-generator textarea,
+.ai-notes-generator select,
+.ai-notes-card input,
+.ai-notes-card textarea,
+.ai-notes-card select {
+  width: 100%;
+
+  outline: none;
+
+  border:
+    1px solid rgba(148, 163, 184, 0.15);
+
+  border-radius: 14px;
+
+  background:
+    rgba(2, 6, 23, 0.55);
+
+  color: #f8fafc;
+
+  font-size: 0.95rem;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.notes-generator input,
+.ai-notes-generator input,
+.ai-notes-card input,
+.notes-generator select,
+.ai-notes-generator select,
+.ai-notes-card select {
+  height: 52px;
+
+  padding: 0 16px;
+}
+
+.notes-generator textarea,
+.ai-notes-generator textarea,
+.ai-notes-card textarea {
+  min-height: 130px;
+
+  padding: 15px 16px;
+
+  resize: vertical;
+}
+
+.notes-generator input::placeholder,
+.notes-generator textarea::placeholder,
+.ai-notes-generator input::placeholder,
+.ai-notes-generator textarea::placeholder,
+.ai-notes-card input::placeholder,
+.ai-notes-card textarea::placeholder {
+  color: #475569;
+}
+
+.notes-generator input:focus,
+.notes-generator textarea:focus,
+.notes-generator select:focus,
+.ai-notes-generator input:focus,
+.ai-notes-generator textarea:focus,
+.ai-notes-generator select:focus,
+.ai-notes-card input:focus,
+.ai-notes-card textarea:focus,
+.ai-notes-card select:focus {
+  border-color:
+    rgba(129, 140, 248, 0.7);
+
+  background:
+    rgba(15, 23, 42, 0.9);
+
+  box-shadow:
+    0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.notes-generator label,
+.ai-notes-generator label,
+.ai-notes-card label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #cbd5e1;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   GENERATOR BUTTON
+========================================================= */
+
+.notes-generator button[type="submit"],
+.ai-notes-generator button[type="submit"],
+.ai-notes-card button[type="submit"],
+.generate-ai-notes-button {
+  min-height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 0 24px;
+
+  border: none;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6
+    );
+
+  color: #ffffff;
+
+  font-size: 0.9rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px rgba(99, 102, 241, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.notes-generator button[type="submit"]:hover,
+.ai-notes-generator button[type="submit"]:hover,
+.ai-notes-card button[type="submit"]:hover,
+.generate-ai-notes-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 18px 40px rgba(99, 102, 241, 0.4);
+}
+
+.notes-generator button:disabled,
+.ai-notes-generator button:disabled,
+.ai-notes-card button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   GENERATED NOTES
+   Future component support
+========================================================= */
+
+.generated-notes {
+  margin-top: 34px;
+
+  padding: 36px;
+
+  border-radius: 26px;
+
+  border:
+    1px solid rgba(148, 163, 184, 0.13);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 42, 0.96),
+      rgba(17, 24, 39, 0.9)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.22);
+}
+
+.generated-notes-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding-bottom: 22px;
+
+  margin-bottom: 26px;
+
+  border-bottom:
+    1px solid rgba(148, 163, 184, 0.1);
+}
+
+.generated-notes-badge {
+  display: inline-flex;
+
+  padding: 8px 13px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(99, 102, 241, 0.1);
+
+  border:
+    1px solid rgba(129, 140, 248, 0.22);
+
+  color: #a5b4fc;
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+}
+
+.generated-notes h1,
+.generated-notes h2,
+.generated-notes h3 {
+  color: #f8fafc;
+}
+
+.generated-notes h1 {
+  margin-top: 0;
+
+  font-size: 2rem;
+
+  letter-spacing: -0.03em;
+}
+
+.generated-notes h2 {
+  margin-top: 32px;
+
+  font-size: 1.3rem;
+}
+
+.generated-notes h3 {
+  margin-top: 24px;
+
+  font-size: 1.05rem;
+}
+
+.generated-notes p {
+  color: #94a3b8;
+
+  line-height: 1.85;
+}
+
+.generated-notes ul,
+.generated-notes ol {
+  padding-left: 22px;
+
+  color: #cbd5e1;
+
+  line-height: 1.9;
+}
+
+.generated-notes li::marker {
+  color: #818cf8;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.notes-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 30px;
+
+  color: #a5b4fc;
+}
+
+.notes-loading-spinner {
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(129, 140, 248, 0.2);
+
+  border-top-color: #818cf8;
+
+  animation: notes-spin 0.8s linear infinite;
+}
+
+@keyframes notes-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .notes-container {
+    width: min(100% - 32px, 760px);
+    padding-top: 32px;
+  }
+
+  .notes-hero {
+    min-height: 380px;
+    padding: 55px 25px;
+  }
+
+  .notes-generator-wrapper,
+  .generated-notes {
+    padding: 26px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .notes-container {
+    width: calc(100% - 24px);
+    padding: 20px 0 55px;
+  }
+
+  .notes-hero {
+    min-height: 420px;
+
+    padding:
+      50px 20px;
+
+    border-radius: 22px;
+  }
+
+  .notes-hero h1 {
+    font-size: 2.35rem;
+  }
+
+  .notes-hero p {
+    font-size: 0.92rem;
+  }
+
+  .generate-notes-button {
+    width: 100%;
+  }
+
+  .notes-generator-wrapper,
+  .generated-notes {
+    padding: 22px 18px;
+
+    border-radius: 20px;
+  }
+
+  .notes-empty-preview {
+    min-height: 260px;
+
+    padding: 40px 20px;
+
+    border-radius: 20px;
+  }
+
+  .notes-empty-preview h2 {
+    font-size: 1.35rem;
+  }
+
+  .notes-close-button {
+    top: 12px;
+    right: 12px;
+  }
+
+}
+/* =========================================================
+   SKILLORA NOTES MODULE
+   AI NOTES GENERATOR
+========================================================= */
+
+.ai-notes-generator {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+/* =========================================================
+   MAIN AI WORKSPACE
+========================================================= */
+
+.ai-notes-workspace {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 32px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(99, 102, 241, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #111827 0%,
+      #0f172a 100%
+    );
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+/* Background glow */
+
+.ai-notes-workspace-glow {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+.glow-left {
+  top: -180px;
+  left: -120px;
+  background: #6366f1;
+}
+
+.glow-right {
+  right: -150px;
+  bottom: -200px;
+  background: #8b5cf6;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.ai-notes-header {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 3rem 1.5rem;
+}
+
+.ai-notes-title-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.ai-notes-robot-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 58px;
+  height: 58px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6
+    );
+
+  color: #ffffff;
+  font-size: 1.5rem;
+
+  box-shadow:
+    0 12px 35px rgba(99, 102, 241, 0.28);
+}
+
+.ai-notes-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  color: #a5b4fc;
+
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.ai-notes-label svg {
+  font-size: 0.7rem;
+}
+
+.ai-notes-title-area h2 {
+  margin: 0.6rem 0 0;
+
+  color: #f8fafc;
+
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+}
+
+.ai-notes-title-area h2 span {
+  color: #a5b4fc;
+}
+
+.ai-notes-title-area p {
+  max-width: 620px;
+  margin: 0.9rem 0 0;
+
+  color: #94a3b8;
+
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.ai-notes-form {
+  position: relative;
+  z-index: 1;
+
+  padding: 1.5rem 3rem 3rem;
+}
+
+/* Topic */
+
+.ai-topic-field label {
+  display: block;
+
+  margin-bottom: 0.7rem;
+
+  color: #cbd5e1;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ai-topic-field input {
+  width: 100%;
+
+  padding: 1.1rem 1.35rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+
+  outline: none;
+
+  background: rgba(15, 23, 42, 0.65);
+
+  color: #f8fafc;
+
+  font-size: 1rem;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.ai-topic-field input::placeholder {
+  color: #64748b;
+}
+
+.ai-topic-field input:focus {
+  border-color: #6366f1;
+
+  background: rgba(15, 23, 42, 0.9);
+
+  box-shadow:
+    0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.ai-notes-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  margin-top: 1.25rem;
+}
+
+.ai-select-field label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-bottom: 0.65rem;
+
+  color: #94a3b8;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.ai-select-field label svg {
+  color: #818cf8;
+}
+
+.ai-select-field select {
+  width: 100%;
+
+  padding: 0.9rem 1rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 14px;
+
+  outline: none;
+
+  background: rgba(15, 23, 42, 0.55);
+
+  color: #e2e8f0;
+
+  font-size: 0.9rem;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.ai-select-field select:focus {
+  border-color: #6366f1;
+
+  background: rgba(15, 23, 42, 0.9);
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.ai-notes-error {
+  margin-top: 1.25rem;
+
+  padding: 0.9rem 1rem;
+
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 12px;
+
+  background: rgba(127, 29, 29, 0.12);
+
+  color: #fca5a5;
+
+  font-size: 0.88rem;
+}
+
+/* =========================================================
+   GENERATE BUTTON
+========================================================= */
+
+.ai-generate-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+
+  width: 100%;
+
+  margin-top: 1.5rem;
+  padding: 1.05rem 1.5rem;
+
+  border: none;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #7c3aed,
+      #8b5cf6
+    );
+
+  color: #ffffff;
+
+  font-size: 0.98rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 14px 35px rgba(99, 102, 241, 0.22);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.ai-generate-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 20px 45px rgba(99, 102, 241, 0.32);
+}
+
+.ai-generate-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.ai-generate-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.ai-generate-loading {
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #6d28d9
+    );
+}
+
+/* Loading spinner */
+
+.ai-loading-spinner {
+  width: 18px;
+  height: 18px;
+
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+
+  animation: aiNotesSpin 0.8s linear infinite;
+}
+
+@keyframes aiNotesSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ai-generator-footer-text {
+  margin: 1rem 0 0;
+
+  color: #64748b;
+
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* =========================================================
+   GENERATED NOTES
+========================================================= */
+
+.generated-notes-section {
+  margin-top: 2rem;
+
+  padding: 2rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 41, 59, 0.65),
+      rgba(15, 23, 42, 0.95)
+    );
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.generated-notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.generated-notes-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.generated-notes-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6
+    );
+
+  color: white;
+  font-size: 1.15rem;
+}
+
+.generated-notes-title span {
+  display: block;
+
+  color: #818cf8;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.generated-notes-title h2 {
+  margin: 0.3rem 0 0;
+
+  color: #f8fafc;
+
+  font-size: 1.45rem;
+  font-weight: 750;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.generated-notes-actions {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.notes-copy-button,
+.notes-download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0.7rem 1rem;
+
+  border-radius: 12px;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.notes-copy-button {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  background: rgba(30, 41, 59, 0.8);
+
+  color: #cbd5e1;
+}
+
+.notes-copy-button:hover {
+  background: rgba(51, 65, 85, 0.9);
+}
+
+.notes-download-button {
+  border: none;
+
+  background: #6366f1;
+
+  color: white;
+}
+
+.notes-download-button:hover {
+  background: #4f46e5;
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   META
+========================================================= */
+
+.generated-notes-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+
+  margin-top: 1.5rem;
+}
+
+.generated-notes-meta span {
+  padding: 0.4rem 0.75rem;
+
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 999px;
+
+  background: rgba(99, 102, 241, 0.08);
+
+  color: #a5b4fc;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   NOTES CONTENT
+========================================================= */
+
+.generated-notes-content {
+  margin-top: 1.5rem;
+
+  padding-top: 1.75rem;
+
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+
+  color: #cbd5e1;
+
+  font-size: 0.96rem;
+  line-height: 1.9;
+
+  white-space: pre-wrap;
+}
+
+.generated-notes-content p {
+  margin: 0;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+  .ai-notes-options {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-notes-header {
+    padding: 2rem 1.5rem 1rem;
+  }
+
+  .ai-notes-form {
+    padding: 1.5rem 1.5rem 2rem;
+  }
+
+  .generated-notes-section {
+    padding: 1.5rem;
+  }
+
+  .generated-notes-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .ai-notes-workspace {
+    border-radius: 22px;
+  }
+
+  .ai-notes-title-area {
+    gap: 1rem;
+  }
+
+  .ai-notes-robot-icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 15px;
+
+    font-size: 1.2rem;
+  }
+
+  .ai-notes-title-area h2 {
+    font-size: 1.8rem;
+  }
+
+  .generated-notes-section {
+    border-radius: 22px;
+  }
+
+  .generated-notes-actions {
+    width: 100%;
+  }
+
+  .notes-copy-button,
+  .notes-download-button {
+    flex: 1;
+  }
+}
+

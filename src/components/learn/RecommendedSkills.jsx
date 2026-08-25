@@ -3,152 +3,183 @@ import {
   FaRobot,
   FaArrowRight,
   FaClock,
-  FaChartLine,
-  FaPlayCircle,
+  FaPlay,
+  FaStar,
+  FaBrain,
+  FaLayerGroup,
+  FaCheckCircle,
 } from "react-icons/fa";
 
-function RecommendedSkills({
-  onLearn,
-  courses = [],
-}) {
+function RecommendedSkills({ onLearn, courses = [] }) {
   const recommendedCourses = courses.slice(0, 4);
 
   return (
-    <section className="mt-12">
+    <section className="recommended-section">
+      {/* Background effects */}
+      <div className="recommended-orb recommended-orb-one" />
+      <div className="recommended-orb recommended-orb-two" />
 
-      {/* =========================
-          HEADER
-      ========================= */}
+      {/* ================= HEADER ================= */}
 
-      <div className="mb-8 flex items-center justify-between">
-
-        <div>
-
-          <div className="flex items-center gap-3">
-
-            <FaRobot className="text-3xl text-purple-400" />
-
-            <h2 className="text-3xl font-bold text-white">
-              AI Recommended Skills
-            </h2>
-
+      <div className="recommended-header">
+        <div className="recommended-header-content">
+          <div className="recommended-eyebrow">
+            <FaStar />
+            <span>PERSONALIZED LEARNING</span>
           </div>
 
-          <p className="mt-2 text-slate-400">
-            Recommended courses based on your learning interests.
-          </p>
+          <div className="recommended-title-row">
+            <div className="recommended-main-icon">
+              <FaRobot />
+            </div>
 
+            <div>
+              <h2>
+                AI Recommended
+                <span> Skills</span>
+              </h2>
+
+              <p>
+                Personalized learning paths selected to help you develop
+                valuable skills and move confidently toward your career goals.
+              </p>
+            </div>
+          </div>
         </div>
 
+        {/* AI Status Card */}
+
+        <div className="recommended-ai-status">
+          <div className="recommended-ai-icon">
+            <FaBrain />
+          </div>
+
+          <div className="recommended-ai-text">
+            <span>SKILLORA AI</span>
+            <strong>Recommendations Ready</strong>
+          </div>
+
+          <div className="recommended-status-dot" />
+        </div>
       </div>
 
-      {/* =========================
-          COURSES
-      ========================= */}
+      {/* ================= COURSE GRID ================= */}
 
       {recommendedCourses.length > 0 ? (
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-
-          {recommendedCourses.map((course) => (
-
-            <div
-              key={course.id}
-              className="group rounded-3xl border border-slate-800 bg-slate-900 p-7 transition-all duration-300 hover:-translate-y-2 hover:border-indigo-500"
+        <div className="recommended-grid">
+          {recommendedCourses.map((course, index) => (
+            <article
+              key={course.id || `${course.title}-${index}`}
+              className="recommended-card"
             >
+              {/* Top Accent */}
 
-              {/* Badge */}
+              <div className="recommended-card-glow" />
 
-              <div className="flex items-center justify-between">
+              {/* ================= CARD HEADER ================= */}
 
-                <span className="rounded-full bg-purple-600/20 px-4 py-2 text-sm text-purple-300">
-                  🤖 AI Recommended
-                </span>
-
-                <span className="font-semibold text-green-400">
-                  {course.level}
-                </span>
-
-              </div>
-
-              {/* Title */}
-
-              <h3 className="mt-6 text-3xl font-bold text-white transition group-hover:text-indigo-400">
-                {course.title}
-              </h3>
-
-              {/* Description */}
-
-              <p className="mt-3 leading-7 text-slate-400">
-                {course.description}
-              </p>
-
-              {/* Course Information */}
-
-              <div className="mt-7 flex flex-wrap gap-4">
-
-                <div className="flex items-center gap-2 text-slate-400">
-                  <FaClock />
-                  <span>{course.duration || "Self-paced"}</span>
+              <div className="recommended-card-header">
+                <div className="recommended-course-number">
+                  <span>0{index + 1}</span>
                 </div>
 
-                <div className="flex items-center gap-2 text-slate-400">
-                  <FaChartLine />
-                  <span>
-                    {course.videos?.length || 0} YouTube Lessons
+                <div className="recommended-card-badges">
+                  <div className="recommended-ai-badge">
+                    <FaRobot />
+                    <span>AI Match</span>
+                  </div>
+
+                  <span className="recommended-level">
+                    {course.level || "Beginner"}
                   </span>
                 </div>
-
               </div>
 
-              {/* Button */}
+              {/* ================= COURSE CONTENT ================= */}
 
-              <div className="mt-8 flex justify-end">
+              <div className="recommended-card-content">
+                <div className="recommended-match">
+                  <FaStar />
+                  <span>Recommended for your growth</span>
+                </div>
+
+                <h3>{course.title}</h3>
+
+                <p>
+                  {course.description ||
+                    "Build practical knowledge through structured lessons, curated resources, and hands-on learning."}
+                </p>
+              </div>
+
+              {/* ================= STATS ================= */}
+
+              <div className="recommended-stats">
+                <div className="recommended-stat">
+                  <div className="recommended-stat-icon purple">
+                    <FaClock />
+                  </div>
+
+                  <div>
+                    <span>Duration</span>
+                    <strong>{course.duration || "Self-paced"}</strong>
+                  </div>
+                </div>
+
+                <div className="recommended-stat">
+                  <div className="recommended-stat-icon blue">
+                    <FaLayerGroup />
+                  </div>
+
+                  <div>
+                    <span>Resources</span>
+                    <strong>
+                      {course.videos?.length || 0} Lessons
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* ================= FOOTER ================= */}
+
+              <div className="recommended-card-footer">
+                <div className="recommended-verified">
+                  <FaCheckCircle />
+                  <span>Learning path ready</span>
+                </div>
 
                 <button
                   type="button"
                   onClick={() => onLearn?.(course)}
-                  className="flex items-center gap-3 rounded-2xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700"
+                  className="recommended-start-button"
                 >
+                  <FaPlay />
 
-                  <FaPlayCircle />
+                  <span>Start Learning</span>
 
-                  Start Learning
-
-                  <FaArrowRight />
-
+                  <FaArrowRight className="recommended-arrow" />
                 </button>
-
               </div>
-
-            </div>
-
+            </article>
           ))}
-
         </div>
-
       ) : (
+        <div className="recommended-empty">
+          <div className="recommended-empty-icon">
+            <FaRobot />
+          </div>
 
-        /* =========================
-           EMPTY STATE
-        ========================= */
+          <div>
+            <span>SKILLORA AI</span>
 
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
+            <h3>Your recommendations are being prepared</h3>
 
-          <FaRobot className="mx-auto text-4xl text-purple-400" />
-
-          <h3 className="mt-4 text-xl font-bold text-white">
-            No recommended courses yet
-          </h3>
-
-          <p className="mt-2 text-slate-400">
-            Search for a course above to start learning.
-          </p>
-
+            <p>
+              Explore skills and courses to help our AI create personalized
+              learning recommendations for you.
+            </p>
+          </div>
         </div>
-
       )}
-
     </section>
   );
 }

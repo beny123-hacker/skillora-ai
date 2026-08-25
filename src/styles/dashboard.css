@@ -1,0 +1,1266 @@
+/* =========================================================
+   SKILLORA AI — PREMIUM DASHBOARD
+   Layout-safe / No sidebar overlap
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL DASHBOARD LAYOUT
+   ========================================================= */
+
+.dashboard-layout {
+  --sidebar-width: 322px;
+
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(
+      circle at 75% 5%,
+      rgba(99, 102, 241, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 35% 35%,
+      rgba(14, 165, 233, 0.06),
+      transparent 28%
+    ),
+    #070b18;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   MAIN AREA
+   IMPORTANT:
+   This exactly matches the sidebar width.
+   ========================================================= */
+
+.dashboard-main {
+  width: calc(100% - var(--sidebar-width));
+  min-width: 0;
+  min-height: 100vh;
+
+  margin-left: var(--sidebar-width);
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   CONTENT AREA
+   ========================================================= */
+
+.dashboard-content {
+  width: 100%;
+  min-width: 0;
+
+  padding: 30px 32px 42px;
+
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DASHBOARD ROOT
+   ========================================================= */
+
+.dashboard-premium {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+
+.dashboard-shell {
+  width: 100%;
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header {
+  width: 100%;
+  margin-bottom: 24px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  min-width: 0;
+}
+
+
+.dashboard-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 999px;
+
+  background: rgba(14, 165, 233, 0.06);
+
+  color: #38bdf8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.2em;
+
+  white-space: nowrap;
+}
+
+
+.eyebrow-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22d3ee;
+
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.8);
+}
+
+
+.dashboard-header h1 {
+  margin: 14px 0 4px;
+
+  font-size: 30px;
+  line-height: 1.1;
+
+  font-weight: 800;
+  letter-spacing: -0.03em;
+
+  color: #ffffff;
+}
+
+
+.dashboard-date {
+  margin: 0;
+
+  color: #7184a7;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.dashboard-hero {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.7fr)
+    minmax(280px, 0.7fr);
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   HERO LEFT
+   ========================================================= */
+
+.dashboard-hero-left {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 34px 36px;
+
+  border-radius: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(124, 58, 237, 0.14),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 42, 0.98),
+      rgba(10, 15, 31, 0.96)
+    );
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  overflow: hidden;
+}
+
+
+/* subtle premium glow */
+
+.dashboard-hero-left::after {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  top: -160px;
+  right: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(124, 58, 237, 0.16);
+
+  filter: blur(70px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GREETING
+   ========================================================= */
+
+.greeting-content {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+}
+
+
+.greeting-small {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #8aa0c8;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.16em;
+}
+
+
+.greeting-content h2 {
+  margin: 0;
+
+  max-width: 100%;
+
+  font-size: clamp(36px, 3.2vw, 58px);
+
+  line-height: 1.08;
+
+  letter-spacing: -0.045em;
+
+  font-weight: 800;
+
+  color: #ffffff;
+
+  overflow-wrap: anywhere;
+}
+
+
+.greeting-content h2 span:first-of-type {
+  background:
+    linear-gradient(
+      90deg,
+      #22d3ee,
+      #6366f1,
+      #a855f7
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+
+.wave {
+  display: inline-block;
+
+  margin-left: 8px;
+
+  font-size: 0.7em;
+
+  color: #ffffff;
+}
+
+
+.greeting-content p {
+  margin: 18px 0 0;
+
+  max-width: 760px;
+
+  color: #8da1c7;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   QUOTE CARD
+   ========================================================= */
+
+.quote-card {
+  position: relative;
+  z-index: 1;
+
+  margin-top: 28px;
+
+  padding: 22px 26px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(129, 140, 248, 0.18);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.1),
+      rgba(168, 85, 247, 0.06)
+    );
+}
+
+
+.quote-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  margin-bottom: 14px;
+}
+
+
+.quote-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 20px rgba(99, 102, 241, 0.25);
+}
+
+
+.quote-top span {
+  color: #8194bd;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.18em;
+}
+
+
+.quote-card blockquote {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 20px;
+
+  line-height: 1.5;
+
+  font-weight: 700;
+}
+
+
+.quote-author {
+  margin-top: 12px;
+
+  color: #818cf8;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PROFILE CARD
+   ========================================================= */
+
+.profile-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 28px 26px;
+
+  border-radius: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(99, 102, 241, 0.14),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 42, 0.98),
+      rgba(9, 14, 28, 0.98)
+    );
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.22);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  overflow: hidden;
+}
+
+
+.profile-glow {
+  position: absolute;
+
+  top: -90px;
+
+  width: 220px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  background: rgba(99, 102, 241, 0.16);
+
+  filter: blur(60px);
+
+  pointer-events: none;
+}
+
+
+.profile-avatar-wrapper {
+  position: relative;
+  z-index: 1;
+
+  margin-bottom: 14px;
+}
+
+
+.profile-avatar {
+  width: 108px;
+  height: 108px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 3px solid rgba(99, 102, 241, 0.8);
+
+  box-shadow:
+    0 0 0 7px rgba(99, 102, 241, 0.08),
+    0 0 35px rgba(99, 102, 241, 0.25);
+}
+
+
+.profile-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #111827;
+
+  color: #818cf8;
+
+  font-size: 38px;
+}
+
+
+.online-indicator {
+  position: absolute;
+
+  right: 2px;
+  bottom: 4px;
+
+  width: 15px;
+  height: 15px;
+
+  border-radius: 50%;
+
+  background: #10e981;
+
+  border: 3px solid #0b1020;
+
+  box-shadow:
+    0 0 12px rgba(16, 233, 129, 0.7);
+}
+
+
+.profile-card h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  font-weight: 800;
+}
+
+
+.profile-role {
+  margin: 6px 0 12px;
+
+  color: #7185aa;
+
+  font-size: 14px;
+}
+
+
+.active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 7px 13px;
+
+  border-radius: 999px;
+
+  border: 1px solid rgba(16, 185, 129, 0.16);
+
+  background: rgba(16, 185, 129, 0.06);
+
+  color: #10d993;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+
+.active-badge span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #10d993;
+
+  box-shadow:
+    0 0 8px rgba(16, 217, 147, 0.8);
+}
+
+
+/* =========================================================
+   PROFILE PROGRESS
+   ========================================================= */
+
+.profile-progress {
+  width: 100%;
+
+  margin-top: 30px;
+
+  text-align: left;
+}
+
+
+.progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 9px;
+}
+
+
+.progress-heading span {
+  color: #63779e;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.17em;
+}
+
+
+.progress-heading strong {
+  color: #22d3ee;
+
+  font-size: 14px;
+}
+
+
+.progress-track {
+  width: 100%;
+  height: 7px;
+
+  border-radius: 999px;
+
+  background: #1a2133;
+
+  overflow: hidden;
+}
+
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6366f1,
+      #22d3ee
+    );
+
+  box-shadow:
+    0 0 14px rgba(99, 102, 241, 0.5);
+
+  transition: width 0.6s ease;
+}
+
+
+.profile-email {
+  width: 100%;
+
+  margin-top: 20px;
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  color: #516686;
+
+  font-size: 12px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   STAT CARDS
+   ========================================================= */
+
+.stats-section {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+
+.premium-stat-card {
+  position: relative;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(14, 21, 39, 0.98),
+      rgba(9, 14, 28, 0.98)
+    );
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  overflow: hidden;
+}
+
+
+.premium-stat-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(99, 102, 241, 0.22);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  font-size: 20px;
+}
+
+
+.courses-icon {
+  background: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+}
+
+
+.xp-icon {
+  background: rgba(250, 204, 21, 0.1);
+  color: #facc15;
+}
+
+
+.streak-icon {
+  background: rgba(244, 63, 94, 0.1);
+  color: #fb7185;
+}
+
+
+.stat-content {
+  min-width: 0;
+  flex: 1;
+}
+
+
+.stat-content span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #63789f;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+
+  white-space: nowrap;
+}
+
+
+.stat-content strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 28px;
+
+  line-height: 1.1;
+
+  font-weight: 800;
+}
+
+
+.stat-content p {
+  margin: 4px 0 0;
+
+  color: #5c7196;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.stat-arrow {
+  flex-shrink: 0;
+
+  color: #405371;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   OVERALL PROGRESS
+   ========================================================= */
+
+.overall-card {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding: 22px 26px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(13, 20, 38, 0.98),
+      rgba(9, 14, 28, 0.98)
+    );
+
+  box-sizing: border-box;
+}
+
+
+.overall-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+
+.overall-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.16),
+      rgba(34, 211, 238, 0.1)
+    );
+
+  color: #818cf8;
+}
+
+
+.overall-left span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #60749a;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+}
+
+
+.overall-left h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 20px;
+
+  font-weight: 800;
+}
+
+
+.overall-left p {
+  margin: 3px 0 0;
+
+  color: #60749a;
+
+  font-size: 12px;
+}
+
+
+.overall-progress-area {
+  width: min(420px, 42%);
+
+  flex-shrink: 0;
+}
+
+
+.overall-progress-value {
+  margin-bottom: 8px;
+
+  text-align: right;
+
+  color: #a5b4fc;
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+
+.overall-progress-track {
+  width: 100%;
+  height: 7px;
+
+  border-radius: 999px;
+
+  background: #192235;
+
+  overflow: hidden;
+}
+
+
+.overall-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7c3aed,
+      #6366f1,
+      #22d3ee
+    );
+
+  box-shadow:
+    0 0 18px rgba(99, 102, 241, 0.35);
+
+  transition: width 0.7s ease;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.dashboard-footer-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 22px;
+
+  color: #52678c;
+
+  font-size: 12px;
+}
+
+
+.dashboard-footer-message svg {
+  color: #818cf8;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.dashboard-loading {
+  min-height: 60vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+
+  color: #7185a8;
+}
+
+
+.dashboard-loader {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: 3px solid rgba(255, 255, 255, 0.08);
+
+  border-top-color: #6366f1;
+
+  animation: dashboard-spin 0.8s linear infinite;
+}
+
+
+@keyframes dashboard-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   LARGE LAPTOP
+   ========================================================= */
+
+@media (max-width: 1250px) {
+
+  .dashboard-content {
+    padding: 26px 24px 36px;
+  }
+
+  .dashboard-hero {
+    grid-template-columns:
+      minmax(0, 1.55fr)
+      minmax(260px, 0.75fr);
+
+    gap: 16px;
+  }
+
+  .dashboard-hero-left {
+    padding: 30px;
+  }
+
+  .profile-card {
+    padding: 24px 20px;
+  }
+
+  .stats-section {
+    gap: 12px;
+  }
+
+  .premium-stat-card {
+    padding: 17px;
+    gap: 12px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .dashboard-layout {
+    --sidebar-width: 0px;
+  }
+
+  .dashboard-main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .dashboard-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card {
+    display: grid;
+
+    grid-template-columns: auto 1fr auto;
+
+    align-items: center;
+
+    text-align: left;
+
+    column-gap: 18px;
+  }
+
+  .profile-avatar-wrapper {
+    grid-row: span 2;
+
+    margin: 0;
+  }
+
+  .profile-card h3 {
+    align-self: end;
+  }
+
+  .profile-role {
+    margin: 3px 0;
+  }
+
+  .active-badge {
+    justify-self: start;
+  }
+
+  .profile-progress {
+    grid-column: 1 / -1;
+
+    margin-top: 20px;
+  }
+
+  .profile-email {
+    display: none;
+  }
+
+  .stats-section {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .dashboard-content {
+    padding: 20px 15px 30px;
+  }
+
+  .dashboard-header {
+    margin-bottom: 18px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .dashboard-hero-left {
+    padding: 25px 22px;
+  }
+
+  .greeting-content h2 {
+    font-size: 38px;
+  }
+
+  .greeting-content p {
+    font-size: 14px;
+  }
+
+  .quote-card {
+    padding: 18px;
+  }
+
+  .quote-card blockquote {
+    font-size: 17px;
+  }
+
+  .profile-card {
+    display: flex;
+    text-align: center;
+  }
+
+  .profile-avatar-wrapper {
+    margin-bottom: 12px;
+  }
+
+  .profile-role {
+    margin: 5px 0 10px;
+  }
+
+  .profile-progress {
+    margin-top: 22px;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+
+  .premium-stat-card {
+    padding: 18px;
+  }
+
+  .overall-card {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 20px;
+  }
+
+  .overall-progress-area {
+    width: 100%;
+  }
+
+  .overall-progress-value {
+    text-align: left;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .dashboard-content {
+    padding: 16px 12px 24px;
+  }
+
+  .dashboard-eyebrow {
+    font-size: 9px;
+
+    letter-spacing: 0.13em;
+  }
+
+  .greeting-content h2 {
+    font-size: 32px;
+  }
+
+  .dashboard-hero-left {
+    padding: 22px 18px;
+  }
+
+  .profile-card {
+    padding: 22px 18px;
+  }
+
+  .overall-card {
+    padding: 20px;
+  }
+}

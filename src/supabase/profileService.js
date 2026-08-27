@@ -91,12 +91,26 @@ export async function createProfile({
         level: 1,
 
         roadmap_progress: 0,
+
+        department: "",
+
+        year: "",
+
+        college_name: "",
+
+        interests: [],
+
+        dream_company: "",
+
+        career_goal: "",
       },
     ])
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -112,7 +126,9 @@ export async function getProfile(userId) {
     .eq("id", userId)
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -121,7 +137,10 @@ export async function getProfile(userId) {
 // UPDATE PROFILE
 // ==========================================
 
-export async function updateProfile(userId, updates) {
+export async function updateProfile(
+  userId,
+  updates
+) {
   const { data, error } = await supabase
     .from("profiles")
     .update({
@@ -132,7 +151,9 @@ export async function updateProfile(userId, updates) {
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -141,7 +162,10 @@ export async function updateProfile(userId, updates) {
 // UPDATE AVATAR
 // ==========================================
 
-export async function updateAvatar(userId, avatar_url) {
+export async function updateAvatar(
+  userId,
+  avatar_url
+) {
   const { data, error } = await supabase
     .from("profiles")
     .update({
@@ -152,7 +176,9 @@ export async function updateAvatar(userId, avatar_url) {
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -175,7 +201,9 @@ export async function updateRoadmapProgress(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -195,7 +223,9 @@ export async function updateXP(userId, xp) {
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -204,7 +234,10 @@ export async function updateXP(userId, xp) {
 // UPDATE STREAK
 // ==========================================
 
-export async function updateStreak(userId, streak) {
+export async function updateStreak(
+  userId,
+  streak
+) {
   const { data, error } = await supabase
     .from("profiles")
     .update({
@@ -215,7 +248,9 @@ export async function updateStreak(userId, streak) {
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -230,7 +265,9 @@ export async function deleteProfile(userId) {
     .delete()
     .eq("id", userId);
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return true;
 }

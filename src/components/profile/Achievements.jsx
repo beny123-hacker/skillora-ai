@@ -1,64 +1,91 @@
 import { motion } from "framer-motion";
-import { FiAward, FiLock } from "react-icons/fi";
+import {
+  FiAward,
+  FiLock,
+  FiCheckCircle,
+  FiStar,
+} from "react-icons/fi";
 
 function Achievements({ achievements = [] }) {
+  const upcomingBadges = [
+    {
+      title: "Roadmap Master",
+      description:
+        "Complete your first full Skillora learning roadmap.",
+      icon: "🗺️",
+    },
+    {
+      title: "Quiz Champion",
+      description:
+        "Achieve outstanding results across multiple quizzes.",
+      icon: "🏆",
+    },
+    {
+      title: "1000 XP Club",
+      description:
+        "Earn 1000 XP and join Skillora's active learners.",
+      icon: "⚡",
+    },
+  ];
+
   return (
-    <section>
+    <section className="profile-achievements">
+      {/* HEADER */}
 
-      <div className="mb-6 flex items-center justify-between">
-
+      <div className="profile-module-header">
         <div>
+          <span className="profile-section-kicker">
+            YOUR REWARDS
+          </span>
 
-          <h2 className="text-2xl font-bold text-white">
-            Achievements
-          </h2>
+          <h2>Achievements</h2>
 
-          <p className="mt-1 text-sm text-slate-400">
-            Badges you've unlocked during your learning journey.
+          <p>
+            Badges and milestones unlocked throughout your learning journey.
           </p>
-
         </div>
 
-        <span className="rounded-full bg-indigo-500/10 px-4 py-2 text-sm font-semibold text-indigo-300">
+        <div className="profile-count-badge">
+          <FiAward />
           {achievements.length} Unlocked
-        </span>
-
+        </div>
       </div>
 
+      {/* EMPTY STATE */}
+
       {achievements.length === 0 ? (
-
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="rounded-3xl border border-dashed border-slate-700 bg-slate-900/60 p-12 text-center"
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="profile-empty-card"
         >
+          <div className="profile-empty-glow" />
 
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 text-4xl shadow-lg">
+          <div className="profile-empty-icon profile-achievement-empty-icon">
             🏆
           </div>
 
-          <h3 className="mt-6 text-xl font-semibold text-white">
-            No Achievements Yet
-          </h3>
+          <div className="relative">
+            <span className="profile-empty-kicker">
+              YOUR JOURNEY STARTS HERE
+            </span>
 
-          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-400">
-            Complete quizzes, finish learning roadmaps, earn XP,
-            and unlock your first Skillora achievement.
-          </p>
+            <h3>No Achievements Yet</h3>
 
+            <p>
+              Complete quizzes, finish learning roadmaps, earn XP,
+              and unlock your first Skillora achievement.
+            </p>
+          </div>
         </motion.div>
-
       ) : (
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
+        <div className="profile-achievement-grid">
           {achievements.map((achievement, index) => (
-
             <motion.div
-              key={achievement.id}
+              key={achievement.id || index}
               initial={{
                 opacity: 0,
-                y: 20,
+                y: 25,
               }}
               animate={{
                 opacity: 1,
@@ -69,104 +96,95 @@ function Achievements({ achievements = [] }) {
               }}
               whileHover={{
                 y: -8,
-                scale: 1.03,
+                scale: 1.02,
               }}
-              className="group overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 shadow-xl transition-all duration-300 hover:border-yellow-500/40"
+              className="profile-achievement-card"
             >
+              <div className="profile-achievement-card-glow" />
 
-              {/* Top Glow */}
-
-              <div className="h-2 bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-500" />
-
-              <div className="p-6">
-
-                <div className="flex justify-center">
-
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 text-3xl text-white shadow-xl transition-transform duration-300 group-hover:scale-110">
-                    <FiAward />
-                  </div>
-
+              <div className="profile-achievement-top">
+                <div className="profile-achievement-icon">
+                  <FiAward />
                 </div>
 
-                <h3 className="mt-5 text-center text-lg font-bold text-white">
-                  {achievement.title}
-                </h3>
-
-                {achievement.description && (
-
-                  <p className="mt-3 text-center text-sm leading-6 text-slate-400">
-                    {achievement.description}
-                  </p>
-
-                )}
-
-                <div className="mt-6 flex items-center justify-center gap-2 rounded-full bg-green-500/10 py-2 text-xs font-semibold text-green-400">
-
-                  ✅ Achievement Unlocked
-
+                <div className="profile-unlocked-label">
+                  <FiCheckCircle />
+                  Unlocked
                 </div>
-
               </div>
 
+              <h3>{achievement.title}</h3>
+
+              <p>
+                {achievement.description ||
+                  "You've reached an important milestone in your learning journey."}
+              </p>
+
+              <div className="profile-achievement-footer">
+                <FiStar />
+                Skillora Achievement
+              </div>
             </motion.div>
-
           ))}
-
         </div>
-
       )}
 
-      {/* Locked Badges */}
+      {/* UPCOMING BADGES */}
 
-      <div className="mt-10">
+      <div className="profile-upcoming-section">
+        <div className="profile-subsection-header">
+          <div>
+            <span>KEEP GOING</span>
+            <h3>Upcoming Badges</h3>
+          </div>
 
-        <h3 className="mb-5 text-lg font-semibold text-slate-300">
-          Upcoming Badges
-        </h3>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-          {[
-            "Roadmap Master",
-            "Quiz Champion",
-            "1000 XP Club",
-          ].map((badge) => (
-
-            <div
-              key={badge}
-              className="rounded-3xl border border-slate-800 bg-slate-900/50 p-5 opacity-70"
-            >
-
-              <div className="flex items-center gap-4">
-
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-800 text-xl text-slate-500">
-
-                  <FiLock />
-
-                </div>
-
-                <div>
-
-                  <h4 className="font-semibold text-white">
-                    {badge}
-                  </h4>
-
-                  <p className="mt-1 text-xs text-slate-500">
-                    Complete more activities to unlock.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          ))}
-
+          <p>
+            Your next milestones are waiting for you.
+          </p>
         </div>
 
-      </div>
+        <div className="profile-upcoming-grid">
+          {upcomingBadges.map((badge, index) => (
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 15,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                delay: 0.15 + index * 0.08,
+              }}
+              whileHover={{
+                y: -5,
+              }}
+              key={badge.title}
+              className="profile-upcoming-card"
+            >
+              <div className="profile-locked-icon">
+                <FiLock />
+              </div>
 
+              <div className="profile-upcoming-content">
+                <div className="profile-upcoming-title-row">
+                  <h4>{badge.title}</h4>
+
+                  <span>{badge.icon}</span>
+                </div>
+
+                <p>{badge.description}</p>
+
+                <div className="profile-locked-status">
+                  <FiLock />
+                  Locked
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

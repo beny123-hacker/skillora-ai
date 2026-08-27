@@ -1,7 +1,16 @@
 import { motion } from "framer-motion";
-import { FiEdit2, FiMail, FiBriefcase, FiTarget } from "react-icons/fi";
+import {
+  FiEdit2,
+  FiMail,
+  FiBookOpen,
+  FiCalendar,
+  FiMapPin,
+  FiUser,
+  FiHeart,
+  FiPlus,
+} from "react-icons/fi";
 
-const ProfileHero = ({ profile, user }) => {
+const ProfileHero = ({ profile, user, onEdit }) => {
   const displayName =
     profile?.full_name ||
     user?.user_metadata?.full_name ||
@@ -16,133 +25,290 @@ const ProfileHero = ({ profile, user }) => {
 
   const learningProgress = profile?.learning_progress || 0;
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="relative rounded-3xl border border-white/40 dark:border-gray-700/40
-      bg-white/70 dark:bg-gray-900/50 backdrop-blur-xl shadow-xl
-      p-6 sm:p-10 overflow-hidden"
-    >
-      {/* Background Glow */}
-      <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 pointer-events-none" />
+  const department =
+    profile?.department ||
+    "•";
 
-      <div className="relative flex flex-col md:flex-row gap-6 items-center md:items-start">
+  const year =
+    profile?.year ||
+    profile?.study_year ||
+    "•";
+
+  const collegeName =
+    profile?.college_name ||
+    profile?.college ||
+    "•";
+
+  const bio =
+    profile?.bio ||
+    "•";
+
+  let interests = profile?.interests || [];
+
+  // Handle interests stored as JSON string
+  if (typeof interests === "string") {
+    try {
+      interests = JSON.parse(interests);
+    } catch {
+      interests = interests
+        .split(",")
+        .map((interest) => interest.trim())
+        .filter(Boolean);
+    }
+  }
+
+  if (!Array.isArray(interests)) {
+    interests = [];
+  }
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="profile-hero"
+    >
+      {/* Background Effects */}
+      <div className="profile-hero-glow profile-hero-glow-one" />
+      <div className="profile-hero-glow profile-hero-glow-two" />
+
+      {/* TOP SECTION */}
+      <div className="profile-hero-top">
 
         {/* Avatar */}
-        <div className="shrink-0">
+        <div className="profile-avatar-wrapper">
           {avatarUrl ? (
             <img
               src={avatarUrl}
               alt={displayName}
-              className="w-28 h-28 rounded-3xl object-cover
-              shadow-xl ring-4 ring-white dark:ring-gray-800"
+              className="profile-avatar"
             />
           ) : (
-            <div
-              className="w-28 h-28 rounded-3xl
-              bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600
-              flex items-center justify-center
-              text-white text-4xl font-bold
-              shadow-xl ring-4 ring-white dark:ring-gray-800"
-            >
+            <div className="profile-avatar profile-avatar-placeholder">
               {displayName.charAt(0).toUpperCase()}
             </div>
           )}
+
+          <span className="profile-online-dot" />
         </div>
 
-        {/* User Info */}
-        <div className="flex-1 text-center md:text-left">
+        {/* Main Info */}
+        <div className="profile-main-info">
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+          <span className="profile-label">
+            SKILLORA LEARNER
+          </span>
+
+          <h1 className="profile-name">
             {displayName}
           </h1>
 
-          <p className="mt-2 flex justify-center md:justify-start items-center gap-2 text-gray-500 dark:text-gray-400">
-            <FiMail size={15} />
-            {email}
-          </p>
-
-          <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-5">
-
-            {profile?.dream_company && (
-              <span
-                className="px-4 py-2 rounded-full
-                bg-indigo-100 dark:bg-indigo-900/30
-                text-indigo-600 dark:text-indigo-300
-                text-sm flex items-center gap-2"
-              >
-                <FiBriefcase />
-                {profile.dream_company}
-              </span>
-            )}
-
-            {profile?.career_goal && (
-              <span
-                className="px-4 py-2 rounded-full
-                bg-purple-100 dark:bg-purple-900/30
-                text-purple-600 dark:text-purple-300
-                text-sm flex items-center gap-2"
-              >
-                <FiTarget />
-                {profile.career_goal}
-              </span>
-            )}
-
+          <div className="profile-email">
+            <FiMail />
+            <span>{email}</span>
           </div>
-
-          {/* Progress */}
-          <div className="mt-8">
-
-            <div className="flex justify-between text-xs text-gray-500 mb-2">
-              <span>Learning Progress</span>
-              <span>{learningProgress}%</span>
-            </div>
-
-            <div className="h-3 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${learningProgress}%` }}
-                transition={{ duration: 1 }}
-                className="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
-              />
-
-            </div>
-
-          </div>
-
         </div>
 
-        {/* Edit Button */}
-        <div className="shrink-0">
+        {/* Right Actions */}
+        <div className="profile-actions">
+
+          <div className="profile-status">
+            <span className="profile-status-dot" />
+            Active Learner
+          </div>
 
           <button
-            className="
-            px-5 py-3
-            rounded-xl
-            bg-gradient-to-r
-            from-blue-600
-            via-indigo-600
-            to-purple-600
-            text-white
-            font-medium
-            shadow-lg
-            hover:scale-105
-            transition-all
-            flex
-            items-center
-            gap-2"
+            type="button"
+            onClick={onEdit}
+            className="profile-edit-button"
           >
             <FiEdit2 />
             Edit Profile
           </button>
 
         </div>
-
       </div>
-    </motion.div>
+
+      {/* PROFILE DETAILS */}
+      <div className="profile-details-grid">
+
+        {/* Department */}
+        <motion.div
+          whileHover={{ y: -4 }}
+          className="profile-detail-card"
+        >
+          <div className="profile-detail-icon department-icon">
+            <FiBookOpen />
+          </div>
+
+          <div className="profile-detail-content">
+            <span className="profile-detail-label">
+              DEPARTMENT
+            </span>
+
+            <p className="profile-detail-value">
+              {department}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Year */}
+        <motion.div
+          whileHover={{ y: -4 }}
+          className="profile-detail-card"
+        >
+          <div className="profile-detail-icon year-icon">
+            <FiCalendar />
+          </div>
+
+          <div className="profile-detail-content">
+            <span className="profile-detail-label">
+              YEAR
+            </span>
+
+            <p className="profile-detail-value">
+              {year}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* College */}
+        <motion.div
+          whileHover={{ y: -4 }}
+          className="profile-detail-card"
+        >
+          <div className="profile-detail-icon college-icon">
+            <FiMapPin />
+          </div>
+
+          <div className="profile-detail-content">
+            <span className="profile-detail-label">
+              COLLEGE
+            </span>
+
+            <p className="profile-detail-value">
+              {collegeName}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Bio */}
+        <motion.div
+          whileHover={{ y: -4 }}
+          className="profile-detail-card profile-bio-card"
+        >
+          <div className="profile-detail-icon bio-icon">
+            <FiUser />
+          </div>
+
+          <div className="profile-detail-content">
+            <span className="profile-detail-label">
+              ABOUT
+            </span>
+
+            <p className="profile-detail-value profile-bio-text">
+              {bio}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* INTERESTS */}
+      <div className="profile-interests-section">
+
+        <div className="profile-interests-header">
+
+          <div className="profile-interests-title">
+            <FiHeart />
+
+            <div>
+              <span>MY INTERESTS</span>
+
+              <p>
+                Personalize your Skillora learning experience
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={onEdit}
+            className="profile-add-interest"
+          >
+            <FiPlus />
+            Add Interests
+          </button>
+        </div>
+
+        <div className="profile-interest-list">
+
+          {interests.length > 0 ? (
+            interests.map((interest, index) => (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.03 }}
+                whileHover={{ scale: 1.05 }}
+                key={`${interest}-${index}`}
+                className="profile-interest-tag"
+              >
+                {interest}
+              </motion.span>
+            ))
+          ) : (
+            <button
+              type="button"
+              onClick={onEdit}
+              className="profile-empty-interest"
+            >
+              <FiPlus />
+              Add your interests
+            </button>
+          )}
+
+        </div>
+      </div>
+
+      {/* PROGRESS */}
+      <div className="profile-progress-section">
+
+        <div className="profile-progress-header">
+
+          <div>
+            <span className="profile-detail-label">
+              LEARNING PROGRESS
+            </span>
+
+            <p>
+              Keep building your skills
+            </p>
+          </div>
+
+          <strong>
+            {learningProgress}%
+          </strong>
+        </div>
+
+        <div className="profile-progress-track">
+
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{
+              width: `${Math.min(
+                Math.max(Number(learningProgress) || 0, 0),
+                100
+              )}%`,
+            }}
+            transition={{
+              duration: 1,
+              ease: "easeOut",
+            }}
+            className="profile-progress-fill"
+          />
+        </div>
+      </div>
+
+    </motion.section>
   );
 };
 

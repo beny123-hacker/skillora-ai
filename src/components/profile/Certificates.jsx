@@ -4,67 +4,73 @@ import {
   FiDownload,
   FiEye,
   FiCalendar,
+  FiCheckCircle,
+  FiShield,
 } from "react-icons/fi";
 
 function Certificates({ certificates = [] }) {
   return (
-    <section>
+    <section className="profile-certificates">
+      {/* HEADER */}
 
-      {/* Header */}
-
-      <div className="mb-6 flex items-center justify-between">
-
+      <div className="profile-module-header">
         <div>
+          <span className="profile-section-kicker">
+            VERIFIED SKILLS
+          </span>
 
-          <h2 className="text-2xl font-bold text-white">
-            Certificates
-          </h2>
+          <h2>Certificates</h2>
 
-          <p className="mt-1 text-sm text-slate-400">
-            Certificates earned after completing Skillora roadmaps.
+          <p>
+            Certificates earned after successfully completing Skillora
+            learning experiences.
           </p>
-
         </div>
 
-        <span className="rounded-full bg-indigo-500/10 px-4 py-2 text-sm font-semibold text-indigo-300">
+        <div className="profile-count-badge">
+          <FiAward />
           {certificates.length} Earned
-        </span>
-
+        </div>
       </div>
 
-      {/* Empty */}
+      {/* EMPTY STATE */}
 
       {certificates.length === 0 ? (
-
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="rounded-3xl border border-dashed border-slate-700 bg-slate-900/60 p-12 text-center"
+          initial={{
+            opacity: 0,
+            scale: 0.97,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
+          className="profile-empty-card"
         >
+          <div className="profile-empty-glow profile-certificate-glow" />
 
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-4xl shadow-xl">
+          <div className="profile-empty-icon profile-certificate-empty-icon">
             📜
           </div>
 
-          <h3 className="mt-6 text-xl font-semibold text-white">
-            No Certificates Yet
-          </h3>
+          <div className="relative">
+            <span className="profile-empty-kicker">
+              BUILD YOUR PORTFOLIO
+            </span>
 
-          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-400">
-            Complete a complete roadmap and pass the quizzes to
-            unlock your Skillora certificates.
-          </p>
+            <h3>No Certificates Yet</h3>
 
+            <p>
+              Complete Skillora roadmaps and successfully pass quizzes
+              to earn verified certificates.
+            </p>
+          </div>
         </motion.div>
-
       ) : (
-
-        <div className="grid gap-6 lg:grid-cols-2">
-
+        <div className="profile-certificate-grid">
           {certificates.map((certificate, index) => (
-
             <motion.div
-              key={certificate.id}
+              key={certificate.id || index}
               initial={{
                 opacity: 0,
                 y: 25,
@@ -77,79 +83,66 @@ function Certificates({ certificates = [] }) {
                 delay: index * 0.08,
               }}
               whileHover={{
-                y: -6,
+                y: -8,
               }}
-              className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 shadow-xl"
+              className="profile-certificate-card"
             >
+              <div className="profile-certificate-ribbon" />
 
-              {/* Ribbon */}
-
-              <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-
-              <div className="p-6">
-
-                <div className="flex items-start justify-between">
-
-                  <div>
-
-                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-3xl text-white shadow-lg">
-                      <FiAward />
-                    </div>
-
+              <div className="profile-certificate-content">
+                <div className="profile-certificate-top">
+                  <div className="profile-certificate-icon">
+                    <FiAward />
                   </div>
 
-                  <div className="rounded-full bg-green-500/10 px-3 py-2 text-xs font-semibold text-green-400">
+                  <div className="profile-verified-badge">
+                    <FiCheckCircle />
                     VERIFIED
                   </div>
-
                 </div>
 
-                <h3 className="mt-6 text-xl font-bold text-white">
-                  {certificate.title}
-                </h3>
+                <div className="profile-certificate-body">
+                  <span className="profile-certificate-label">
+                    SKILLORA CERTIFICATE
+                  </span>
 
-                <div className="mt-4 flex items-center gap-2 text-sm text-slate-400">
+                  <h3>{certificate.title}</h3>
 
-                  <FiCalendar />
-
-                  Issued on {certificate.issued_at}
-
+                  <div className="profile-certificate-date">
+                    <FiCalendar />
+                    <span>
+                      Issued on {certificate.issued_at || "Recently"}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="mt-8 flex gap-3">
+                <div className="profile-certificate-security">
+                  <FiShield />
+                  Verified Skillora Credential
+                </div>
 
+                <div className="profile-certificate-actions">
                   <button
-                    className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-500"
+                    type="button"
+                    className="profile-certificate-view"
                   >
-
                     <FiEye />
-
-                    View
-
+                    View Certificate
                   </button>
 
                   <button
-                    className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-slate-700 bg-slate-800 py-3 font-semibold text-slate-300 transition hover:border-indigo-500 hover:text-white"
+                    type="button"
+                    className="profile-certificate-download"
                   >
-
                     <FiDownload />
-
                     Download
-
                   </button>
-
                 </div>
-
               </div>
-
             </motion.div>
-
           ))}
-
         </div>
-
       )}
-
     </section>
   );
 }
